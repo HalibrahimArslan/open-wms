@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        aur_vw_depo_stok_adres view'i hicbir changeset'te olusturulmamisti; ilk gectigi yer
+        20240604000001_modify_entities.xml icindeki <dropView> idi. Bos bir veritabaninda
+        migration "view does not exist" ile duruyordu. Bu changeSet, ayni dosyadaki
+        20240604000001-4'un dropView'indan hemen once view'i olusturur; zaten varsa
+        MARK_RAN olarak isaretlenir ve mevcut veritabanlarina dokunulmaz.
+    -->
+    <changeSet id="20240603000003-1" author="wms">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <viewExists viewName="aur_vw_depo_stok_adres"/>
+            </not>
+        </preConditions>
+        <createProcedure>
+            create view aur_vw_depo_stok_adres
+                    (id, urunadresid, stokkodu, lastupdatedate, lastupdateuser, depocode, miktar, barcode, adres, status, companycode,
+                     stockname) as
+            SELECT row_number() OVER (ORDER BY aduas.stok_kod) AS id,
+                   aduas.urun_adres_id                         AS urunadresid,
+                   aduas.stok_kod                              AS stokkodu,
+                   aduas.last_modified_date                    AS lastupdatedate,
+                   aduas.last_modified_by                      AS lastupdateuser,
+                   aduas.depo_code                             AS depocode,
+                   aduas.miktar,
+                   aduas.barcode,
+                   adua.adres,
+                   aduas.status,
+                   aduas.company_code                          AS companycode,
+                   pr.stok_adi                                 AS stockname
+            FROM aur_depo_urun_adres_stok aduas
+                     JOIN aur_depo_urun_adres adua ON aduas.urun_adres_id = adua.id
+                     LEFT JOIN product pr
+                               ON aduas.barcode = pr.barkod and aduas.company_code = pr.company_code;
+        </createProcedure>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,35 @@
+{
+  "name": "OrderRow",
+  "fields": [
+    {
+      "fieldName": "productQuantity",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "stockCode",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "order",
+      "otherEntityRelationshipName": "orderRow",
+      "relationshipName": "order"
+    }
+  ],
+  "entityTableName": "order_row",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20230417080837"
+}

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+  <!--
+      Create the AurTmpSevkPlan table
+  -->
+
+  <changeSet id="20250120000001" author="cicek">
+    <createTable tableName="aur_sevk_plani">
+      <column name="id" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+      <column name="company_code" type="varchar">
+        <constraints nullable="false"/>
+      </column>
+      <column name="cari_kod" type="varchar">
+        <constraints nullable="false"/>
+      </column>
+      <column name="address_no" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+      <column name="bolge_kodu" type="varchar">
+        <constraints nullable="false"/>
+      </column>
+      <column name="bolge_adi" type="varchar">
+        <constraints nullable="false"/>
+      </column>
+      <column name="depo_no" type="number(10)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="durum" type="varchar">
+        <constraints nullable="false"/>
+      </column>
+      <column name="trans_group_code" type="varchar">
+        <constraints nullable="true"/>
+      </column>
+      <column name="trans_group_name" type="varchar">
+        <constraints nullable="true"/>
+      </column>
+      <column name="approved_user" type="varchar">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_date" type="timestamp">
+        <constraints nullable="false" />
+      </column>
+      <column name="created_by" type="varchar(50)">
+        <constraints nullable="false" />
+      </column>
+      <column name="last_modified_by" type="varchar(50)">
+        <constraints nullable="false" />
+      </column>
+      <column name="last_modified_date" type="timestamp">
+        <constraints nullable="false" />
+      </column>
+      <column name="status" type="varchar(25)">
+        <constraints nullable="false" />
+      </column>
+      <column name="upload_id" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+
+    </createTable>
+  </changeSet>
+</databaseChangeLog>
+

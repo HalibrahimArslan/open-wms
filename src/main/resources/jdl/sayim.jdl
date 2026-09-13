@@ -1,0 +1,40 @@
+
+entity AurSayimTanim {
+	id Long,
+	status Boolean,
+    sayimAdi String,
+    depoNo String,
+    sayimTarihi Instant,
+    sayimDurumu SayimDurumu,
+    aciklama String,
+    sayimiBitirenKullanici String,
+    sayimiOnaylayanKullanici String,
+    createDate Instant,
+    createUser String,
+    lastUpdateDate Instant,
+    lastUpdateUser String
+}
+
+
+entity AurSayimUrun {
+	sayimUrunId Long,
+    stokKod String,
+    status SayimDurumu,
+    createDate Instant,
+    createUser String,
+    lastUpdateDate Instant,
+    lastUpdateUser String
+}
+
+enum SayimDurumu {
+    AKTIF, PASIF, REDDEDILDI, ONAYLANDI
+}
+
+
+relationship OneToMany {
+	AurSayimTanim to AurSayimUrun{aurSayimTanim},
+}
+
+filter AurSayimUrun, AurSayimTanim
+
+

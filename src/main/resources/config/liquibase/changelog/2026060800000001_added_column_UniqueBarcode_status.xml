@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="2026060800000001" author="halilibrahim.arslan">
+
+        <addColumn tableName="unique_barcode">
+            <column name="status" type="varchar(30)" defaultValue="CREATED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="numeric(19,4)"/>
+            <column name="description" type="jsonb"/>
+            <column name="aur_tmp_detail_id" type="bigint"/>
+        </addColumn>
+
+        <addForeignKeyConstraint
+            constraintName="fk_unique_barcode_aur_tmp_detail"
+            baseTableName="unique_barcode"
+            baseColumnNames="aur_tmp_detail_id"
+            referencedTableName="aur_tmp_detail"
+            referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

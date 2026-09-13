@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity CountingAddressException.
+    -->
+    <changeSet id="20231214000002-1" author="halil">
+       <createTable tableName="counting_address_exception">
+           <column name="id" type="bigint">
+               <constraints primaryKey="true" nullable="false"/>
+           </column>
+           <column name="address_id" type="bigint"/>
+           <column name="counting_definition_id" type="bigint" />
+           <column name="status" type="boolean" />
+       </createTable>
+
+        <createSequence sequenceName="counting_address_exception_id_seq" startValue="1" incrementBy="1"/>
+
+        <addForeignKeyConstraint baseTableName="counting_address_exception"
+                                 baseColumnNames="address_id"
+                                 constraintName="fk_counting_address_exception_address_id"
+                                 referencedTableName="aur_depo_urun_adres"
+                                 referencedColumnNames="id" />
+        <addForeignKeyConstraint baseTableName="counting_address_exception"
+                                 baseColumnNames="counting_definition_id"
+                                 constraintName="fk_counting_address_exception_counting_definition_id"
+                                 referencedTableName="aur_sayim_tanim"
+                                 referencedColumnNames="id" />
+
+    </changeSet>
+</databaseChangeLog>

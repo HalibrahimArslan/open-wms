@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity UserDepoRel.
+    -->
+    <changeSet id="20230314000001-1" author="jhipster">
+        <createTable tableName="aur_dispatch_area_control">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="status" type="boolean">
+                <constraints nullable="false" />
+            </column>
+            <column name="aur_tmp_detail_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20230314000001-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="aur_tmp_detail_id"
+                                 baseTableName="aur_dispatch_area_control"
+                                 constraintName="fk_aur_dispatch_area_control_aur_tmp_detail_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="aur_tmp_detail"/>
+    </changeSet>
+
+    <changeSet id="20230314000001-3" author="jhipster">
+        <createSequence cacheSize="1"
+                        dataType="bigint"
+                        incrementBy="50"
+                        schemaName="public"
+                        sequenceName="aur_dispatch_areaControlGenerator_seq"
+        />
+
+
+    </changeSet>
+
+    <changeSet id="20230314000001-4" author="halil">
+    <addColumn tableName="aur_dispatch_area_control">
+        <column name="observed_amount" type="double"></column>
+    </addColumn>
+
+    </changeSet>
+
+</databaseChangeLog>

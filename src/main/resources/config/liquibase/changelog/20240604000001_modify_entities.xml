@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Modify entity AurMenuRoleRel and AurUserRoleRel columns types.
+    -->
+    <changeSet id="20240604000001-1" author="halil">
+        <dropView viewName="aur_vw_user_menu_rel" />
+    </changeSet>
+    <changeSet id="20240604000001-2" author="halil">
+       <modifyDataType tableName="aur_menu_role_rel" columnName="menu_id" newDataType="bigint"/>
+        <modifyDataType tableName="aur_menu_role_rel" columnName="role_id" newDataType="bigint"/>
+        <modifyDataType tableName="aur_user_role_rel" columnName="role_id" newDataType="bigint"/>
+        <modifyDataType tableName="aur_user_role_rel" columnName="user_id" newDataType="bigint"/>
+    </changeSet>
+    <changeSet id="20240604000001-3" author="halil">
+        <createProcedure>
+            create view aur_vw_user_menu_rel(menu_id, menu_type, parent_menu_id, menu_name, user_name) as
+            SELECT DISTINCT (m.id) AS menu_id,
+                            m.menu_type,
+                            m.parent_menu_id,
+                            m.menu_name,
+                            u.login AS user_name
+            FROM aur_menu m
+                     JOIN aur_menu_role_rel mr ON m.id = mr.menu_id
+                     JOIN aur_user_role_rel ur ON mr.role_id = ur.role_id
+                     JOIN aur_user u ON u.id = ur.user_id;
+        </createProcedure>
+    </changeSet>
+    <changeSet id="20240604000001-4" author="halil">
+        <dropView viewName="aur_vw_depo_stok_adres" />
+        <createProcedure>
+            create view aur_vw_depo_stok_adres
+                    (id, urunadresid, stokkodu, lastupdatedate, lastupdateuser, depocode, miktar, barcode, adres, status,companycode,
+                     stockname) as
+            SELECT row_number() OVER (ORDER BY aduas.stok_kod) AS id,
+                aduas.urun_adres_id                         AS urunadresid,
+                   aduas.stok_kod                              AS stokkodu,
+                   aduas.last_modified_date                    AS lastupdatedate,
+                   aduas.last_modified_by                      AS lastupdateuser,
+                   aduas.depo_code                             AS depocode,
+                   aduas.miktar,
+                   aduas.barcode,
+                   adua.adres,
+                   aduas.status,
+                   aduas.company_code                            AS companycode,
+                   pr.stok_adi                                AS stockname
+            FROM aur_depo_urun_adres_stok aduas
+                     JOIN aur_depo_urun_adres adua ON aduas.urun_adres_id = adua.id
+                     LEFT JOIN product pr
+                               ON aduas.barcode = pr.barkod and aduas.company_code = pr.company_code;
+        </createProcedure>
+    </changeSet>
+
+
+</databaseChangeLog>
+

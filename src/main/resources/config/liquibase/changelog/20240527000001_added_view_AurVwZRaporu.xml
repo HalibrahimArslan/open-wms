@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        aur_vw_z_raporu view'i hicbir changeset'te olusturulmamisti; ilk gectigi yer
+        20240528000001_modify_column_AurOrderMaster.xml icindeki <dropView> idi.
+        Bos bir veritabaninda migration "view does not exist" ile duruyordu. Tanim, 20240528000001-1
+        kolonlari yeniden adlandirmadan onceki isimleri (create_date / last_update_date) kullanir.
+        View zaten varsa changeSet MARK_RAN olarak isaretlenir.
+    -->
+    <changeSet id="20240527000001-1" author="wms">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <viewExists viewName="aur_vw_z_raporu"/>
+            </not>
+        </preConditions>
+        <createProcedure>
+            create view aur_vw_z_raporu
+                    (id, order_info, firm_name, baglanti_tipi, alt_cari_adi, belge_no, op_type, erp_order_info, miktar) as
+            SELECT row_number() OVER (ORDER BY aom.order_info) AS id,
+                   aom.order_info,
+                   aom.firm_name,
+                   aom.baglanti_tipi,
+                   aom.baglanti_tipi                           AS alt_cari_adi,
+                   aom.belge_no,
+                   aom.op_type,
+                   aod.erp_order_info,
+                   aod.count                                   AS miktar
+            FROM aur_order_master aom
+                     JOIN (SELECT aodd.aur_order_id,
+                                  aodd.erp_order_info,
+                                  count(*) AS count
+                           FROM aur_order_detail aodd
+                           GROUP BY aodd.aur_order_id, aodd.erp_order_info) aod ON aom.id = aod.aur_order_id
+            WHERE (aom.create_date > (now() - '1 day'::interval) OR aom.last_update_date > (now() - '1 day'::interval))
+              AND aom.status::text = 'DONE'::text
+            ORDER BY aom.order_info, aom.op_type;
+        </createProcedure>
+    </changeSet>
+
+</databaseChangeLog>

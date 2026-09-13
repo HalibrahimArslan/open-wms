@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Modify Tables
+    -->
+    <changeSet id="20240812000001-1" author="halil">
+        <addUniqueConstraint tableName="aur_grup_mail_adres" columnNames="grup_kodu,mail_adres"
+                             constraintName="uq_grup_kodu_mail_adres" />
+        <addUniqueConstraint tableName="vendor_mail_address" columnNames="customer_code,district_code,mail"
+                             constraintName="uq_customer_code_district_code_mail" />
+    </changeSet>
+    <changeSet id="20240812000001-2" author="halil">
+        <addColumn tableName="depo">
+            <column type="boolean" name="countable"></column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="20240812000001-3" author="halil">
+        <addColumn tableName="aur_menu">
+            <column name="path" type="varchar" />
+            <column name="index" type="boolean" />
+            <column name="icon" type="varchar" />
+        </addColumn>
+    </changeSet>
+    <changeSet id="20240812000001-4" author="halil">
+        <dropView viewName="aur_vw_user_menu_rel" />
+        <createProcedure>
+            create view aur_vw_user_menu_rel(menu_id, menu_type, parent_menu_id,path,index,icon,company_code, menu_name, user_name) as
+            SELECT DISTINCT m.id    AS menu_id,
+                            m.menu_type,
+                            m.parent_menu_id,
+                            m.path,
+                            m.index,
+                            m.icon,
+                            m.company_code,
+                            m.menu_name,
+                            u.login AS user_name
+            FROM aur_menu m
+                     JOIN aur_menu_role_rel mr ON m.id = mr.menu_id
+                     JOIN aur_user_role_rel ur ON mr.role_id = ur.role_id
+                     JOIN aur_user u ON u.id = ur.user_id;
+
+        </createProcedure>
+    </changeSet>
+
+</databaseChangeLog>
+

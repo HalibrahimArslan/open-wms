@@ -1,0 +1,5 @@
+entity AurUser {
+    userId Integer,
+    userName String,
+    companyCode Integer    	
+}

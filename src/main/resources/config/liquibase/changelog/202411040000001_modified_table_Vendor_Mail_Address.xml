@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Modified table Vendor Mail Address
+    -->
+
+    <changeSet id="202411040000001-1" author="halil">
+        <addColumn tableName="vendor_mail_address">
+            <column name="connection_type" type="int" defaultValue="0">
+                <constraints nullable="false" />
+            </column>
+            <column name="customer_name" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="district_name" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="company_code" type="varchar" defaultValue="0">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+        <renameTable oldTableName="vendor_mail_address" newTableName="customer" />
+    </changeSet>
+</databaseChangeLog>
+

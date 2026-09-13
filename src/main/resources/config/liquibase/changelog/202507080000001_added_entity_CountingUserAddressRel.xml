@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added entity CountingUserAddressRel
+    -->
+
+    <changeSet id="20250708000001-1" author="halil">
+        <createTable tableName="counting_user_address_rel">
+            <column type="bigint" name="id" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column type="bigint" name="user_id">
+                <constraints nullable="false"
+                             foreignKeyName="fk_countig_user_address_rel_user_id__aur_user_id"
+                             referencedTableName="aur_user"
+                             referencedColumnNames="id"
+
+                />
+            </column>
+            <column type="bigint" name="address_id">
+                <constraints nullable="false"
+                             foreignKeyName="fk_counting_user_address_rel_address_id__aur_depo_urun_adres_id"
+                             referencedTableName="aur_depo_urun_adres"
+                             referencedColumnNames="id"
+                />
+            </column>
+            <column type="bigint" name="counting_definition_id">
+                <constraints nullable="false"
+                             foreignKeyName="fk_counting_user_address_rel_counting_definition_id__aur_sayim_tanim_id"
+                             referencedTableName="aur_sayim_tanim"
+                             referencedColumnNames="id"
+                />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="20250708000001-2" author="halil">
+        <addUniqueConstraint tableName="counting_user_address_rel" columnNames="user_id,address_id,counting_definition_id" />
+    </changeSet>
+
+
+</databaseChangeLog>
+

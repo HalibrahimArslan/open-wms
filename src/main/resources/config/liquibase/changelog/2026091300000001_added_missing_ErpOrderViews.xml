@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Asagidaki uc view, domain katmanindaki @NamedNativeQuery'ler tarafindan okunuyor
+        ama hicbir changeset'te olusturulmuyordu (mevcut ortamlarda elle olusturulmuslar):
+
+          aur_vw_firm_order_exists     <- AurVwFirmOrderExists   / getFirmOrderExists
+          aur_vw_firm_order_detail     <- AurVwFirmOrderDetail   / getFirmOrderDetail
+          aur_vw_firm_orderlist_bulk   <- AurVwFirmOrderListBulk / getFirmOrderDetailBulk
+
+        Kolon esleme, ilgili entity'lerdeki @Column adlarindan ve named query'lerin
+        WHERE sartlarindan birebir cikarilmistir; kaynak tablo aur_erp_data'dir.
+
+        Her changeSet'te "view zaten varsa MARK_RAN" onkosulu var; dolayisiyla bu
+        tanimlar YALNIZCA view'in bulunmadigi (yeni/lokal) veritabanlarinda olusur,
+        mevcut ortamlardaki tanimlar oldugu gibi kalir.
+    -->
+
+    <!-- Hangi carilerin acik siparisi var (Mal Kabul / Sevkiyat firma listeleri) -->
+    <changeSet id="2026091300000001-1" author="wms">
+        <preConditions onFail="MARK_RAN">
+            <not><viewExists viewName="aur_vw_firm_order_exists"/></not>
+        </preConditions>
+        <createProcedure>
+            create view aur_vw_firm_order_exists
+                (cari_kod, cari_unvan, cari_baglanti_tipi, cari_hareket_tipi,
+                 bolge_kodu, bolge_adi, sip_tip, sip_depo_no) as
+            SELECT DISTINCT aed.cari_kod,
+                            aed.cari_unvan,
+                            aed.cari_baglanti_tipi,
+                            aed.cari_hareket_tipi,
+                            aed.bolge_kodu,
+                            aed.bolge_adi,
+                            aed.sip_tip,
+                            aed.sip_depo_no
+            FROM aur_erp_data aed
+            WHERE aed.cari_kod IS NOT NULL
+              -- "siparisi var" = teslim edilmemis miktar kalmis satirlar
+              AND coalesce(aed.sip_miktar, 0) > coalesce(aed.sip_teslim_miktar, 0);
+        </createProcedure>
+    </changeSet>
+
+    <!-- Bir carinin tek depodaki siparis satirlari -->
+    <changeSet id="2026091300000001-2" author="wms">
+        <preConditions onFail="MARK_RAN">
+            <not><viewExists viewName="aur_vw_firm_order_detail"/></not>
+        </preConditions>
+        <createProcedure>
+            create view aur_vw_firm_order_detail
+                (id, stokkodu, stokadi, siparismiktar, teslimmiktar, barkod, stokbirimi,
+                 siptip, depono, musterikod, caribaglantitipi) as
+            SELECT aed.id,
+                   aed.sip_stok_kod       AS stokkodu,
+                   aed.stok_adi           AS stokadi,
+                   aed.sip_miktar         AS siparismiktar,
+                   aed.sip_teslim_miktar  AS teslimmiktar,
+                   aed.barkod,
+                   aed.stok_birimi        AS stokbirimi,
+                   aed.sip_tip            AS siptip,
+                   aed.sip_depo_no        AS depono,
+                   aed.sip_musteri_kod    AS musterikod,
+                   aed.cari_baglanti_tipi AS caribaglantitipi
+            FROM aur_erp_data aed;
+        </createProcedure>
+    </changeSet>
+
+    <!-- Ayni satirlar, birden fazla depo icin toplu sorgulanirken (siparis basligi da dahil) -->
+    <changeSet id="2026091300000001-3" author="wms">
+        <preConditions onFail="MARK_RAN">
+            <not><viewExists viewName="aur_vw_firm_orderlist_bulk"/></not>
+        </preConditions>
+        <createProcedure>
+            create view aur_vw_firm_orderlist_bulk
+                (id, stokkodu, stokadi, siparismiktar, teslimmiktar, barkod, stokbirimi,
+                 sipuid, orderno, orderdate,
+                 siptip, depono, musterikod, caribaglantitipi) as
+            SELECT aed.id,
+                   aed.sip_stok_kod       AS stokkodu,
+                   aed.stok_adi           AS stokadi,
+                   aed.sip_miktar         AS siparismiktar,
+                   aed.sip_teslim_miktar  AS teslimmiktar,
+                   aed.barkod,
+                   aed.stok_birimi        AS stokbirimi,
+                   aed.sip_guid           AS sipuid,
+                   aed.sip_belge_no       AS orderno,
+                   aed.sip_tarih          AS orderdate,
+                   aed.sip_tip            AS siptip,
+                   aed.sip_depo_no        AS depono,
+                   aed.sip_musteri_kod    AS musterikod,
+                   aed.cari_baglanti_tipi AS caribaglantitipi
+            FROM aur_erp_data aed;
+        </createProcedure>
+    </changeSet>
+
+</databaseChangeLog>

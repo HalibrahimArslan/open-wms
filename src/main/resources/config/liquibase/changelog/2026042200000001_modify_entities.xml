@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <!--
+        Modify type of depoCode at address components
+    -->
+    <changeSet id="2026042200000001-1" author="halilibrahim.arslan">
+        <dropForeignKeyConstraint baseTableName="aur_depo_urun_adres" constraintName="fk_aur_adres_bolum_aur_depo_urun_adres"/>
+        <dropForeignKeyConstraint baseTableName="aur_depo_urun_adres" constraintName="fk_aur_adres_reyon_aur_depo_urun_adres"/>
+        <dropForeignKeyConstraint baseTableName="aur_depo_urun_adres" constraintName="fk_aur_adres_unite_aur_depo_urun_adres"/>
+        <dropForeignKeyConstraint baseTableName="aur_depo_urun_adres" constraintName="fk_aur_adres_kat_aur_depo_urun_adres"/>
+        <dropForeignKeyConstraint baseTableName="aur_depo_urun_adres" constraintName="fk_aur_adres_oda_aur_depo_urun_adres"/>
+        <dropForeignKeyConstraint baseTableName="aur_depo_urun_adres" constraintName="fk_aur_adres_tip_aur_depo_urun_adres"/>
+
+
+    </changeSet>
+
+    <changeSet id="2026042200000001-2" author="halilibrahim.arslan">
+        <modifyDataType tableName="aur_adres_bolum" columnName="depo_code" newDataType="varchar(50)" />
+        <modifyDataType tableName="aur_adres_kat" columnName="depo_code" newDataType="varchar(50)" />
+        <modifyDataType tableName="aur_adres_reyon" columnName="depo_code" newDataType="varchar(50)" />
+        <modifyDataType tableName="aur_adres_oda" columnName="depo_code" newDataType="varchar(50)" />
+        <modifyDataType tableName="aur_adres_unite" columnName="depo_code" newDataType="varchar(50)" />
+        <modifyDataType tableName="aur_adres_tip" columnName="depo_code" newDataType="varchar(50)" />
+        <modifyDataType tableName="aur_barkod_tip" columnName="depo_code" newDataType="varchar(50)" />
+        <modifyDataType tableName="aur_depo_urun_adres" columnName="depo_no" newDataType="varchar(50)"/>
+    </changeSet>
+
+    <changeSet id="2026042200000001-3" author="halil">
+        <addForeignKeyConstraint baseTableName="aur_depo_urun_adres" baseColumnNames="bolum,depo_no,company_code"
+                                 constraintName="fk_aur_adres_bolum_aur_depo_urun_adres" referencedTableName="aur_adres_bolum"
+                                 referencedColumnNames="code,depo_code,company_code" />
+        <addForeignKeyConstraint baseTableName="aur_depo_urun_adres" baseColumnNames="reyon,depo_no,company_code"
+                                 constraintName="fk_aur_adres_reyon_aur_depo_urun_adres" referencedTableName="aur_adres_reyon"
+                                 referencedColumnNames="code,depo_code,company_code" />
+        <addForeignKeyConstraint baseTableName="aur_depo_urun_adres" baseColumnNames="unite,depo_no,company_code"
+                                 constraintName="fk_aur_adres_unite_aur_depo_urun_adres" referencedTableName="aur_adres_unite"
+                                 referencedColumnNames="code,depo_code,company_code" />
+        <addForeignKeyConstraint baseTableName="aur_depo_urun_adres" baseColumnNames="kat,depo_no,company_code"
+                                 constraintName="fk_aur_adres_kat_aur_depo_urun_adres" referencedTableName="aur_adres_kat"
+                                 referencedColumnNames="code,depo_code,company_code" />
+        <addForeignKeyConstraint baseTableName="aur_depo_urun_adres" baseColumnNames="oda,depo_no,company_code"
+                                 constraintName="fk_aur_adres_oda_aur_depo_urun_adres" referencedTableName="aur_adres_oda"
+                                 referencedColumnNames="code,depo_code,company_code" />
+        <addForeignKeyConstraint baseTableName="aur_depo_urun_adres" baseColumnNames="adres_tipi,depo_no,company_code"
+                                 constraintName="fk_aur_adres_tip_aur_depo_urun_adres" referencedTableName="aur_adres_tip"
+                                 referencedColumnNames="code,depo_code,company_code" />
+    </changeSet>
+
+
+</databaseChangeLog>

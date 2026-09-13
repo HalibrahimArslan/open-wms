@@ -1,0 +1,10 @@
+.git
+.gitlab-ci.yml
+.idea
+.vscode
+.husky
+node_modules
+target
+docs
+*.log
+.env

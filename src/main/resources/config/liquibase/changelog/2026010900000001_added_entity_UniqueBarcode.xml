@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <!--
+        Added the entity Unique_barcode
+    -->
+    <changeSet id="2026010900000001" author="ahmetdoguhan.erbil">
+
+        <!-- Sequence for ID -->
+        <createSequence
+            sequenceName="unique_barcode_seq"
+            startValue="1"
+            incrementBy="1"/>
+
+        <!-- Table -->
+        <createTable tableName="unique_barcode">
+
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <!-- FK: company -->
+            <column name="company_code" type="varchar(25)">
+                <constraints nullable="false"/>
+            </column>
+
+
+            <column name="erp_barcode" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="barcode" type="varchar(150)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="receiving_date" type="timestamp"/>
+
+            <column name="customer_code" type="varchar(50)"/>
+
+            <column name="erp_order_info" type="varchar(25)"/>
+
+            <column name="parti_code" type="varchar(20)"/>
+
+            <column name="lot_number" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_by" type="varchar"/>
+            <column name="created_date" type="timestamp" />
+            <column name="last_modified_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar"/>
+
+        </createTable>
+
+        <!-- Unique constraint for barcode -->
+        <addUniqueConstraint
+            tableName="unique_barcode"
+            columnNames="barcode"
+            constraintName="uk_unique_barcode_barcode"/>
+
+
+
+        <!-- FK: product_code -> product(stok_kodu) -->
+        <addForeignKeyConstraint
+            constraintName="fk_unique_barcode_product"
+            baseTableName="unique_barcode"
+            baseColumnNames="erp_barcode, company_code"
+            referencedTableName="product"
+            referencedColumnNames="barkod, company_code"/>
+
+        <!-- Indexes  -->
+        <createIndex
+            indexName="idx_unique_barcode_parti_code"
+            tableName="unique_barcode">
+            <column name="parti_code"/>
+        </createIndex>
+
+        <createIndex
+            indexName="idx_unique_barcode_lot_number"
+            tableName="unique_barcode">
+            <column name="lot_number"/>
+        </createIndex>
+
+    </changeSet>
+
+</databaseChangeLog>

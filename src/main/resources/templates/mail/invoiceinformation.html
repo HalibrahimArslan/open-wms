@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="tr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DEPO YÖNETİM SİSTEMİ</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; background-color: #f4f4f4; color: #333333;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f4f4f4; padding: 20px;">
+  <tr>
+    <td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff; border: 1px solid #dddddd; border-radius: 8px; overflow: hidden;">
+        <!-- Header -->
+        <tr>
+          <td style="background-color: #003087; padding: 20px; text-align: center;">
+            <h2 style="margin: 0; font-size: 20px; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">DEPO YÖNETİM SİSTEMİ</h2>
+          </td>
+        </tr>
+        <!-- Content -->
+        <tr>
+          <td style="padding: 20px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+              <tr>
+                <td>
+                  <table width="100%" cellpadding="8" cellspacing="0" border="0" style="border-collapse: collapse; background-color: #f9f9f9; border: 1px solid #e0e0e0;">
+                    <thead>
+                    <tr style="background-color: #003087; color: #ffffff;">
+                      <th style="padding: 10px; font-size: 12px; border: 1px solid #e0e0e0;">Sıra No</th>
+                      <th style="padding: 10px; font-size: 12px; border: 1px solid #e0e0e0;">Sipariş No</th>
+                      <th style="padding: 10px; font-size: 12px; border: 1px solid #e0e0e0;">Alıcı Adı</th>
+                      <th style="padding: 10px; font-size: 12px; border: 1px solid #e0e0e0;">Teslim Alıcı</th>
+                      <th style="padding: 10px; font-size: 12px; border: 1px solid #e0e0e0;">Ürün Adı</th>
+                      <th style="padding: 10px; font-size: 12px; border: 1px solid #e0e0e0;">Sipariş Miktarı</th>
+                      <th style="padding: 10px; font-size: 12px; border: 1px solid #e0e0e0;">Sevk Miktarı</th>
+                      <th style="padding: 10px; font-size: 12px; border: 1px solid #e0e0e0;">Kalan Miktar</th>
+                      <th style="padding: 10px; font-size: 12px; border: 1px solid #e0e0e0;">Sevkiyat Adresi</th>
+                      <th style="padding: 10px; font-size: 12px; border: 1px solid #e0e0e0;">Şoför</th>
+                      <th style="padding: 10px; font-size: 12px; border: 1px solid #e0e0e0;">İrtibat Tel</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="wms : ${wms}" style="background-color: #ffffff;">
+                      <td style="padding: 10px; font-size: 12px; border: 1px solid #e0e0e0;" th:text="${wms.id}">Sıra No</td>
+                      <td style="padding: 10px; font-size: 12px; border: 1px solid #e0e0e0;" th:text="${wms.siparisNumarasi}">Sipariş No</td>
+                      <td style="padding: 10px; font-size: 12px; border: 1px solid #e0e0e0;" th:text="${wms.cariAdi}">Alıcı Adı</td>
+                      <td style="padding: 10px; font-size: 12px; border: 1px solid #e0e0e0;" th:text="${wms.altCariAdi}">Teslim Alıcı</td>
+                      <td style="padding: 10px; font-size: 12px; border: 1px solid #e0e0e0;" th:text="${wms.stokAdi}">Ürün Adı</td>
+                      <td style="padding: 10px; font-size: 12px; border: 1px solid #e0e0e0;" th:text="${wms.siparisMiktari}">Sipariş Miktarı</td>
+                      <td style="padding: 10px; font-size: 12px; border: 1px solid #e0e0e0;" th:text="${wms.teslimMiktari}">Sevk Miktarı</td>
+                      <td style="padding: 10px; font-size: 12px; border: 1px solid #e0e0e0;" th:text="${wms.kalanMiktar}">Kalan Miktar</td>
+                      <td style="padding: 10px; font-size: 12px; border: 1px solid #e0e0e0;" th:text="${wms.sevkiyatAdresi}">Sevkiyat Adresi</td>
+                      <td style="padding: 10px; font-size: 12px; border: 1px solid #e0e0e0;" th:text="${wms.soforAdSoyad}">Şoför</td>
+                      <td style="padding: 10px; font-size: 12px; border: 1px solid #e0e0e0;" th:text="${wms.irtibatTel}">İrtibat Tel</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <!-- Alerts -->
+        <tr>
+          <td style="padding: 0 20px 20px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e7f3fe; border: 1px solid #bce8f1; border-radius: 4px; padding: 15px; margin-bottom: 15px;">
+              <tr th:if="${!#strings.isEmpty(shipmentFormUrl)}">
+                <td style="font-size: 16px; color: #31708f;">
+                  <span style="margin-right: 10px; color: #003087; font-weight: bold;">✔️</span>
+                  <a th:href="${shipmentFormUrl}" style="color: #003087; text-decoration: none; font-weight: bold;">Ürün teslimat öncesi bilgilendirme metni için tıklayınız</a>
+                </td>
+              </tr>
+            </table>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e7f3fe; border: 1px solid #bce8f1; border-radius: 4px; padding: 15px;">
+              <tr th:if="${!#strings.isEmpty(shipmentFormUrl)}">
+                <td style="font-size: 16px; color: #31708f;">
+                  <span style="margin-right: 10px; color: #003087; font-weight: bold;">✔️</span>
+                  <a th:href="${shipmentFormUrl}" style="color: #003087; text-decoration: none; font-weight: bold;">Sevkiyat sonrası doldurulacak forma erişim için tıklayınız</a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

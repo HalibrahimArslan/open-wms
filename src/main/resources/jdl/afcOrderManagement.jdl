@@ -1,0 +1,42 @@
+
+entity Order {
+    orderNo String
+    isTransferred Boolean
+    entranceWarehosue Integer
+    transferWarehouse Integer
+    cancelReasonDetail String
+    documentType Integer
+
+}
+
+entity OrderRow {
+	productQuantity Long
+    stockCode String
+    status Boolean
+}
+
+// defining multiple OneToMany relationships with comments
+
+
+entity OrderStatus{
+    status String
+    description String
+}
+
+relationship OneToMany {
+    Order to OrderRow{order}
+
+}
+
+relationship  OneToOne{
+    Order{orderStatus} to OrderStatus
+}
+
+
+// Use Data Transfer Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

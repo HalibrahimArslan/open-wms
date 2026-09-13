@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity AurErpData
+    -->
+    <changeSet id="20220818000005-1" author="jhipster">
+        <createTable tableName="aur_erp_data">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sip_guid" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="sip_depo_no" type="smallint">
+                <constraints nullable="true" />
+            </column>
+            <column name="sip_sube_no" type="int">
+                <constraints nullable="true" />
+            </column>
+            <column name="sip_tip" type="smallint">
+                <constraints nullable="true" />
+            </column>
+            <column name="sip_cins" type="smallint">
+                <constraints nullable="true" />
+            </column>
+            <column name="sip_evrak_seri" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="sip_evrak_sira" type="int">
+                <constraints nullable="true" />
+            </column>
+            <column name="sip_satir_no" type="int">
+                <constraints nullable="true" />
+            </column>
+            <column name="sip_belge_no" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="sip_musteri_kod" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="sip_stok_kod" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="stok_adi" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="barkod" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="stok_birimi" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="sip_miktar" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="sip_teslim_miktar" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="sip_tarih" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="teslim_tarihi" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="planlanan_sevk_tarihi" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="cari_kod" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="cari_unvan" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="bolge_kodu" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="bolge_adi" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="cari_hareket_tipi" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="cari_baglanti_tipi" type="varchar">
+                <constraints nullable="true" />
+            </column>
+
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="2026061700000001" author="halilibrahim.arslan">
+
+        <addColumn tableName="unique_barcode">
+            <column name="address_id" type="bigint"/>
+        </addColumn>
+
+        <addForeignKeyConstraint
+            constraintName="fk_unique_barcode_address_id"
+            baseTableName="unique_barcode"
+            baseColumnNames="address_id"
+            referencedTableName="aur_depo_urun_adres"
+            referencedColumnNames="id"/>
+
+    </changeSet>
+
+    <changeSet id="2026061700000002" author="halilibrahim.arslan">
+
+        <addColumn tableName="unique_barcode_aud">
+            <column name="address_id" type="bigint"/>
+        </addColumn>
+
+    </changeSet>
+
+</databaseChangeLog>

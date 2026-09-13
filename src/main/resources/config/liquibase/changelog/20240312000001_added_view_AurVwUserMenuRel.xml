@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        aur_vw_user_menu_rel view'i hicbir changeset'te olusturulmamisti; ilk gectigi yer
+        20240313000001_delete_columns.xml icindeki <dropView> idi. Mevcut ortamlarda view
+        elle olusturuldugu icin sorun cikmiyordu, ama bos bir veritabaninda migration
+        "view does not exist" ile duruyordu.
+
+        Asagidaki tanim, 20240313000001 kolonlari silmeden onceki semaya gore yazilmistir
+        (aur_menu.menu_id / aur_role.role_id / aur_user.user_id is anahtarlari uzerinden).
+        View zaten varsa changeSet MARK_RAN olarak isaretlenir, mevcut veritabanlarina
+        dokunmaz.
+    -->
+    <changeSet id="20240312000001-1" author="wms">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <viewExists viewName="aur_vw_user_menu_rel"/>
+            </not>
+        </preConditions>
+        <createProcedure>
+            create view aur_vw_user_menu_rel(menu_id, menu_type, parent_menu_id, menu_name, user_name) as
+            SELECT m.menu_id,
+                   m.menu_type,
+                   m.parent_menu_id,
+                   m.menu_name,
+                   u.user_name
+            FROM aur_menu m
+                     JOIN aur_menu_role_rel mr ON m.menu_id = mr.menu_id
+                     JOIN aur_user_role_rel ur ON mr.role_id = ur.role_id
+                     JOIN aur_user u ON u.user_id = ur.user_id;
+        </createProcedure>
+    </changeSet>
+
+</databaseChangeLog>

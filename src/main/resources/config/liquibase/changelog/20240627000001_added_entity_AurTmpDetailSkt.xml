@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added entity AurTmpDetailSkt
+    -->
+    <changeSet id="20240627000001-1" author="halil">
+        <createSequence sequenceName="aur_tmp_detail_skt_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false" />
+        <createTable tableName="aur_tmp_detail_skt">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="aur_tmp_detail_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="skt_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="double"></column>
+<!--            <column name="created_date" type="timestamp">-->
+<!--                <constraints nullable="true" />-->
+<!--            </column>-->
+<!--            <column name="created_by" type="varchar(50)">-->
+<!--                <constraints nullable="true" />-->
+<!--            </column>-->
+<!--            <column name="last_modified_by" type="varchar(50)">-->
+<!--                <constraints nullable="true" />-->
+<!--            </column>-->
+<!--            <column name="last_modified_date" type="timestamp">-->
+<!--                <constraints nullable="true" />-->
+<!--            </column>-->
+        </createTable>
+        <addForeignKeyConstraint baseTableName="aur_tmp_detail_skt"
+                                 baseColumnNames="aur_tmp_detail_id"
+                                 constraintName="fk_aur_tmp_detail_skt_aur_tmp_detail_id"
+                                 referencedTableName="aur_tmp_detail"
+                                 referencedColumnNames="id"/>
+        <addUniqueConstraint tableName="aur_tmp_detail_skt"
+                             columnNames="aur_tmp_detail_id,skt_date"
+                             constraintName="ux_aur_tmp_detail_skt_date" />
+    </changeSet>
+</databaseChangeLog>
+

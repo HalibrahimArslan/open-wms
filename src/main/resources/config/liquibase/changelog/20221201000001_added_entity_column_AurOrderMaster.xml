@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <!--
+        Added column for entity OrderPickingTransaction.
+    -->
+    <changeSet id="20221201000001-1" author="jhipster">
+        <addColumn tableName="aur_order_master">
+            <column name="baglanti_tipi" type="varchar(2)">
+                <constraints nullable="true" />
+            </column>
+            <column name="cari_code" type="varchar(100)">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+
+
+    </changeSet>
+</databaseChangeLog>

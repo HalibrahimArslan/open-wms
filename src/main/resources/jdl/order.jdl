@@ -1,0 +1,19 @@
+entity AurOrderMaster {
+	orderNo      String,
+    supplierId   Integer,
+    companyCode  Integer,
+    depoNo       Integer
+}
+
+entity AurOrderLineItem  {
+    orderNo       String,
+    stockCode     Integer,
+    stockBarkod   String,
+    stockNane     String,
+    orderAmount   Integer,
+    receiveAmound Integer
+}
+
+relationship OneToMany {
+   AurOrderMaster to AurOrderLineItem{aurOrderMaster}
+}

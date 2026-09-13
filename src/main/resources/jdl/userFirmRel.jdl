@@ -1,0 +1,23 @@
+entity UserFirmRel {
+    firmCode String,
+    firmName String,
+    userId   Long, 
+}
+
+
+
+
+
+
+
+// Set pagination options
+
+// Use Data Transfer Objects (DTO)
+// dto * with mapstruct
+
+dto UserFirmRel with mapstruct
+
+// Set service options to all except few
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

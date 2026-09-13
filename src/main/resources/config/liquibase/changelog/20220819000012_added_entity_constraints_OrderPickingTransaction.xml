@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <!--
+        Added the constraints for entity AurSayimTanim.
+    -->
+    <changeSet id="20220819000012-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="aur_tmp_detail_id"
+                                 baseTableName="order_picking_transaction"
+                                 constraintName="fk_order_picking_transaction_aur_tmp_detail_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="aur_tmp_detail"/>
+        <addForeignKeyConstraint baseColumnNames="urun_adres_id"
+                                 baseTableName="order_picking_transaction"
+                                 constraintName="fk_order_picking_transaction_urun_adres_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="aur_depo_urun_adres"/>
+    </changeSet>
+    <changeSet id="20220819000012-3" author="jhipster">
+
+        <dropForeignKeyConstraint
+                                   baseTableName="order_picking_transaction"
+                                   constraintName="fk_order_picking_transaction_aur_tmp_detail_id"/>
+        <dropForeignKeyConstraint
+            baseTableName="order_picking_transaction"
+            constraintName="fk_order_picking_transaction_urun_adres_id"/>
+    </changeSet>
+
+</databaseChangeLog>

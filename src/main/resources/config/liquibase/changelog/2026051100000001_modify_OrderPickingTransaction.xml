@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <!--
+        Modify Order Picking Transaction
+    -->
+    <changeSet id="2026051100000001-1" author="halilibrahim.arslan">
+        <renameColumn tableName="order_picking_transaction" oldColumnName="aur_tmp_detail_id" newColumnName="reference_id" />
+    </changeSet>
+
+
+</databaseChangeLog>

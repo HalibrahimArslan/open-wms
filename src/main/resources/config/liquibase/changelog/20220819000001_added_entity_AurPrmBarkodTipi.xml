@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity AurPrmBarkodTipi
+    -->
+    <changeSet id="20220819000001-1" author="jhipster">
+        <createTable tableName="aur_prm_barkod_tipi">
+            <column name="prm_barkod_tipi_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="status" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="description" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="company_code" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="depo_code" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

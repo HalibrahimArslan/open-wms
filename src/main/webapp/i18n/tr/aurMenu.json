@@ -1,0 +1,28 @@
+{
+  "wmsApp": {
+    "aurMenu": {
+      "home": {
+        "title": "Aur Menus",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Aur Menu",
+        "createOrEditLabel": "Create or edit a Aur Menu",
+        "notFound": "No Aur Menus found"
+      },
+      "created": "A new Aur Menu is created with identifier {{ param }}",
+      "updated": "A Aur Menu is updated with identifier {{ param }}",
+      "deleted": "A Aur Menu is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Aur Menu {{ id }}?"
+      },
+      "detail": {
+        "title": "Aur Menu"
+      },
+      "id": "ID",
+      "menuId": "Menu Id",
+      "parentMenuId": "Parent Menu Id",
+      "menuName": "Menu Name",
+      "menuType": "Menu Type",
+      "companyCode": "Company Code"
+    }
+  }
+}

@@ -1,0 +1,58 @@
+entity AfcOrder {
+    orderCancelReasonId Long
+    cancelReasonDetail String
+    orderDate Instant
+    isTransferred Boolean
+
+}
+
+
+entity OrderRow{
+    stockCode String
+    productQuantity Double
+}
+
+entity OrderStatus{
+	name String
+    description String
+    active Boolean
+}
+
+entity OrderCancelReason{
+	name String
+    description String
+}
+
+entity Customer {
+	name String
+    description String
+    mailAddress String
+}
+
+entity Product{
+	customerId Long
+    name String
+    stockCode String
+    stockAnaGroup String
+    stockAltGroup String
+}
+
+
+relationship OneToMany {
+	AfcOrder to OrderRow{afcOrder}
+}
+
+relationship ManyToOne {
+	AfcOrder{customer} to Customer
+}
+
+relationship OneToOne {
+	AfcOrder{orderStatus} to OrderStatus
+}
+
+filter AfcOrder, Product
+
+service all with serviceImpl
+
+
+

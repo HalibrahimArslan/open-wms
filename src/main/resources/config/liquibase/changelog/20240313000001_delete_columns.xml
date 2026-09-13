@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Delete column from AurUser,AurMenu,AurRole.
+        Beginning of the project that columns created by using jdl generator.
+        Jdl automatically add primary key id columns(We have technical debt because of it)
+    -->
+    <changeSet id="20240313000001-1" author="halil">
+        <dropView viewName="aur_vw_user_menu_rel" />
+    </changeSet>
+    <changeSet id="20240313000001-2" author="halil">
+        <dropColumn tableName="aur_user">
+            <column name="user_id"/>
+        </dropColumn>
+        <dropColumn tableName="aur_menu">
+            <column name="menu_id" />
+        </dropColumn>
+        <dropColumn tableName="aur_role">
+            <column name="role_id" />
+        </dropColumn>
+    </changeSet>
+    <changeSet id="20240313000001-3" author="halil">
+        <createProcedure>
+            create view aur_vw_user_menu_rel(menu_id, menu_type, parent_menu_id, menu_name, user_name) as
+            SELECT m.id AS menu_id,
+                   m.menu_type,
+                   m.parent_menu_id,
+                   m.menu_name,
+                   u.user_name
+            FROM aur_menu m
+                     JOIN aur_menu_role_rel mr ON m.id = mr.menu_id
+                     JOIN aur_user_role_rel ur ON mr.role_id = ur.role_id
+                     JOIN aur_user u ON u.id = ur.user_id;
+        </createProcedure>
+    </changeSet>
+    <changeSet id="20240313000001-4" author="halil">
+        <dropPrimaryKey tableName="aur_user_role_rel" constraintName="aur_user_role_rel_pkey"/>
+        <dropColumn tableName="aur_user_role_rel">
+            <column name="id"/>
+        </dropColumn>
+    </changeSet>
+    <changeSet id="20240313000001-5" author="halil">
+        <addPrimaryKey tableName="aur_user_role_rel" columnNames="user_id,role_id" />
+        <addForeignKeyConstraint baseTableName="aur_user_role_rel"
+                                 baseColumnNames="user_id"
+                                 constraintName="aur_user_role_rel__user_id_fk"
+                                 referencedTableName="aur_user"
+                                 referencedColumnNames="id" />
+        <addForeignKeyConstraint baseTableName="aur_user_role_rel"
+                                 baseColumnNames="role_id"
+                                 constraintName="aur_user_role_rel__role_id_fk"
+                                 referencedTableName="aur_role"
+                                 referencedColumnNames="id" />
+<!--        <addNotNullConstraint tableName="aur_user" columnName="login" />-->
+    </changeSet>
+
+</databaseChangeLog>
+

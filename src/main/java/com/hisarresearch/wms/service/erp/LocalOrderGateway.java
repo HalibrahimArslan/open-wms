@@ -1,0 +1,239 @@
+package com.hisarresearch.wms.service.erp;
+
+import com.hisarresearch.wms.service.UserService;
+import com.hisarresearch.wms.service.dto.AurCariDto;
+import com.hisarresearch.wms.service.dto.AurCariOrderDetailDto;
+import com.hisarresearch.wms.service.dto.AurCariOrderDetailListDto;
+import com.hisarresearch.wms.service.dto.AurCariOrderDto;
+import com.hisarresearch.wms.service.dto.AurFirmListDto;
+import com.hisarresearch.wms.service.dto.MalKabulRequestDto;
+import com.hisarresearch.wms.service.dto.SevkiyatRequestDto;
+import com.hisarresearch.wms.service.dto.erp.ErpOperationResult;
+import com.hisarresearch.wms.service.dto.mikro.StockDetailResponseDto;
+import com.hisarresearch.wms.service.dto.mikro.v16.OrderParamsDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * ERP entegrasyonu olmadan calisan {@link ErpOrderGateway} implementasyonu.
+ *
+ * <p>Siparis ve stok bilgisini uzak bir ERP servisi yerine dogrudan yerel
+ * tablolardan okur:
+ * <ul>
+ *     <li>siparis satirlari  -> {@code aur_erp_data}</li>
+ *     <li>stok/urun bilgisi  -> {@code product}</li>
+ *     <li>depodaki miktar    -> {@code aur_depo_urun_adres_stok}</li>
+ * </ul>
+ *
+ * <p>{@code token} ve {@code apiPath} parametreleri arayuz sozlesmesi geregi
+ * alinir ama kullanilmaz.
+ *
+ * <p>Hangi implementasyonun kullanilacagina {@link ErpGatewayRouter} karar verir.
+ */
+@Service
+public class LocalOrderGateway implements ErpOrderGateway {
+
+    private final Logger log = LoggerFactory.getLogger(LocalOrderGateway.class);
+
+    private static final String ORDER_DETAIL_SQL =
+        "select aed.barkod, aed.sip_teslim_miktar, aed.planlanan_sevk_tarihi, aed.sip_guid, " +
+        "       aed.sip_miktar, aed.stok_adi, aed.stok_birimi, aed.sip_stok_kod, " +
+        "       aed.teslim_tarihi, aed.sip_depo_no " +
+        "  from aur_erp_data aed " +
+        " where aed.sip_belge_no = :orderNo " +
+        "   and aed.sip_tip = :sipTip " +
+        "   and aed.sip_depo_no = :depoNo " +
+        " order by aed.sip_satir_no";
+
+    private static final String STOCK_DETAIL_SQL =
+        "select p.barkod, p.stok_kodu, p.stok_adi, p.stok_birimi, p.kategori_adi, " +
+        "       p.ana_grup, p.description, " +
+        "       coalesce((select sum(s.miktar) " +
+        "                   from aur_depo_urun_adres_stok s " +
+        "                  where s.barcode = p.barkod " +
+        "                    and s.company_code = p.company_code " +
+        "                    and (:depoNo is null or s.depo_code = :depoNo)), 0) as depodaki_miktar " +
+        "  from product p " +
+        " where p.barkod in (:barcodes) " +
+        "   and p.company_code = :companyCode";
+
+    private final EntityManager em;
+    private final UserService userService;
+    private final AurLocalService aurLocalService;
+
+    public LocalOrderGateway(EntityManager em, UserService userService, AurLocalService aurLocalService) {
+        this.em = em;
+        this.userService = userService;
+        this.aurLocalService = aurLocalService;
+    }
+
+    @Override
+    public List<AurCariDto> getFirmList(String token, String apiPath, int depoNo, int sipTip) {
+        // cariBaglantiTipi, Mikro tarafinda da siparis tipinin metin karsiligi olarak kullaniliyor.
+        return aurLocalService.getFirmList((short) sipTip, String.valueOf(sipTip), (short) depoNo);
+    }
+
+    @Override
+    public List<AurCariOrderDto> getCariOrderList(String token, String apiPath, AurFirmListDto aurFirmListDto) {
+        return aurLocalService.getCariOrderList(aurFirmListDto);
+    }
+
+    @Override
+    public List<AurCariOrderDetailListDto> getCariOrderDetailList(String token, String apiPath, AurFirmListDto aurFirmListDto) {
+        return aurLocalService.getCariOrderDetailList(aurFirmListDto);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<AurCariOrderDetailDto> getOrderDetail(String token, String apiPath, String orderNo,
+                                                      Integer sipTip, Integer depoNo) {
+        log.debug("Local ERP: {} nolu siparisin detaylari okunuyor (sipTip={}, depoNo={})", orderNo, sipTip, depoNo);
+
+        Query q = em.createNativeQuery(ORDER_DETAIL_SQL);
+        q.setParameter("orderNo", orderNo);
+        q.setParameter("sipTip", sipTip);
+        q.setParameter("depoNo", depoNo);
+
+        List<Object[]> rows = q.getResultList();
+        List<AurCariOrderDetailDto> result = new ArrayList<>(rows.size());
+
+        for (Object[] row : rows) {
+            AurCariOrderDetailDto dto = new AurCariOrderDetailDto();
+            dto.setBarkod(asString(row[0]));
+            dto.setTeslimMiktar(asDouble(row[1]));
+            dto.setPlanlananSevkTarihi(asString(row[2]));
+            dto.setSipUid(asString(row[3]));
+            dto.setSiparisMiktar(asDouble(row[4]));
+            dto.setStokAdi(asString(row[5]));
+            dto.setStokBirimi(asString(row[6]));
+            dto.setStokKodu(asString(row[7]));
+            dto.setTeslimTarihi(asString(row[8]));
+            dto.setDepoNo((int) asDouble(row[9]));
+            // Mikro tarafinda "0" acik siparis satirini ifade ediyor; ayni sozlesmeyi koruyoruz.
+            dto.setDurum("0");
+            result.add(dto);
+        }
+        return result;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Map<String, StockDetailResponseDto> getStockDetails(String token, String apiPath,
+                                                               List<String> barcodes, Integer depoNo) {
+        if (barcodes == null || barcodes.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        log.debug("Local ERP: {} barkod icin stok detayi okunuyor (depoNo={})", barcodes.size(), depoNo);
+
+        Query q = em.createNativeQuery(STOCK_DETAIL_SQL);
+        q.setParameter("barcodes", barcodes);
+        q.setParameter("companyCode", String.valueOf(userService.getUserCompanyCode()));
+        q.setParameter("depoNo", depoNo == null ? null : String.valueOf(depoNo));
+
+        List<Object[]> rows = q.getResultList();
+        Map<String, StockDetailResponseDto> result = new HashMap<>(rows.size());
+
+        for (Object[] row : rows) {
+            StockDetailResponseDto dto = new StockDetailResponseDto();
+            dto.setBarkod(asString(row[0]));
+            dto.setStokKodu(asString(row[1]));
+            dto.setStokAdi(asString(row[2]));
+            dto.setStokBirimi(asString(row[3]));
+            dto.setKategoriAdi(asString(row[4]));
+            dto.setAnagrupAdi(asString(row[5]));
+            dto.setDescription(asString(row[6]));
+            dto.setDepodakiMiktar(asDouble(row[7]));
+            result.putIfAbsent(dto.getBarkod(), dto);
+        }
+        return result;
+    }
+
+    @Override
+    public java.util.Set<com.hisarresearch.wms.domain.enumeration.ErpConnectionType> erpTypes() {
+        return java.util.Set.of(com.hisarresearch.wms.domain.enumeration.ErpConnectionType.LOCAL);
+    }
+
+    @Override
+    public String getToken(String apiPath, String apiParameters) {
+        return null; // yerel modda ERP'ye gidilmiyor
+    }
+
+    @Override
+    public Object getDepoList(String token, String apiPath, String companyCode) {
+        return aurLocalService.getDepoList(companyCode);
+    }
+
+    // =====================================================================
+    // Asagidaki metotlar sozlesmeyi tamamlamak icin tanimli; is kurallari
+    // heniz yazilmadi. Cagri hata firlatmak yerine islenebilir bir sonuc
+    // doner, boylece ekranlar yerel modda da akisini surdurebilir.
+    // =====================================================================
+
+    /**
+     * TODO yerel mal kabul is kurallari.
+     *
+     * <p>ERP'den bagimsiz olan WMS adimlari zaten mevcut ve dogrudan buraya
+     * baglanabilir:
+     * {@code receivingAddressService.completeReceivingAddressOperation(malKabulRequestDto, addressId)}
+     * ve {@code aurOrderMasterService.completeReceiving(malKabulRequestDto)}.
+     * Ardindan {@code aur_erp_data.sip_teslim_miktar} guncellenerek satir kapatilabilir.
+     */
+    @Override
+    public Object receiveOrder(String token, String apiPath, MalKabulRequestDto malKabulRequestDto, Long addressId) {
+        log.warn("Yerel mal kabul heniz uygulanmadi (addressId={})", addressId);
+        return ErpOperationResult.notImplemented("Mal kabul");
+    }
+
+    /**
+     * TODO yerel sevkiyat is kurallari.
+     *
+     * <p>Mikro tarafinda sevkiyat sonrasi siparis satirlari kapatiliyor; yerel modda
+     * ayni etki {@code aur_erp_data.sip_teslim_miktar} artirilarak saglanabilir.
+     */
+    @Override
+    public Object dispatchOrder(String token, String apiPath, SevkiyatRequestDto sevkiyatRequestDto) {
+        log.warn("Yerel sevkiyat heniz uygulanmadi");
+        return ErpOperationResult.notImplemented("Sevkiyat");
+    }
+
+    /**
+     * TODO yerel barkod uretimi.
+     *
+     * <p>Yerel modda barkod {@code product} tablosundan okunabilir ya da stok koduna
+     * gore uretilebilir.
+     */
+    @Override
+    public Object generateBarcode(String token, String apiPath, String stokKod) {
+        log.warn("Yerel barkod uretimi heniz uygulanmadi (stokKod={})", stokKod);
+        return ErpOperationResult.notImplemented("Barkod uretimi");
+    }
+
+    /**
+     * TODO genis siparis detayi.
+     *
+     * <p>Kaynak {@code aur_erp_data}; {@link #getOrderDetail} ile ayni tablodan,
+     * {@link OrderParamsDTO} icindeki filtrelere gore beslenecek.
+     */
+    @Override
+    public Object getOrderComprehensiveDetails(String token, String apiPath, OrderParamsDTO orderParamsDTO) {
+        log.warn("Yerel genis siparis detayi heniz uygulanmadi");
+        return Collections.emptyList();
+    }
+
+    private static String asString(Object value) {
+        return value == null ? null : String.valueOf(value);
+    }
+
+    private static double asDouble(Object value) {
+        return value instanceof Number ? ((Number) value).doubleValue() : 0d;
+    }
+}

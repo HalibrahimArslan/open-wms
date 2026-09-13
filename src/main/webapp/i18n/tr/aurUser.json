@@ -1,0 +1,26 @@
+{
+  "wmsApp": {
+    "aurUser": {
+      "home": {
+        "title": "Aur Users",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Aur User",
+        "createOrEditLabel": "Create or edit a Aur User",
+        "notFound": "No Aur Users found"
+      },
+      "created": "A new Aur User is created with identifier {{ param }}",
+      "updated": "A Aur User is updated with identifier {{ param }}",
+      "deleted": "A Aur User is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Aur User {{ id }}?"
+      },
+      "detail": {
+        "title": "Aur User"
+      },
+      "id": "ID",
+      "userId": "User Id",
+      "userName": "User Name",
+      "companyCode": "Company Code"
+    }
+  }
+}

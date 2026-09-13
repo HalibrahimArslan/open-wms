@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <!--
+        Added the constraints for entity AurPartialDetails.
+    -->
+    <changeSet id="20221228000001-1" author="jhipster">
+       <alterSequence sequenceName="sequence_generator" incrementBy="1" />
+    </changeSet>
+
+    <changeSet id="20221228000001-2" author="jhipster">
+        <createSequence sequenceName="aur_address_placement_history_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="aur_company_seq" startValue="2" incrementBy="1"/>
+        <createSequence sequenceName="aur_erp_data_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="aur_grup_mail_adres_seq" startValue="25" incrementBy="1"/>
+        <createSequence sequenceName="aur_integration_logs_seq" startValue="52186" incrementBy="1"/>
+        <createSequence sequenceName="aur_lookup_table_seq" startValue="4" incrementBy="1"/>
+        <createSequence sequenceName="aur_mail_add_to_seq" startValue="10" incrementBy="1"/>
+        <createSequence sequenceName="aur_partial_details_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="aur_partial_item_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="order_picking_transaction_seq" startValue="14913" incrementBy="1"/>
+<!--        <createSequence sequenceName="aur_tmp_detail_seq" startValue="1" incrementBy="1"/>-->
+<!--        <createSequence sequenceName="aur_order_master_seq" startValue="150" incrementBy="1"/>-->
+<!--        <createSequence sequenceName="aur_order_detail_seq" startValue="1" incrementBy="1"/>-->
+        <createSequence sequenceName="aur_sayim_tanim_seq" startValue="5" incrementBy="1"/>
+        <createSequence sequenceName="aur_sayim_urun_seq" startValue="9170" incrementBy="1"/>
+        <createSequence sequenceName="erp_jwt_data_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="depo_seq" startValue="5" incrementBy="1"/>
+        <createSequence sequenceName="aur_user_seq" startValue="24" incrementBy="1"/>
+        <createSequence sequenceName="aur_role_seq" startValue="9" incrementBy="1"/>
+        <createSequence sequenceName="aur_menu_role_rel_seq" startValue="44" incrementBy="1"/>
+        <createSequence sequenceName="aur_menu_seq" startValue="28" incrementBy="1"/>
+        <createSequence sequenceName="customer_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="product_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="order_status_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="order_row_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="order_cancel_reason_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="order_seq" startValue="1" incrementBy="1"/>
+    </changeSet>
+    <changeSet id="20221228000001-3" author="jhipster">
+        <createSequence sequenceName="aur_depo_urun_adres_stok_seq" startValue="3367" incrementBy="1"/>
+    </changeSet>
+    <changeSet id="20221228000001-4" author="jhipster">
+                <createSequence sequenceName="aur_tmp_detail_seq" startValue="105000" incrementBy="1" cacheSize="0" cycle="false"/>
+                <createSequence sequenceName="aur_order_master_seq" startValue="105000" incrementBy="1" cacheSize="0" cycle="false" />
+                <createSequence sequenceName="aur_order_detail_seq" startValue="105000" incrementBy="1" cacheSize="0" cycle="false"/>
+    </changeSet>
+    <changeSet id="20221228000001-5" author="jhipster">
+        <createSequence sequenceName="pallet_barcode_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+    </changeSet>
+    <changeSet id="20221228000001-6" author="jhipster">
+        <createSequence sequenceName="pallet_barcode_order_rel_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+    </changeSet>
+    <changeSet id="20221228000001-7" author="jhipster">
+        <createSequence sequenceName="aur_dispatch_area_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+    </changeSet>
+    <changeSet id="20221228000001-8" author="halil">
+        <createSequence sequenceName="process_leaf_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="process_tree_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+
+    </changeSet>
+    <changeSet id="20230823000001-9" author="halil">
+        <createSequence sequenceName="customer_address_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+    </changeSet>
+</databaseChangeLog>

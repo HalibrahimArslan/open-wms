@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <!-- hibernate_sequence yoksa oluştur -->
+    <changeSet id="2026060800000002a" author="halilibrahim.arslan">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sequenceExists sequenceName="hibernate_sequence"/>
+            </not>
+        </preConditions>
+
+        <createSequence sequenceName="hibernate_sequence" startValue="1" incrementBy="1"/>
+
+    </changeSet>
+
+    <!-- REVINFO yoksa oluştur -->
+    <changeSet id="2026060800000002" author="halilibrahim.arslan">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="revinfo"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="revinfo">
+            <column name="rev" type="integer">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="revtstmp" type="bigint"/>
+            <column name="created_by" type="varchar(50)"/>
+            <column name="created_date" type="timestamp"/>
+        </createTable>
+
+    </changeSet>
+
+    <!-- created_by ve created_date kolonları yoksa ekle (mevcut REVINFO için) -->
+    <changeSet id="2026060800000002b" author="halilibrahim.arslan">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="revinfo" columnName="created_by"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="revinfo">
+            <column name="created_by" type="varchar(50)"/>
+            <column name="created_date" type="timestamp"/>
+        </addColumn>
+
+    </changeSet>
+
+    <changeSet id="2026060800000003" author="halilibrahim.arslan">
+
+        <createTable tableName="unique_barcode_aud">
+            <column name="id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rev" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="revtype" type="smallint"/>
+            <column name="status" type="varchar(30)"/>
+            <column name="aur_tmp_detail_id" type="bigint"/>
+        </createTable>
+
+        <addPrimaryKey
+            tableName="unique_barcode_aud"
+            columnNames="id, rev"
+            constraintName="pk_unique_barcode_aud"/>
+
+        <addForeignKeyConstraint
+            constraintName="fk_unique_barcode_aud_revinfo"
+            baseTableName="unique_barcode_aud"
+            baseColumnNames="rev"
+            referencedTableName="revinfo"
+            referencedColumnNames="rev"/>
+
+    </changeSet>
+
+    <changeSet id="2026060800000004" author="halilibrahim.arslan">
+
+        <createTable tableName="aur_tmp_detail_aud">
+            <column name="id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rev" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="revtype" type="smallint"/>
+            <column name="status" type="varchar(25)"/>
+            <column name="teslim_miktar" type="double"/>
+            <column name="observer_amount" type="double"/>
+        </createTable>
+
+        <addPrimaryKey
+            tableName="aur_tmp_detail_aud"
+            columnNames="id, rev"
+            constraintName="pk_aur_tmp_detail_aud"/>
+
+        <addForeignKeyConstraint
+            constraintName="fk_aur_tmp_detail_aud_revinfo"
+            baseTableName="aur_tmp_detail_aud"
+            baseColumnNames="rev"
+            referencedTableName="revinfo"
+            referencedColumnNames="rev"/>
+
+    </changeSet>
+
+</databaseChangeLog>

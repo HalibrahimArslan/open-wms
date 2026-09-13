@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity aur_order_adres
+    -->
+    <changeSet id="2025120200000001" author="ahmetdoguhan.erbil">
+
+        <!-- Sequence for ID -->
+        <createSequence
+            sequenceName="aur_order_adres_seq"
+            startValue="1"
+            incrementBy="1"/>
+
+        <createTable tableName="aur_order_adres">
+
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="erp_order_info" type="varchar(255)"/>
+            <column name="magento_order_id" type="varchar(255)"/>
+
+            <column name="sevk_adres_1" type="varchar(255)"/>
+            <column name="sevk_adres_2" type="varchar(255)"/>
+
+            <column name="post_code" type="varchar(50)"/>
+
+            <column name="sevk_il" type="varchar(100)"/>
+            <column name="sevk_ilce" type="varchar(100)"/>
+            <column name="sevk_ulke" type="varchar(100)"/>
+
+            <column name="sevk_tel" type="varchar(50)"/>
+            <column name="sevk_muhatap" type="varchar(255)"/>
+
+        </createTable>
+
+    </changeSet>
+</databaseChangeLog>

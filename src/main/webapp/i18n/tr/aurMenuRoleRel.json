@@ -1,0 +1,25 @@
+{
+  "wmsApp": {
+    "aurMenuRoleRel": {
+      "home": {
+        "title": "Aur Menu Role Rels",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Aur Menu Role Rel",
+        "createOrEditLabel": "Create or edit a Aur Menu Role Rel",
+        "notFound": "No Aur Menu Role Rels found"
+      },
+      "created": "A new Aur Menu Role Rel is created with identifier {{ param }}",
+      "updated": "A Aur Menu Role Rel is updated with identifier {{ param }}",
+      "deleted": "A Aur Menu Role Rel is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Aur Menu Role Rel {{ id }}?"
+      },
+      "detail": {
+        "title": "Aur Menu Role Rel"
+      },
+      "id": "ID",
+      "menuId": "Menu Id",
+      "roleId": "Role Id"
+    }
+  }
+}

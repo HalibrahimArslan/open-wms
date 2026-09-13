@@ -1,0 +1,29 @@
+entity AurPartialItem {
+    packageCode String required,
+    packageName String
+}
+
+entity AurPartialDetails {
+    stockCode String,
+    quantity Double
+}
+
+
+relationship OneToMany {
+
+    AurPartialItem to  AurPartialDetails{aurPartialItem}
+}
+
+
+// Set pagination options
+paginate AurPartialItem, AurPartialDetails with infinite-scroll
+
+// Use Data Transfer Objects (DTO)
+// dto * with mapstruct
+
+dto AurPartialItem, AurPartialDetails with mapstruct
+
+// Set service options to all except few
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

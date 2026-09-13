@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Modify entities
+    -->
+    <changeSet id="20240826000001-1" author="halil">
+
+        <renameColumn tableName="aur_prm_urun_adres_bolum" oldColumnName="prm_urun_adres_bolum_id" newColumnName="id" />
+        <renameColumn tableName="aur_prm_urun_adres_reyon" oldColumnName="prm_urun_adres_reyon_id" newColumnName="id"/>
+        <renameColumn tableName="aur_prm_urun_adres_unite" oldColumnName="prm_urun_adres_unite_id" newColumnName="id" />
+        <renameColumn tableName="aur_prm_urun_adres_tipi" oldColumnName="prm_urun_adres_tipi_id" newColumnName="id" />
+        <renameColumn tableName="aur_prm_urun_adres_kat" oldColumnName="prm_urun_adres_kat_id" newColumnName="id" />
+        <createTable tableName="aur_adres_oda">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code" type="varchar(2)">
+                <constraints nullable="true" />
+            </column>
+            <column name="description" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="status" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="company_code" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="depo_code" type="varchar">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+        <dropTable tableName="aur_bolum_kat_rel" />
+
+    </changeSet>
+    <changeSet id="20240826000001-2" author="halil">
+        <renameTable oldTableName="aur_prm_urun_adres_bolum" newTableName="aur_adres_bolum" />
+        <renameTable oldTableName="aur_prm_urun_adres_reyon" newTableName="aur_adres_reyon" />
+        <renameTable oldTableName="aur_prm_urun_adres_unite" newTableName="aur_adres_unite" />
+        <renameTable oldTableName="aur_prm_urun_adres_tipi" newTableName="aur_adres_tip" />
+        <renameTable oldTableName="aur_prm_urun_adres_kat" newTableName="aur_adres_kat" />
+    </changeSet>
+    <changeSet id="20240826000001-3" author="halil">
+        <renameColumn tableName="aur_prm_barkod_tipi" oldColumnName="prm_barkod_tipi_id" newColumnName="id" />
+    </changeSet>
+    <changeSet id="20240826000001-4" author="halil">
+        <renameTable oldTableName="aur_prm_barkod_tipi" newTableName="aur_barkod_tip" />
+    </changeSet>
+    <changeSet id="20240826000001-5" author="halil">
+        <addUniqueConstraint tableName="aur_adres_bolum" columnNames="code,depo_code,company_code" constraintName="uq_adres_bolum_code_depo_code_company_code"/>
+        <addUniqueConstraint tableName="aur_adres_reyon" columnNames="code,depo_code,company_code" constraintName="uq_adres_reyon_code_depo_code_company_code"/>
+        <addUniqueConstraint tableName="aur_adres_unite" columnNames="code,depo_code,company_code" constraintName="uq_adres_unite_code_depo_code_company_code"/>
+        <addUniqueConstraint tableName="aur_adres_kat" columnNames="code,depo_code,company_code" constraintName="uq_adres_kat_code_depo_code_company_code"/>
+        <addUniqueConstraint tableName="aur_adres_oda" columnNames="code,depo_code,company_code" constraintName="uq_adres_oda_code_depo_code_company_code"/>
+        <addUniqueConstraint tableName="aur_adres_tip" columnNames="code,depo_code,company_code" constraintName="uq_adres_tip_code_depo_code_company_code"/>
+
+    </changeSet>
+
+    <changeSet id="20240826000001-6" author="halil">
+        <modifyDataType tableName="aur_depo_urun_adres" columnName="kat" newDataType="varchar(3)" />
+    </changeSet>
+
+    <changeSet id="20240826000001-7" author="halil">
+        <addColumn tableName="aur_depo_urun_adres">
+            <column name="oda" type="varchar(2)">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20240826000001-8" author="halil">
+       <modifyDataType tableName="aur_adres_tip" columnName="code" newDataType="varchar(25)" />
+    </changeSet>
+
+    <changeSet id="20240826000001-9" author="halil">
+        <modifyDataType tableName="aur_adres_kat" columnName="code" newDataType="varchar(2)" />
+    </changeSet>
+
+
+</databaseChangeLog>
+

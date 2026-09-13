@@ -1,0 +1,13 @@
+{
+  "name": "wms-websocket-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "WMS bildirim websocket sunucusu (lokal gelistirme)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

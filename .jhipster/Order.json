@@ -1,0 +1,54 @@
+{
+  "name": "Order",
+  "fields": [
+    {
+      "fieldName": "orderNo",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "isTransferred",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "entranceWarehosue",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "transferWarehouse",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "cancelReasonDetail",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "documentType",
+      "fieldType": "Integer"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "orderStatus",
+      "otherEntityRelationshipName": "order",
+      "relationshipName": "orderStatus",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "orderRow",
+      "otherEntityRelationshipName": "order",
+      "relationshipName": "orderRow"
+    }
+  ],
+  "entityTableName": "jhi_order",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20230417080836"
+}

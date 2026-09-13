@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Modify AurUser.
+    -->
+    <changeSet id="20240401000001-1" author="halil">
+        <dropView viewName="aur_vw_user_menu_rel" />
+    </changeSet>
+
+    <changeSet id="20240401000001-2" author="halil">
+        <dropColumn tableName="aur_user">
+<!--        <column name="user_name"/> -->
+            <column name="password" />
+            <column name="first_name" />
+            <column name="last_name" />
+            <column name="email" />
+            <column name="password_version" />
+        </dropColumn>
+        <addColumn tableName="aur_user">
+            <column name="password_version" type="int" defaultValue="0"></column>
+        </addColumn>
+        <addColumn tableName="aur_user">
+            <column name="password_hash" type="varchar(60)"/>
+            <column name="first_name" type="varchar(50)"/>
+            <column name="last_name" type="varchar(50)"/>
+            <column name="email" type="varchar(191)">
+                <constraints unique="true" nullable="true" uniqueConstraintName="ux_aur_user_email"/>
+            </column>
+            <column name="image_url" type="varchar(256)"/>
+            <column name="activated" type="boolean" valueBoolean="false">
+            </column>
+            <column name="lang_key" type="varchar(10)"/>
+            <column name="activation_key" type="varchar(20)"/>
+            <column name="reset_key" type="varchar(20)"/>
+            <column name="created_by" type="varchar(50)">
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="reset_date" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </addColumn>
+    </changeSet>
+    <!--
+        20240401000001-3 asagida jhi_user_authority.user_id yabanci anahtarini jhi_user yerine
+        aur_user'a baglıyor, ancak jhi_user satirlarini aur_user'a tasiyan bir changeSet yoktu.
+        Mevcut ortamlarda aur_user zaten doluydu; bos bir veritabaninda ise FK ihlali
+        ("violates foreign key constraint fk_user_id") ile migration duruyordu.
+        aur_user bos degilse changeSet MARK_RAN olarak isaretlenir.
+    -->
+    <changeSet id="20240401000001-2b" author="wms">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT count(*) FROM aur_user</sqlCheck>
+        </preConditions>
+        <sql>
+            INSERT INTO aur_user (id, user_name, password_hash, first_name, last_name, email,
+                                  image_url, activated, lang_key, activation_key, reset_key,
+                                  created_by, created_date, reset_date,
+                                  last_modified_by, last_modified_date, password_version)
+            SELECT u.id, u.login, u.password_hash, u.first_name, u.last_name, u.email,
+                   u.image_url, u.activated, u.lang_key, u.activation_key, u.reset_key,
+                   u.created_by, u.created_date, u.reset_date,
+                   u.last_modified_by, u.last_modified_date, 0
+            FROM jhi_user u
+            WHERE NOT EXISTS (SELECT 1 FROM aur_user a WHERE a.id = u.id);
+        </sql>
+    </changeSet>
+
+    <changeSet id="20240401000001-3" author="halil">
+        <dropForeignKeyConstraint baseTableName="jhi_user_authority" constraintName="fk_user_id" />
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="jhi_user_authority"
+                                 constraintName="fk_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="aur_user"/>
+<!--        <addNotNullConstraint   columnName="password_hash"-->
+<!--                                columnDataType="varchar(60)"-->
+<!--                                tableName="aur_user"/>-->
+    </changeSet>
+    <changeSet id="20240401000001-4" author="halil">
+        <renameColumn tableName="aur_user" oldColumnName="user_name" newColumnName="login" columnDataType="varchar(50)" />
+        <addUniqueConstraint tableName="aur_user" columnNames="login" constraintName="ux_aur_user_login" />
+    </changeSet>
+    <changeSet id="20240401000001-5" author="halil">
+        <createProcedure>
+            create view aur_vw_user_menu_rel(menu_id, menu_type, parent_menu_id, menu_name, user_name) as
+            SELECT m.id AS menu_id,
+                   m.menu_type,
+                   m.parent_menu_id,
+                   m.menu_name,
+                   u.login AS user_name
+            FROM aur_menu m
+                     JOIN aur_menu_role_rel mr ON m.id = mr.menu_id
+                     JOIN aur_user_role_rel ur ON mr.role_id = ur.role_id
+                     JOIN aur_user u ON u.id = ur.user_id;
+        </createProcedure>
+    </changeSet>
+
+</databaseChangeLog>
+

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity AurDepoUrunAdresStok
+    -->
+    <changeSet id="20220818000004-1" author="jhipster">
+        <createTable tableName="aur_depo_urun_adres_stok">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="status" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="urun_adres_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="stok_kod" type="varchar(25)">
+                <constraints nullable="true" />
+            </column>
+            <column name="barkod_tipi" type="varchar(25)">
+                <constraints nullable="true" />
+            </column>
+            <column name="palet_barkod_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="create_date" type="date">
+                <constraints nullable="true" />
+            </column>
+            <column name="create_user" type="varchar(25)">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_update_date" type="date">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_update_user" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="depo_code" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="company_code" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="miktar" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="barcode" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+    </changeSet>
+    <changeSet id="20220818000004-2" author="jhipster">
+        <modifyDataType tableName="aur_depo_urun_adres_stok" columnName="create_date" newDataType="timestamp"/>
+        <renameColumn tableName="aur_depo_urun_adres_stok" oldColumnName="create_date" newColumnName="created_date"/>
+        <renameColumn tableName="aur_depo_urun_adres_stok" oldColumnName="create_user" newColumnName="created_by"/>
+        <modifyDataType tableName="aur_depo_urun_adres_stok" columnName="last_update_date" newDataType="timestamp"/>
+        <renameColumn tableName="aur_depo_urun_adres_stok" oldColumnName="last_update_date" newColumnName="last_modified_date"/>
+        <renameColumn tableName="aur_depo_urun_adres_stok" oldColumnName="last_update_user" newColumnName="last_modified_by"/>
+    </changeSet>
+    <changeSet id="20220818000004-3" author="jhipster">
+        <addColumn tableName="aur_depo_urun_adres_stok">
+            <column name="hasarli_urun_adres" type="Boolean">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="20220818000004-4" author="jhipster">
+
+      <dropColumn tableName="aur_depo_urun_adres_stok">
+          <column name="hasarli_urun_adres"  />
+      </dropColumn>
+    </changeSet>
+
+
+</databaseChangeLog>

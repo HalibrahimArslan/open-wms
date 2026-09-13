@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: ${POSTGRESQL_CONNECTION_URL}
+    username: ${POSTGRESQL_DB_USERNAME}
+    password: ${POSTGRESQL_DB_PASSWORD}
+
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+  jpa:
+    database-platform: tech.jhipster.domain.util.FixedPostgreSQL10Dialect
+    properties:
+      org:
+        hibernate:
+          envers:
+            store_data_at_delete: true
+
+server:
+  port: 8080
+
+metabase:
+  url: ${METABASE_SECRET_URL}
+  secretKey: ${METABASE_SECRET_KEY}

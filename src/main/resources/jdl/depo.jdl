@@ -1,0 +1,40 @@
+entity Depo {
+	depoNo   Integer
+    depoName String,
+    companyCode Integer
+}
+
+entity AurMenu { 
+	menuId Integer,
+	parentMenuId Integer,
+	menuName String,
+	menuType String,
+	companyCode Integer
+}
+
+entity AurCompany {
+	companyCode Integer,
+	companyName String
+}
+
+entity AurRole {
+	roleId Integer,
+	roleName String,
+	companyCode Integer
+}
+
+entity AurMenuRoleRel {
+	menuId Integer,
+	roleId Integer
+}
+
+entity AurUserRoleRel {
+	userId Integer,
+	roleId Integer
+}
+
+entity AurSupplier {
+	supplierId Integer,
+	supplierName String,
+	companyCode Integer
+}

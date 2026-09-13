@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Modify entity AurDepoUrunAdres
+    -->
+    <changeSet id="20240809000001-1" author="halil">
+        <createSequence sequenceName="aur_depo_urun_adres_seq" startValue="1991" incrementBy="1" cacheSize="0"
+                        cycle="false"/>
+    </changeSet>
+    <changeSet id="20240809000001-2" author="halil">
+        <addUniqueConstraint tableName="aur_depo_urun_adres" columnNames="company_code,depo_no,adres"
+                             constraintName="uq_company_code_depo_no_adres" />
+    </changeSet>
+
+</databaseChangeLog>
+

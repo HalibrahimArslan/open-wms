@@ -1,0 +1,26 @@
+{
+  "wmsApp": {
+    "warehouse": {
+      "home": {
+        "title": "Depos",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Depo",
+        "createOrEditLabel": "Create or edit a Depo",
+        "notFound": "No Depos found"
+      },
+      "created": "A new Depo is created with identifier {{ param }}",
+      "updated": "A Depo is updated with identifier {{ param }}",
+      "deleted": "A Depo is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Depo {{ id }}?"
+      },
+      "detail": {
+        "title": "Depo"
+      },
+      "id": "ID",
+      "depoNo": "Depo No",
+      "depoName": "Depo Name",
+      "companyCode": "Company Code"
+    }
+  }
+}

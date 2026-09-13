@@ -1,0 +1,25 @@
+{
+  "wmsApp": {
+    "aurUserRoleRel": {
+      "home": {
+        "title": "Aur User Role Rels",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Aur User Role Rel",
+        "createOrEditLabel": "Create or edit a Aur User Role Rel",
+        "notFound": "No Aur User Role Rels found"
+      },
+      "created": "A new Aur User Role Rel is created with identifier {{ param }}",
+      "updated": "A Aur User Role Rel is updated with identifier {{ param }}",
+      "deleted": "A Aur User Role Rel is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Aur User Role Rel {{ id }}?"
+      },
+      "detail": {
+        "title": "Aur User Role Rel"
+      },
+      "id": "ID",
+      "userId": "User Id",
+      "roleId": "Role Id"
+    }
+  }
+}

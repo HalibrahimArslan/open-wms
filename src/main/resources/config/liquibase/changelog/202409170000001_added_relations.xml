@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added relations
+    -->
+
+    <changeSet id="20240917000001-1" author="halil">
+        <addForeignKeyConstraint baseTableName="aur_depo_urun_adres_stok" baseColumnNames="urun_adres_id" constraintName="fk_aur_depo_urun_adres__id__aur_depo_urun_adres_stok"
+                                 referencedTableName="aur_depo_urun_adres"
+                                 referencedColumnNames="id" />
+        <addForeignKeyConstraint baseTableName="aur_order_master" baseColumnNames="aur_user_id" constraintName="fk_aur_user__id__aur_order_master"
+                                 referencedTableName="aur_user"
+                                 referencedColumnNames="id" />
+    </changeSet>
+</databaseChangeLog>
+
