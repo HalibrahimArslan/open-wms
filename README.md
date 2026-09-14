@@ -99,3 +99,14 @@ içinde ortam değişkeni olarak tanımlıdır:
 
 Şirkete özel ERP ayarları `aur_company` tablosundaki `erp_tipi` ve
 `api_parameters` alanlarından okunur.
+
+### Obje deposu (MinIO)
+
+Dosya yüklemeleri S3 uyumlu bir obje deposunda tutulur. `MINIO_BUCKETNAME` ile
+verilen bucket'i hazırlamak için ayrı bir kurulum adımı gerekmez: uygulama
+açılırken bucket'in var olup olmadığına bakar, yoksa oluşturur
+(`config/MinioBucketInitializer`). Bucket zaten varsa içeriğine dokunulmaz.
+
+Depo açılış anında erişilemezse uygulama yine de ayağa kalkar; yalnızca uyarı
+basılır ve dosya yükleme istekleri kendi hatasını döndürür. `MINIO_BUCKETNAME`
+boş bırakılırsa kontrol tamamen atlanır.
