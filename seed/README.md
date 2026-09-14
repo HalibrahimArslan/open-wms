@@ -18,10 +18,12 @@ Iceridigi kayitlar:
 | `aur_user` | `admin` ve `user` kullanicilarina `company_code = 1` |
 | `aur_user_role_rel` | her iki kullanici da `ADMIN` rolunde |
 | `user_depo_rel` | her iki kullanici da Merkez Depo'ya yetkili |
-| `aur_menu` | 14 kok, toplam 46 menu |
+| `aur_menu` | — menuler artik seed'de degil, `2026091300000002_added_data_AurMenu.xml` changeset'inde |
 | `aur_menu_role_rel` | tum menuler `ADMIN` rolune bagli |
 | `product` | 5 demo urun (`8690000000011`..`59`) |
-| `aur_erp_data` | 3 siparis / 7 satir, `CARI-001` ve `CARI-002` |
+| `aur_erp_data` | 3 siparis / 7 satir, `320.01.001` ve `320.01.002` |
+| `aur_order_master` / `aur_order_detail` | `A-1001`'den devam eden bir mal kabul siparisi (3 acik satir) |
+| `pallet_barcode` / `pallet_barcode_order_rel` | `9999990000026` paleti, siparisin ilk satirina bagli |
 
 Menuler `company_code = NULL` ile eklenir; `aur_vw_user_menu_rel` sorgusu
 `company_code = :companyCode or company_code is null` filtreledigi icin
