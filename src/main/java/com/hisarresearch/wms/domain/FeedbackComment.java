@@ -14,7 +14,8 @@ public class FeedbackComment extends AbstractAuditingEntityWithoutJsonIgnore imp
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "feedbackCommentGenerator")
+    @SequenceGenerator(name = "feedbackCommentGenerator", sequenceName = "feedback_comment_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "content")

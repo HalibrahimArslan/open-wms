@@ -12,7 +12,7 @@
 
     <changeSet id="20250708000001-1" author="halil">
         <createTable tableName="counting_user_address_rel">
-            <column type="bigint" name="id" autoIncrement="true">
+            <column type="bigint" name="id">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column type="bigint" name="user_id">

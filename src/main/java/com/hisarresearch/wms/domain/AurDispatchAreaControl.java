@@ -14,7 +14,7 @@ public class AurDispatchAreaControl extends AbstractAuditingEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aurDispatchAreaControlGenerator")
-    @SequenceGenerator(name = "aurDispatchAreaControlGenerator",sequenceName = "aur_dispatch_area_seq",allocationSize = 1)
+    @SequenceGenerator(name = "aurDispatchAreaControlGenerator",sequenceName = "aur_dispatch_area_control_seq",allocationSize = 1)
     private Long id;
 
     @Column(name = "status")
@@ -22,6 +22,7 @@ public class AurDispatchAreaControl extends AbstractAuditingEntity{
 
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "aurDispatchAreaControl" }, allowSetters = true)
+    @JoinColumn(name = "aur_order_detail_id")
     private AurOrderDetail aurTmpDetail;
 
     @Column(name = "observed_amount")

@@ -29,9 +29,9 @@ import java.util.Map;
 public class UniqueBarcode extends AbstractAuditingEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "uniqueBarcodeSeqGen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "uniqueBarcodeGenerator")
     @SequenceGenerator(
-        name = "uniqueBarcodeSeqGen",
+        name = "uniqueBarcodeGenerator",
         sequenceName = "unique_barcode_seq",
         allocationSize = 1
     )
@@ -83,7 +83,7 @@ public class UniqueBarcode extends AbstractAuditingEntity {
     private Map<String, Object> description;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "aur_tmp_detail_id")
+    @JoinColumn(name = "aur_order_detail_id")
     private AurOrderDetail aurOrderDetail;
 
     @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)

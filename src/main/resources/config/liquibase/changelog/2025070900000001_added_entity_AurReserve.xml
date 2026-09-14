@@ -15,7 +15,7 @@
     -->
     <changeSet id="2025070900000001" author="ahmetdoguhan.erbil">
         <createTable tableName="aur_reserve">
-            <column name="id" type="bigint" autoIncrement="true">
+            <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="order_no" type="varchar(25)" />

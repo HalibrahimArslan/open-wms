@@ -15,8 +15,9 @@ import javax.persistence.*;
 )
 public class AurVwUserMenuRel {
 
+    // aur_menu.id bigint oldugu icin view kolonu da bigint
     @Id
-    private Integer menuId;
+    private Long menuId;
 
     @Column(name = "parent_menu_id")
     private Integer parentMenuId;
@@ -36,11 +37,11 @@ public class AurVwUserMenuRel {
     @Column(name = "icon")
     private String icon;
 
-    public Integer getMenuId() {
+    public Long getMenuId() {
         return menuId;
     }
 
-    public void setMenuId(Integer menuId) {
+    public void setMenuId(Long menuId) {
         this.menuId = menuId;
     }
 

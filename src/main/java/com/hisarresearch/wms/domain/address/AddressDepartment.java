@@ -10,7 +10,8 @@ public class AddressDepartment implements Serializable, AddressComponent {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "addressDepartmentGenerator")
+    @SequenceGenerator(name = "addressDepartmentGenerator", sequenceName = "aur_adres_bolum_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "status")

@@ -8,11 +8,11 @@
     -->
     <changeSet id="20220819000012-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="aur_tmp_detail_id"
+        <addForeignKeyConstraint baseColumnNames="aur_order_detail_id"
                                  baseTableName="order_picking_transaction"
-                                 constraintName="fk_order_picking_transaction_aur_tmp_detail_id"
+                                 constraintName="fk_order_picking_transaction_aur_order_detail_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="aur_tmp_detail"/>
+                                 referencedTableName="aur_order_detail"/>
         <addForeignKeyConstraint baseColumnNames="urun_adres_id"
                                  baseTableName="order_picking_transaction"
                                  constraintName="fk_order_picking_transaction_urun_adres_id"
@@ -23,7 +23,7 @@
 
         <dropForeignKeyConstraint
                                    baseTableName="order_picking_transaction"
-                                   constraintName="fk_order_picking_transaction_aur_tmp_detail_id"/>
+                                   constraintName="fk_order_picking_transaction_aur_order_detail_id"/>
         <dropForeignKeyConstraint
             baseTableName="order_picking_transaction"
             constraintName="fk_order_picking_transaction_urun_adres_id"/>

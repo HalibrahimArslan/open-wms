@@ -30,7 +30,7 @@
       <column name="bolge_adi" type="varchar">
         <constraints nullable="false"/>
       </column>
-      <column name="depo_no" type="number(10)">
+      <column name="depo_no" type="int">
         <constraints nullable="false"/>
       </column>
       <column name="durum" type="varchar">

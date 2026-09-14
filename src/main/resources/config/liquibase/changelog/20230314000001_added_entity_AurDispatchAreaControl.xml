@@ -17,7 +17,7 @@
             <column name="status" type="boolean">
                 <constraints nullable="false" />
             </column>
-            <column name="aur_tmp_detail_id" type="bigint">
+            <column name="aur_order_detail_id" type="bigint">
                 <constraints nullable="false" />
             </column>
             <column name="created_by" type="varchar(50)">
@@ -32,22 +32,11 @@
 
     <changeSet id="20230314000001-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="aur_tmp_detail_id"
+        <addForeignKeyConstraint baseColumnNames="aur_order_detail_id"
                                  baseTableName="aur_dispatch_area_control"
-                                 constraintName="fk_aur_dispatch_area_control_aur_tmp_detail_id"
+                                 constraintName="fk_aur_dispatch_area_control_aur_order_detail_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="aur_tmp_detail"/>
-    </changeSet>
-
-    <changeSet id="20230314000001-3" author="jhipster">
-        <createSequence cacheSize="1"
-                        dataType="bigint"
-                        incrementBy="50"
-                        schemaName="public"
-                        sequenceName="aur_dispatch_areaControlGenerator_seq"
-        />
-
-
+                                 referencedTableName="aur_order_detail"/>
     </changeSet>
 
     <changeSet id="20230314000001-4" author="halil">

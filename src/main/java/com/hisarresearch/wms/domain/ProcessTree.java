@@ -19,8 +19,8 @@ public class ProcessTree extends AbstractAuditingEntity{
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "processTreeSequenceGenerator")
-    @SequenceGenerator(name = "processTreeSequenceGenerator",sequenceName = "process_tree_seq",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "processTreeGenerator")
+    @SequenceGenerator(name = "processTreeGenerator",sequenceName = "process_tree_seq",allocationSize = 1)
     private Long id;
 
     @ManyToOne(cascade = CascadeType.MERGE)

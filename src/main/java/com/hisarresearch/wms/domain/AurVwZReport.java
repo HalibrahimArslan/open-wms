@@ -4,6 +4,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+// Sinif adindan turetilen ad (aur_vw_z_report) view'in gercek adiyla eslesmiyordu.
+@Table(name = "aur_vw_z_raporu")
 @NamedNativeQueries(
     {
         @NamedNativeQuery(
@@ -32,8 +34,9 @@ public class AurVwZReport implements Serializable {
     @Column(name = "erp_order_info")
     private String erpOrderInfo;
 
+    // view'da count(*) -> bigint
     @Column(name = "miktar")
-    private int miktar;
+    private Long miktar;
     @Column(name = "baglanti_tipi")
     private String baglantiTipi;
 
@@ -88,11 +91,11 @@ public class AurVwZReport implements Serializable {
         this.erpOrderInfo = erpOrderInfo;
     }
 
-    public int getMiktar() {
+    public Long getMiktar() {
         return miktar;
     }
 
-    public void setMiktar(int miktar) {
+    public void setMiktar(Long miktar) {
         this.miktar = miktar;
     }
 

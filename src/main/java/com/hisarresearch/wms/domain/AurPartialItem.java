@@ -20,8 +20,8 @@ public class AurPartialItem extends AbstractAuditingEntity implements Serializab
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aurPartialItemSequenceGenerator")
-    @SequenceGenerator(name = "aurPartialItemSequenceGenerator" , sequenceName = "aur_partial_item_seq",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aurPartialItemGenerator")
+    @SequenceGenerator(name = "aurPartialItemGenerator" , sequenceName = "aur_partial_item_seq",allocationSize = 1)
     private Long id;
 
     @Column(name = "status")

@@ -29,8 +29,8 @@ public class AurUser extends AbstractAuditingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aurUserGenerator")
+    @SequenceGenerator(name = "aurUserGenerator", sequenceName = "aur_user_seq", allocationSize = 1)
     private Long id;
 
     @NotNull

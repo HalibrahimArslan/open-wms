@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Projedeki butun sekanslar. revinfo disinda her tablonun kendi sekansi vardir ve adi
+        her zaman "<tablo_adi>_seq" bicimindedir; entity tarafinda da ayni sekans
+        @SequenceGenerator(sequenceName = "...") ile bildirilir.
+
+        Sekanslar daha once changelog'lara dagilmisti; ayrica bir kismi hic kullanilmiyor,
+        bir kismi da tek bir ortak sekansi (hibernate_sequence, sequence_generator)
+        paylasiyordu. Ortak sekans tablolarin id araliklarini birbirine baglar: bir tabloya
+        yapilan her insert digerlerinin id'lerini de ileri atlatir ve birinin sekansini
+        duzeltmek otekileri bozar. Onun icin hepsi burada tek yerde toplandi ve her tablo
+        kendi sekansina baglandi; hibernate_sequence ise yalnizca revinfo icin korundu.
+
+        Bu dosya master.xml'in sonunda calisir; boylece ikinci changeSet her sekansi ilgili
+        tablodaki en buyuk id'nin bir fazlasina konumlandirabilir. Bos veritabaninda hepsi
+        1'den baslar, dolu veritabaninda mevcut kayitlarla cakismaz.
+    -->
+    <changeSet id="2026091400000001-1" author="wms">
+        <createSequence sequenceName="aur_address_placement_history_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_adres_bolum_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_adres_kat_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_adres_oda_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_adres_reyon_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_adres_tip_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_adres_unite_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_barkod_tip_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_company_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_depo_urun_adres_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_depo_urun_adres_stok_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_dispatch_area_control_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_driver_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_erp_data_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_grup_mail_adres_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_integration_logs_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_lookup_table_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_mail_add_to_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_menu_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_order_adres_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_order_detail_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_order_detail_skt_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_order_master_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_partial_details_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_partial_item_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_reserve_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_role_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_sayim_tanim_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_sayim_urun_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_sevk_plani_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_tmp_sevk_plani_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="aur_user_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="counting_address_exception_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="counting_user_address_rel_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="customer_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="customer_address_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="erp_jwt_data_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="feedback_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="feedback_comment_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="jhi_order_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="jhi_user_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="order_picking_transaction_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="order_row_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="order_status_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="pallet_barcode_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="pallet_barcode_order_rel_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="process_leaf_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="process_tree_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="product_address_skt_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="product_counting_type_pairing_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="rule_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="unique_barcode_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="upload_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="upload_comment_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="user_depo_rel_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="user_firm_rel_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+        <createSequence sequenceName="warehouse_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+
+        <!--
+            revinfo (Envers revizyon tablosu) tek istisnadir: rev numarasi
+            DefaultRevisionEntity uzerinden Hibernate'in varsayilan hibernate_sequence'indan
+            gelir. Artik baska hicbir entity AUTO stratejisi kullanmadigi icin bu sekansi
+            fiilen yalnizca revinfo tuketiyor.
+        -->
+        <createSequence sequenceName="hibernate_sequence" startValue="1" incrementBy="1" cacheSize="0" cycle="false"/>
+    </changeSet>
+
+    <changeSet id="2026091400000001-2" author="wms">
+        <sql dbms="postgresql" splitStatements="true" endDelimiter=";">
+            SELECT setval('aur_address_placement_history_seq', coalesce((SELECT max(id) FROM aur_address_placement_history), 0) + 1, false);
+            SELECT setval('aur_adres_bolum_seq', coalesce((SELECT max(id) FROM aur_adres_bolum), 0) + 1, false);
+            SELECT setval('aur_adres_kat_seq', coalesce((SELECT max(id) FROM aur_adres_kat), 0) + 1, false);
+            SELECT setval('aur_adres_oda_seq', coalesce((SELECT max(id) FROM aur_adres_oda), 0) + 1, false);
+            SELECT setval('aur_adres_reyon_seq', coalesce((SELECT max(id) FROM aur_adres_reyon), 0) + 1, false);
+            SELECT setval('aur_adres_tip_seq', coalesce((SELECT max(id) FROM aur_adres_tip), 0) + 1, false);
+            SELECT setval('aur_adres_unite_seq', coalesce((SELECT max(id) FROM aur_adres_unite), 0) + 1, false);
+            SELECT setval('aur_barkod_tip_seq', coalesce((SELECT max(id) FROM aur_barkod_tip), 0) + 1, false);
+            SELECT setval('aur_company_seq', coalesce((SELECT max(id) FROM aur_company), 0) + 1, false);
+            SELECT setval('aur_depo_urun_adres_seq', coalesce((SELECT max(id) FROM aur_depo_urun_adres), 0) + 1, false);
+            SELECT setval('aur_depo_urun_adres_stok_seq', coalesce((SELECT max(id) FROM aur_depo_urun_adres_stok), 0) + 1, false);
+            SELECT setval('aur_dispatch_area_control_seq', coalesce((SELECT max(id) FROM aur_dispatch_area_control), 0) + 1, false);
+            SELECT setval('aur_driver_seq', coalesce((SELECT max(id) FROM aur_driver), 0) + 1, false);
+            SELECT setval('aur_erp_data_seq', coalesce((SELECT max(id) FROM aur_erp_data), 0) + 1, false);
+            SELECT setval('aur_grup_mail_adres_seq', coalesce((SELECT max(id) FROM aur_grup_mail_adres), 0) + 1, false);
+            SELECT setval('aur_integration_logs_seq', coalesce((SELECT max(log_id) FROM aur_integration_logs), 0) + 1, false);
+            SELECT setval('aur_lookup_table_seq', coalesce((SELECT max(id) FROM aur_lookup_table), 0) + 1, false);
+            SELECT setval('aur_mail_add_to_seq', coalesce((SELECT max(id) FROM aur_mail_add_to), 0) + 1, false);
+            SELECT setval('aur_menu_seq', coalesce((SELECT max(id) FROM aur_menu), 0) + 1, false);
+            SELECT setval('aur_order_adres_seq', coalesce((SELECT max(id) FROM aur_order_adres), 0) + 1, false);
+            SELECT setval('aur_order_detail_seq', coalesce((SELECT max(id) FROM aur_order_detail), 0) + 1, false);
+            SELECT setval('aur_order_detail_skt_seq', coalesce((SELECT max(id) FROM aur_order_detail_skt), 0) + 1, false);
+            SELECT setval('aur_order_master_seq', coalesce((SELECT max(id) FROM aur_order_master), 0) + 1, false);
+            SELECT setval('aur_partial_details_seq', coalesce((SELECT max(id) FROM aur_partial_details), 0) + 1, false);
+            SELECT setval('aur_partial_item_seq', coalesce((SELECT max(id) FROM aur_partial_item), 0) + 1, false);
+            SELECT setval('aur_reserve_seq', coalesce((SELECT max(id) FROM aur_reserve), 0) + 1, false);
+            SELECT setval('aur_role_seq', coalesce((SELECT max(id) FROM aur_role), 0) + 1, false);
+            SELECT setval('aur_sayim_tanim_seq', coalesce((SELECT max(id) FROM aur_sayim_tanim), 0) + 1, false);
+            SELECT setval('aur_sayim_urun_seq', coalesce((SELECT max(id) FROM aur_sayim_urun), 0) + 1, false);
+            SELECT setval('aur_sevk_plani_seq', coalesce((SELECT max(id) FROM aur_sevk_plani), 0) + 1, false);
+            SELECT setval('aur_tmp_sevk_plani_seq', coalesce((SELECT max(id) FROM aur_tmp_sevk_plani), 0) + 1, false);
+            SELECT setval('aur_user_seq', coalesce((SELECT max(id) FROM aur_user), 0) + 1, false);
+            SELECT setval('counting_address_exception_seq', coalesce((SELECT max(id) FROM counting_address_exception), 0) + 1, false);
+            SELECT setval('counting_user_address_rel_seq', coalesce((SELECT max(id) FROM counting_user_address_rel), 0) + 1, false);
+            SELECT setval('customer_seq', coalesce((SELECT max(id) FROM customer), 0) + 1, false);
+            SELECT setval('customer_address_seq', coalesce((SELECT max(id) FROM customer_address), 0) + 1, false);
+            SELECT setval('erp_jwt_data_seq', coalesce((SELECT max(id) FROM erp_jwt_data), 0) + 1, false);
+            SELECT setval('feedback_seq', coalesce((SELECT max(id) FROM feedback), 0) + 1, false);
+            SELECT setval('feedback_comment_seq', coalesce((SELECT max(id) FROM feedback_comment), 0) + 1, false);
+            SELECT setval('jhi_order_seq', coalesce((SELECT max(id) FROM jhi_order), 0) + 1, false);
+            SELECT setval('jhi_user_seq', coalesce((SELECT max(id) FROM jhi_user), 0) + 1, false);
+            SELECT setval('order_picking_transaction_seq', coalesce((SELECT max(id) FROM order_picking_transaction), 0) + 1, false);
+            SELECT setval('order_row_seq', coalesce((SELECT max(id) FROM order_row), 0) + 1, false);
+            SELECT setval('order_status_seq', coalesce((SELECT max(id) FROM order_status), 0) + 1, false);
+            SELECT setval('pallet_barcode_seq', coalesce((SELECT max(id) FROM pallet_barcode), 0) + 1, false);
+            SELECT setval('pallet_barcode_order_rel_seq', coalesce((SELECT max(id) FROM pallet_barcode_order_rel), 0) + 1, false);
+            SELECT setval('process_leaf_seq', coalesce((SELECT max(id) FROM process_leaf), 0) + 1, false);
+            SELECT setval('process_tree_seq', coalesce((SELECT max(id) FROM process_tree), 0) + 1, false);
+            SELECT setval('product_address_skt_seq', coalesce((SELECT max(id) FROM product_address_skt), 0) + 1, false);
+            SELECT setval('product_counting_type_pairing_seq', coalesce((SELECT max(id) FROM product_counting_type_pairing), 0) + 1, false);
+            SELECT setval('hibernate_sequence', coalesce((SELECT max(rev) FROM revinfo), 0) + 1, false);
+            SELECT setval('rule_seq', coalesce((SELECT max(id) FROM rule), 0) + 1, false);
+            SELECT setval('unique_barcode_seq', coalesce((SELECT max(id) FROM unique_barcode), 0) + 1, false);
+            SELECT setval('upload_seq', coalesce((SELECT max(id) FROM upload), 0) + 1, false);
+            SELECT setval('upload_comment_seq', coalesce((SELECT max(id) FROM upload_comment), 0) + 1, false);
+            SELECT setval('user_depo_rel_seq', coalesce((SELECT max(id) FROM user_depo_rel), 0) + 1, false);
+            SELECT setval('user_firm_rel_seq', coalesce((SELECT max(id) FROM user_firm_rel), 0) + 1, false);
+            SELECT setval('warehouse_seq', coalesce((SELECT max(id) FROM warehouse), 0) + 1, false);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

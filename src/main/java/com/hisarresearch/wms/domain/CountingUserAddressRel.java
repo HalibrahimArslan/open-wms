@@ -15,7 +15,8 @@ public class CountingUserAddressRel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "countingUserAddressRelGenerator")
+    @SequenceGenerator(name = "countingUserAddressRelGenerator", sequenceName = "counting_user_address_rel_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne

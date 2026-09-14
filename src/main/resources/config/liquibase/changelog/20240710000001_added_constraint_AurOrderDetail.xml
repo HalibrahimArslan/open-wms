@@ -7,13 +7,12 @@
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <!--
-        Added column to ErpStockInfo(Product).
+        Added constraint to AurOrderDetail
     -->
-    <changeSet id="20240603000001-1" author="halil">
-        <addColumn tableName="erp_stock_info">
-            <column name="company_code" type="varchar(25)"></column>
-        </addColumn>
+    <changeSet id="20240710000001-1" author="halil">
+        <addUniqueConstraint tableName="aur_order_detail"
+                             columnNames="aur_order_id,barcode,sip_uid,aur_partial_item_id"
+                             constraintName="uq_aur_order_detail_order_barcode_sip_uid_partial_item" />
     </changeSet>
-
 </databaseChangeLog>
 

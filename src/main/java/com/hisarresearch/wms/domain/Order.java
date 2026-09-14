@@ -20,8 +20,8 @@ public class Order extends AbstractAuditingEntityWithoutJsonIgnore implements Se
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderSequenceGenerator")
-    @SequenceGenerator(name = "orderSequenceGenerator",sequenceName = "order_seq",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderGenerator")
+    @SequenceGenerator(name = "orderGenerator",sequenceName = "jhi_order_seq",allocationSize = 1)
     private Long id;
 
     @Column(name = "order_no")

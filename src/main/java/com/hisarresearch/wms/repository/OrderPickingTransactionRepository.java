@@ -34,7 +34,7 @@ public interface OrderPickingTransactionRepository
             " COUNT(atd.id) AS toplamAdet, " +
             " TO_CHAR((MAX(opt.last_modified_date) - MIN(opt.created_date)) / COUNT(atd.id), 'HH24:MI:SS') AS ortalamaSure " +
             "FROM order_picking_transaction opt " +
-            "JOIN aur_tmp_detail atd ON opt.reference_id = atd.id " +
+            "JOIN aur_order_detail atd ON opt.reference_id = atd.id " +
             "JOIN aur_order_master aom ON atd.aur_order_id = aom.id " +
             "JOIN aur_user au on aom.aur_user_id = au.id " +
             "WHERE (:startDate IS NULL OR aom.created_date >= CAST(:startDate AS timestamp)) " +
@@ -62,7 +62,7 @@ public interface OrderPickingTransactionRepository
             " COUNT(atd.id) AS adet, " +
             " aom.created_by AS kullanici " +
             "FROM order_picking_transaction opt " +
-            "JOIN aur_tmp_detail atd ON opt.reference_id = atd.id " +
+            "JOIN aur_order_detail atd ON opt.reference_id = atd.id " +
             "JOIN aur_order_master aom ON atd.aur_order_id = aom.id " +
             "JOIN aur_user au on aom.aur_user_id = au.id " +
             "WHERE (:startDate IS NULL OR aom.created_date >= CAST(:startDate AS timestamp)) " +

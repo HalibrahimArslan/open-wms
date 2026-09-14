@@ -15,7 +15,8 @@ public class Customer extends AbstractAuditingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customerGenerator")
+    @SequenceGenerator(name = "customerGenerator", sequenceName = "customer_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "customer_code",length = 25,nullable = false)

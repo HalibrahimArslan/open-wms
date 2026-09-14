@@ -20,8 +20,8 @@ public class AurSayimUrun extends AbstractAuditingEntityWithoutJsonIgnore implem
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aur_sayim_urun_generator")
-    @SequenceGenerator(name = "aur_sayim_urun_generator",sequenceName = "aur_sayim_urun_seq",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aurSayimUrunGenerator")
+    @SequenceGenerator(name = "aurSayimUrunGenerator",sequenceName = "aur_sayim_urun_seq",allocationSize = 1)
     private Long id;
 
     @ManyToOne

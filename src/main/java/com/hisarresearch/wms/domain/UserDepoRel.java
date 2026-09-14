@@ -16,7 +16,8 @@ public class UserDepoRel extends AbstractAuditingEntity implements Serializable 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userDepoRelGenerator")
+    @SequenceGenerator(name = "userDepoRelGenerator", sequenceName = "user_depo_rel_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne(cascade = CascadeType.MERGE)

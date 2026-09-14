@@ -9,10 +9,6 @@
     <!--
         Modify entity AurDepoUrunAdres
     -->
-    <changeSet id="20240809000001-1" author="halil">
-        <createSequence sequenceName="aur_depo_urun_adres_seq" startValue="1991" incrementBy="1" cacheSize="0"
-                        cycle="false"/>
-    </changeSet>
     <changeSet id="20240809000001-2" author="halil">
         <addUniqueConstraint tableName="aur_depo_urun_adres" columnNames="company_code,depo_no,adres"
                              constraintName="uq_company_code_depo_no_adres" />

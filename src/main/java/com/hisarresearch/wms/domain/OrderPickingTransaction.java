@@ -18,8 +18,8 @@ public class OrderPickingTransaction extends AbstractAuditingEntityWithoutJsonIg
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_picking_transaction_generator")
-    @SequenceGenerator(name = "order_picking_transaction_generator",sequenceName = "order_picking_transaction_seq",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderPickingTransactionGenerator")
+    @SequenceGenerator(name = "orderPickingTransactionGenerator",sequenceName = "order_picking_transaction_seq",allocationSize = 1)
     private Long id;
 
     @Column(name = "reference_id")

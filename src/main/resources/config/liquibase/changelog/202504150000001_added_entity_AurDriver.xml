@@ -11,7 +11,7 @@
     -->
     <changeSet id="202504150000001-1" author="adem">
         <createTable tableName="aur_driver">
-            <column name="id" type="bigint" autoIncrement="true">
+            <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="driver_name" type="varchar(50)" />

@@ -19,8 +19,8 @@ public class OrderRow implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderRowSequenceGenerator")
-    @SequenceGenerator(name = "orderRowSequenceGenerator",sequenceName = "order_row_seq",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderRowGenerator")
+    @SequenceGenerator(name = "orderRowGenerator",sequenceName = "order_row_seq",allocationSize = 1)
     private Long id;
 
     @Column(name = "product_quantity")

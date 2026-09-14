@@ -10,7 +10,8 @@ public class AddressUnit implements Serializable ,AddressComponent{
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "addressUnitGenerator")
+    @SequenceGenerator(name = "addressUnitGenerator", sequenceName = "aur_adres_unite_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "status")

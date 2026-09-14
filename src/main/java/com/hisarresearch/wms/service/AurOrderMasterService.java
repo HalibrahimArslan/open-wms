@@ -1477,7 +1477,7 @@ public class AurOrderMasterService {
     }
 
     public void updateAurTmpSktList(List<AurOrderDetailSktDTO> orderDetailSktList, AurOrderDetail savedOne) {
-        log.debug("Order detail skt dates is saving to aur_tmp_detail_skt table {}", orderDetailSktList);
+        log.debug("Order detail skt dates is saving to aur_order_detail_skt table {}", orderDetailSktList);
         List<AurOrderDetailSkt> aurTmpDetailSktList = aurOrderDetailSktMapper.toEntity(orderDetailSktList);
         aurTmpDetailSktList.forEach(sktItem -> sktItem.setAurTmpDetail(savedOne));
         List<AurOrderDetailSkt> sktList = aurTmpDetailSktRepository.findByAurTmpDetail_Id(savedOne.getId());

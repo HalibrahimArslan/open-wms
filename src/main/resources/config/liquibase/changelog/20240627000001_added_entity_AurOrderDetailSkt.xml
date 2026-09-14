@@ -7,15 +7,14 @@
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <!--
-        Added entity AurTmpDetailSkt
+        Added entity AurOrderDetailSkt
     -->
     <changeSet id="20240627000001-1" author="halil">
-        <createSequence sequenceName="aur_tmp_detail_skt_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false" />
-        <createTable tableName="aur_tmp_detail_skt">
+        <createTable tableName="aur_order_detail_skt">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="aur_tmp_detail_id" type="bigint">
+            <column name="aur_order_detail_id" type="bigint">
                 <constraints nullable="false" />
             </column>
             <column name="skt_date" type="timestamp">
@@ -35,14 +34,14 @@
 <!--                <constraints nullable="true" />-->
 <!--            </column>-->
         </createTable>
-        <addForeignKeyConstraint baseTableName="aur_tmp_detail_skt"
-                                 baseColumnNames="aur_tmp_detail_id"
-                                 constraintName="fk_aur_tmp_detail_skt_aur_tmp_detail_id"
-                                 referencedTableName="aur_tmp_detail"
+        <addForeignKeyConstraint baseTableName="aur_order_detail_skt"
+                                 baseColumnNames="aur_order_detail_id"
+                                 constraintName="fk_aur_order_detail_skt_aur_order_detail_id"
+                                 referencedTableName="aur_order_detail"
                                  referencedColumnNames="id"/>
-        <addUniqueConstraint tableName="aur_tmp_detail_skt"
-                             columnNames="aur_tmp_detail_id,skt_date"
-                             constraintName="ux_aur_tmp_detail_skt_date" />
+        <addUniqueConstraint tableName="aur_order_detail_skt"
+                             columnNames="aur_order_detail_id,skt_date"
+                             constraintName="ux_aur_order_detail_skt_date" />
     </changeSet>
 </databaseChangeLog>
 

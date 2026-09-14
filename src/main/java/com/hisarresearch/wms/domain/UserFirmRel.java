@@ -16,7 +16,8 @@ public class UserFirmRel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userFirmRelGenerator")
+    @SequenceGenerator(name = "userFirmRelGenerator", sequenceName = "user_firm_rel_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "firm_code")

@@ -9,7 +9,8 @@ import java.io.Serializable;
 public class AurReserve extends AbstractAuditingEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aurReserveGenerator")
+    @SequenceGenerator(name = "aurReserveGenerator", sequenceName = "aur_reserve_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "order_no", nullable = false, length = 25)

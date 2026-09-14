@@ -10,7 +10,8 @@ public class AddressFlat implements Serializable,AddressComponent {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "addressFlatGenerator")
+    @SequenceGenerator(name = "addressFlatGenerator", sequenceName = "aur_adres_kat_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "status")

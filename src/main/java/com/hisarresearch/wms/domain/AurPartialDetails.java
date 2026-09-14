@@ -17,8 +17,8 @@ public class AurPartialDetails extends AbstractAuditingEntity implements Seriali
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aurPartialDetailsSequenceGenerator")
-    @SequenceGenerator(name = "aurPartialDetailsSequenceGenerator" , sequenceName = "aur_partial_details_seq",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aurPartialDetailsGenerator")
+    @SequenceGenerator(name = "aurPartialDetailsGenerator" , sequenceName = "aur_partial_details_seq",allocationSize = 1)
     private Long id;
 
     @Column(name = "stock_code")

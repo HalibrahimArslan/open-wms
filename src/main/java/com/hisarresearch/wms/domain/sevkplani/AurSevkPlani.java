@@ -8,7 +8,8 @@ import java.time.Instant;
 public class AurSevkPlani {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aurSevkPlaniGenerator")
+    @SequenceGenerator(name = "aurSevkPlaniGenerator", sequenceName = "aur_sevk_plani_seq", allocationSize = 1)
     private Long id;
 
     private String companyCode;

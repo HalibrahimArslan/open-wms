@@ -7,11 +7,11 @@
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <!--
-        Added column to AurTmpDetail table
+        Added column to AurOrderDetail table
     -->
 
     <changeSet id="20241217000001-1" author="halil">
-      <addColumn tableName="aur_tmp_detail">
+      <addColumn tableName="aur_order_detail">
           <column name="version" type="int" defaultValue="0">
               <constraints nullable="false" />
           </column>

@@ -11,12 +11,6 @@
     -->
     <changeSet id="2025120200000001" author="ahmetdoguhan.erbil">
 
-        <!-- Sequence for ID -->
-        <createSequence
-            sequenceName="aur_order_adres_seq"
-            startValue="1"
-            incrementBy="1"/>
-
         <createTable tableName="aur_order_adres">
 
             <column name="id" type="bigint">

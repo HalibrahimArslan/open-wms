@@ -11,8 +11,8 @@ public class ProcessLeaf extends AbstractAuditingEntity{
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "processLeafSequenceGenerator")
-    @SequenceGenerator(name = "processLeafSequenceGenerator",sequenceName = "process_leaf_seq",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "processLeafGenerator")
+    @SequenceGenerator(name = "processLeafGenerator",sequenceName = "process_leaf_seq",allocationSize = 1)
     private Long id;
 
     @ManyToOne

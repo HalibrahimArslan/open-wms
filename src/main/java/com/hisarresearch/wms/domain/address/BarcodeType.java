@@ -10,7 +10,8 @@ public class BarcodeType implements Serializable,AddressComponent {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "barcodeTypeGenerator")
+    @SequenceGenerator(name = "barcodeTypeGenerator", sequenceName = "aur_barkod_tip_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "status")

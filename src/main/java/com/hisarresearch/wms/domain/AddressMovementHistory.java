@@ -13,8 +13,8 @@ public class AddressMovementHistory extends AbstractAuditingEntityWithoutJsonIgn
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aurAddressPlacementHistoryGenerator")
-    @SequenceGenerator(name = "aurAddressPlacementHistoryGenerator", sequenceName = "aur_address_placement_history_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "addressMovementHistoryGenerator")
+    @SequenceGenerator(name = "addressMovementHistoryGenerator", sequenceName = "aur_address_placement_history_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne(cascade = CascadeType.MERGE)

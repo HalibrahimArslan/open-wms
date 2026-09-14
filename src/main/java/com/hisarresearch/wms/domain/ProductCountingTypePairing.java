@@ -11,8 +11,8 @@ public class ProductCountingTypePairing extends AbstractAuditingEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "productCountingTypePairingSequenceGenerator")
-    @SequenceGenerator(name = "productCountingTypePairingSequenceGenerator",sequenceName = "product_counting_type_pairing_seq",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "productCountingTypePairingGenerator")
+    @SequenceGenerator(name = "productCountingTypePairingGenerator",sequenceName = "product_counting_type_pairing_seq",allocationSize = 1)
     private Long id;
 
     @Enumerated(EnumType.STRING)

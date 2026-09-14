@@ -10,7 +10,8 @@ public class AddressHall implements Serializable,AddressComponent {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "addressHallGenerator")
+    @SequenceGenerator(name = "addressHallGenerator", sequenceName = "aur_adres_reyon_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "status")

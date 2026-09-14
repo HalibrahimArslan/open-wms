@@ -19,7 +19,6 @@
            <column name="status" type="boolean" />
        </createTable>
 
-        <createSequence sequenceName="counting_address_exception_id_seq" startValue="1" incrementBy="1"/>
 
         <addForeignKeyConstraint baseTableName="counting_address_exception"
                                  baseColumnNames="address_id"

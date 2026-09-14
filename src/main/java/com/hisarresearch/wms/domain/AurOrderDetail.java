@@ -13,14 +13,14 @@ import java.util.Set;
 
 @Entity
 @Audited
-@Table(name = "aur_tmp_detail")
+@Table(name = "aur_order_detail")
 public class AurOrderDetail implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aurTmpDetailGenerator")
-    @SequenceGenerator(name = "aurTmpDetailGenerator",sequenceName = "aur_tmp_detail_seq",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aurOrderDetailGenerator")
+    @SequenceGenerator(name = "aurOrderDetailGenerator",sequenceName = "aur_order_detail_seq",allocationSize = 1)
     private Long id;
 
     @Column(name = "status")

@@ -17,7 +17,8 @@ import java.util.Set;
 public class AurDriver extends AbstractAuditingEntityWithoutJsonIgnore implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aurDriverGenerator")
+    @SequenceGenerator(name = "aurDriverGenerator", sequenceName = "aur_driver_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "driver_name")

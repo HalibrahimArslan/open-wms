@@ -14,14 +14,14 @@
             </column>
             <column name="quantity" type="numeric(19,4)"/>
             <column name="description" type="jsonb"/>
-            <column name="aur_tmp_detail_id" type="bigint"/>
+            <column name="aur_order_detail_id" type="bigint"/>
         </addColumn>
 
         <addForeignKeyConstraint
-            constraintName="fk_unique_barcode_aur_tmp_detail"
+            constraintName="fk_unique_barcode_aur_order_detail"
             baseTableName="unique_barcode"
-            baseColumnNames="aur_tmp_detail_id"
-            referencedTableName="aur_tmp_detail"
+            baseColumnNames="aur_order_detail_id"
+            referencedTableName="aur_order_detail"
             referencedColumnNames="id"/>
 
     </changeSet>

@@ -18,10 +18,10 @@
             <column name="status" type="varchar(25)">
                 <constraints nullable="false"/>
             </column>
-            <column name="week" type="number(2)">
+            <column name="week" type="int">
                 <constraints nullable="false"/>
             </column>
-            <column name="year" type="number(4)">
+            <column name="year" type="int">
                 <constraints nullable="false"/>
             </column>
             <column name="cari_kod" type="varchar">
@@ -42,13 +42,13 @@
             <column name="sip_uid" type="varchar">
                 <constraints nullable="false"/>
             </column>
-            <column name="depo_no" type="number(10)">
+            <column name="depo_no" type="int">
                 <constraints nullable="false"/>
             </column>
             <column name="evrak_seri" type="varchar">
                 <constraints nullable="true"/>
             </column>
-            <column name="evrak_sira" type="number(10)">
+            <column name="evrak_sira" type="int">
                 <constraints nullable="false"/>
             </column>
             <column name="trans_group_code" type="varchar">

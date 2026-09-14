@@ -20,6 +20,7 @@ public class PalletBarcodeOrderRel extends AbstractAuditingEntity {
     private AurOrderMaster aurOrder;
 
     @ManyToOne
+    @JoinColumn(name = "aur_order_detail_id")
     private AurOrderDetail aurTmpDetail;
 
     @Column(name = "status")

@@ -16,7 +16,8 @@ public class ProductAddressv2 implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "productAddressv2Generator")
+    @SequenceGenerator(name = "productAddressv2Generator", sequenceName = "aur_depo_urun_adres_stok_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "status")

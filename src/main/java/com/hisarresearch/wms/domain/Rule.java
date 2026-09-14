@@ -13,7 +13,8 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ruleGenerator")
+    @SequenceGenerator(name = "ruleGenerator", sequenceName = "rule_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "rule_name", nullable = false)

@@ -18,7 +18,8 @@ public class Feedback extends AbstractAuditingEntityWithoutJsonIgnore implements
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "feedbackGenerator")
+    @SequenceGenerator(name = "feedbackGenerator", sequenceName = "feedback_seq", allocationSize = 1)
     private Long id;
 
     @Enumerated(EnumType.STRING)

@@ -17,6 +17,15 @@
             <column name="status" type="boolean">
                 <constraints nullable="true" />
             </column>
+            <!--
+                Adres bilesenlerinin (aur_adres_bolum, _reyon, _unite, _kat, _oda, _tip) hepsinde
+                oldugu gibi 2 karakterlik kod. BarcodeType de AddressComponent'i uyguluyor ama bu
+                kolon tabloya hic eklenmemisti; entity @Column(name = "code", nullable = false)
+                dedigi icin tablo okunmaya calisildiginda sema dogrulamasi/sorgu patliyordu.
+            -->
+            <column name="code" type="varchar(2)">
+                <constraints nullable="false" />
+            </column>
             <column name="description" type="varchar(50)">
                 <constraints nullable="true" />
             </column>

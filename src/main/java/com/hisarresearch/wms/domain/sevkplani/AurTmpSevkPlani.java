@@ -15,7 +15,8 @@ public class AurTmpSevkPlani extends AbstractAuditingEntity implements Serializa
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aurTmpSevkPlaniGenerator")
+    @SequenceGenerator(name = "aurTmpSevkPlaniGenerator", sequenceName = "aur_tmp_sevk_plani_seq", allocationSize = 1)
     private Long id;
 
     @Enumerated(EnumType.STRING)

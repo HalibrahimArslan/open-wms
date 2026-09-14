@@ -170,12 +170,17 @@ VALUES
 ON CONFLICT (id) DO NOTHING;
 
 -- ------------------------------------------------- sequence'lari ileri al
-SELECT setval('aur_company_seq',        1000, false);
-SELECT setval('aur_menu_seq',           1000, false);
-SELECT setval('aur_role_seq',           1000, false);
-SELECT setval('aur_menu_role_rel_seq',  1000, false);
-SELECT setval('sequence_generator',     1000, false);
-SELECT setval('aur_erp_data_seq',       1000, false);
-SELECT setval('product_seq',            1000, false);
+-- Yukaridaki kayitlar id'lerini acikca veriyor; sekanslari bunlarin otesine tasimazsak
+-- uygulamanin ilk insert'i mevcut bir id'yi tekrar uretip primary key hatasi alir.
+-- 1000 tabani seed id'lerinin uzerinde bosluk birakir, max(id)+1 ise seed'den sonra
+-- uygulama kayit eklemis olsa bile sekansin geri gitmesini onler.
+-- aur_menu_role_rel, aur_user_role_rel ve product bilesik/dogal anahtarlidir, sekanslari yoktur.
+SELECT setval('aur_company_seq',   GREATEST(1000, coalesce((SELECT max(id) FROM aur_company),   0) + 1), false);
+SELECT setval('warehouse_seq',     GREATEST(1000, coalesce((SELECT max(id) FROM warehouse),     0) + 1), false);
+SELECT setval('aur_role_seq',      GREATEST(1000, coalesce((SELECT max(id) FROM aur_role),      0) + 1), false);
+SELECT setval('aur_menu_seq',      GREATEST(1000, coalesce((SELECT max(id) FROM aur_menu),      0) + 1), false);
+SELECT setval('aur_user_seq',      GREATEST(1000, coalesce((SELECT max(id) FROM aur_user),      0) + 1), false);
+SELECT setval('user_depo_rel_seq', GREATEST(1000, coalesce((SELECT max(id) FROM user_depo_rel), 0) + 1), false);
+SELECT setval('aur_erp_data_seq',  GREATEST(1000, coalesce((SELECT max(id) FROM aur_erp_data),  0) + 1), false);
 
 COMMIT;

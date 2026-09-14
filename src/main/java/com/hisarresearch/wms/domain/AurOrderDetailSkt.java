@@ -8,18 +8,19 @@ import java.io.Serializable;
 import java.time.Instant;
 
 @Entity
-@Table(name = "aur_tmp_detail_skt")
+@Table(name = "aur_order_detail_skt")
 @AutoClone
 public class AurOrderDetailSkt implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aurTmpDetailSktGenerator")
-    @SequenceGenerator(name = "aurTmpDetailSktGenerator",sequenceName = "aur_tmp_detail_skt_seq",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aurOrderDetailSktGenerator")
+    @SequenceGenerator(name = "aurOrderDetailSktGenerator",sequenceName = "aur_order_detail_skt_seq",allocationSize = 1)
     private Long id;
 
     @ManyToOne
     @JsonIgnore
+    @JoinColumn(name = "aur_order_detail_id")
     private AurOrderDetail aurTmpDetail;
 
     @Column(name = "skt_date")

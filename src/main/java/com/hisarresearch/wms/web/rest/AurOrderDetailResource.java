@@ -230,7 +230,7 @@ public class AurOrderDetailResource {
             .build();
     }
 
-    @ApiOperation("Fetch aur_tmp_detail type is lazy")
+    @ApiOperation("Fetch aur_order_detail type is lazy")
     @GetMapping("/dispatch-area-control-list")
     public ResponseEntity<List<AurDispatchAreaControl>> getAllAurDispatchAreaControlList(){
         return ResponseEntity.ok(aurDispatchAreaControlService.findAll());

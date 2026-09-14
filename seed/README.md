@@ -20,6 +20,8 @@ Iceridigi kayitlar:
 | `user_depo_rel` | her iki kullanici da Merkez Depo'ya yetkili |
 | `aur_menu` | 14 kok, toplam 46 menu |
 | `aur_menu_role_rel` | tum menuler `ADMIN` rolune bagli |
+| `product` | 5 demo urun (`8690000000011`..`59`) |
+| `aur_erp_data` | 3 siparis / 7 satir, `CARI-001` ve `CARI-002` |
 
 Menuler `company_code = NULL` ile eklenir; `aur_vw_user_menu_rel` sorgusu
 `company_code = :companyCode or company_code is null` filtreledigi icin

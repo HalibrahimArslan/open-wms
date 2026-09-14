@@ -15,7 +15,8 @@ public class UploadComment extends AbstractAuditingEntity implements Serializabl
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "uploadCommentGenerator")
+    @SequenceGenerator(name = "uploadCommentGenerator", sequenceName = "upload_comment_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "content")

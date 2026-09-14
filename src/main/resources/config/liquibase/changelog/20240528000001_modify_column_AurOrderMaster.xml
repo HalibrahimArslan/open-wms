@@ -47,11 +47,11 @@ $$
                 aur_order_master aom
                 JOIN (
                 SELECT
-                aodd.aur_order_id, aodd.erp_order_info, COUNT (*) AS count
+                aodd.aur_order_id, aodd.siparis_no AS erp_order_info, COUNT (*) AS count
                 FROM
                 aur_order_detail aodd
                 GROUP BY
-                aodd.aur_order_id, aodd.erp_order_info
+                aodd.aur_order_id, aodd.siparis_no
                 ) aod
             ON aom.id = aod.aur_order_id
             WHERE
@@ -89,10 +89,10 @@ $$;
                    aod.count                                   AS miktar
             FROM aur_order_master aom
                      JOIN (SELECT aodd.aur_order_id,
-                                  aodd.erp_order_info,
+                                  aodd.siparis_no AS erp_order_info,
                                   count(*) AS count
                            FROM aur_order_detail aodd
-                           GROUP BY aodd.aur_order_id, aodd.erp_order_info) aod ON aom.id = aod.aur_order_id
+                           GROUP BY aodd.aur_order_id, aodd.siparis_no) aod ON aom.id = aod.aur_order_id
             WHERE (aom.created_date > (now() - '1 day'::interval) OR aom.last_modified_date > (now() - '1 day'::interval))
               AND aom.status::text = 'DONE'::text
 ORDER BY aom.order_info, aom.op_type;

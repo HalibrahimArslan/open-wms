@@ -12,12 +12,6 @@
     -->
     <changeSet id="2026010900000001" author="ahmetdoguhan.erbil">
 
-        <!-- Sequence for ID -->
-        <createSequence
-            sequenceName="unique_barcode_seq"
-            startValue="1"
-            incrementBy="1"/>
-
         <!-- Table -->
         <createTable tableName="unique_barcode">
 

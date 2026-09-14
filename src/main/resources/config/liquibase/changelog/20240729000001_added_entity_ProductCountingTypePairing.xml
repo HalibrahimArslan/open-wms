@@ -10,7 +10,6 @@
         Added entity ProductCountingTypePairing
     -->
     <changeSet id="20240729000001-1" author="halil">
-        <createSequence sequenceName="product_counting_type_pairing_seq" startValue="1" incrementBy="1" cacheSize="0" cycle="false" />
         <createTable tableName="product_counting_type_pairing">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>

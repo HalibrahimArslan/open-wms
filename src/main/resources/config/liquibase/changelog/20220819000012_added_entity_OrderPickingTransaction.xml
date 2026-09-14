@@ -14,7 +14,7 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="aur_tmp_detail_id" type="bigint">
+            <column name="aur_order_detail_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <column name="urun_adres_id" type="bigint">

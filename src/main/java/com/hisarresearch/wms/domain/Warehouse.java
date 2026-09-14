@@ -18,8 +18,8 @@ public class Warehouse implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "depoGenerator")
-    @SequenceGenerator(name = "depoGenerator",sequenceName = "depo_seq",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "warehouseGenerator")
+    @SequenceGenerator(name = "warehouseGenerator",sequenceName = "warehouse_seq",allocationSize = 1)
     private Long id;
 
     @Column(name = "code")
