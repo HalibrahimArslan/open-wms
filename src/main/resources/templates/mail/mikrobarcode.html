@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html lang="tr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <style>
+    .main{
+      display: -ms-flexbox;
+      justify-content: center;
+      border: 2px solid black;
+      width: 100%;
+      flex-direction: row;
+      padding: 10px;
+      margin-right: 10px;
+
+
+    }
+    .info{
+      display: flex;
+      justify-content: space-around;
+      flex-direction: row;
+      padding: 2px;
+    }
+    .barcode{
+      align-items: center;
+
+    }
+    .mikro-table tr td{
+      display: -ms-flexbox;
+      justify-content: center;
+      padding: 10px;
+      margin-right: 10px;
+    }
+
+
+  </style>
+</head>
+<body>
+
+<table class="mikro-table">
+
+  <tr th:each="i: ${#numbers.sequence(1, 4)}">
+    <td th:each="i: ${#numbers.sequence(1, 2)}">
+      <div class="main">
+        <div class="barcode">
+          <img th:if="${!#strings.isEmpty(logoUrl)}" th:src="${logoUrl}" alt="Logo" height="100" width="100"/>
+          <img th:src="${buffer}" alt="Barkod" height="100" width="100"/>
+
+        </div>
+        <div class="info">
+          <div>
+            <label>Stok Kodu</label>
+            <span th:text="${response.stokKodu}">15.11.12</span>
+          </div>
+          <div>
+            <label>Stok Adı</label>
+            <span th:text="${response.stokAdi}"></span>
+          </div>
+        </div>
+        <div class="info">
+          <div>
+            <label>Koli Içi Adedi</label>
+            <span th:text="${response.barkod}"></span>
+          </div>
+          <div>
+            <label>Stok Birimi</label>
+            <span th:text="${response.stokBirimi}"></span>
+          </div>
+        </div>
+      </div>
+
+    </td>
+
+  </tr>
+</table>
+</body>
+
+</html>

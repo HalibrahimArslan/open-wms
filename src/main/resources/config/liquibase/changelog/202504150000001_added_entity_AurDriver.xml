@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity AurDriver
+    -->
+    <changeSet id="202504150000001-1" author="jhipster">
+        <createTable tableName="aur_driver">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="driver_name" type="varchar(50)" />
+            <column name="phone_number" type="varchar(11)" />
+            <column name="license_plate" type="varchar(50)" />
+            <column name="trailer_plate" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="op_type"  type="varchar(20)" />
+            <column name="identity_number" type="varchar(11)" />
+            <column name="created_date" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_modified_by" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_modified_date" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+        </createTable>
+        <addUniqueConstraint tableName="aur_driver" columnNames="phone_number" constraintName="uk_aur_driver_phone_number"/>
+    </changeSet>
+    <!--<changeSet id="202504150000001-2" author="jhipster">
+        <sql>
+            insert into aur_driver(driver_name,phone_number, license_plate, identity_number, op_type, created_date,created_by,last_modified_by,last_modified_date)
+            SELECT sofor_adi,sofor_tel, sofor_plaka,MAX(sofor_tc_no) as sofor_tc_no, 'MSK' as op_type, NOW(), 'admin', 'admin', NOW()
+            FROM aur_order_master
+            WHERE sofor_tel IS NOT null and  sofor_tel != ''
+            AND op_type='MSK'
+            group by sofor_adi, sofor_tel, sofor_plaka
+        </sql>
+    </changeSet>-->
+</databaseChangeLog>

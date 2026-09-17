@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity Upload.
+    -->
+    <changeSet id="20240415000001-1" author="jhipster">
+        <createTable tableName="upload">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="url" type="varchar" />
+            <column name="title" type="varchar" />
+            <column name="description" type="varchar" />
+            <column name="company_code" type="varchar"/>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_modified_by" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_modified_date" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+        </createTable>
+    </changeSet>
+    <changeSet id="20240415000001-2" author="jhipster">
+        <createTable tableName="tag">
+            <column name="name" type="varchar">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20240415000001-3" author="jhipster">
+        <createTable tableName="upload_tag_rel">
+            <column name="upload_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tag_name" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="upload_id, tag_name" tableName="upload_tag_rel"/>
+
+        <addForeignKeyConstraint baseColumnNames="tag_name"
+                                 baseTableName="upload_tag_rel"
+                                 constraintName="fk_tag_name"
+                                 referencedColumnNames="name"
+                                 referencedTableName="tag"/>
+
+        <addForeignKeyConstraint baseColumnNames="upload_id"
+                                 baseTableName="upload_tag_rel"
+                                 constraintName="fk_upload_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="upload"/>
+
+    </changeSet>
+
+
+</databaseChangeLog>
+

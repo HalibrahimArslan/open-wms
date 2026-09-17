@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity AurOrderDetail
+    -->
+    <changeSet id="20220819000009-1" author="jhipster">
+        <createTable tableName="aur_order_detail">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="aur_order_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="status" type="varchar(25)">
+                <constraints nullable="true" />
+            </column>
+            <column name="stok_kodu" type="varchar(25)">
+                <constraints nullable="true" />
+            </column>
+            <column name="barcode" type="varchar(25)">
+                <constraints nullable="true" />
+            </column>
+            <column name="stok_birimi" type="varchar(10)">
+                <constraints nullable="true" />
+            </column>
+            <column name="siparis_miktar" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="teslim_miktar" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="stok_adi" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="sip_uid" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="siparis_no" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="observer_amount" type="double">
+                <constraints nullable="true" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+    </changeSet>
+    <changeSet id="20220819000009-2" author="jhipster">
+        <addColumn tableName="aur_order_detail" >
+            <column name="is_piece" type="boolean"></column>
+            <column name="aur_partial_item_id" type="bigint"></column>
+        </addColumn>
+
+    </changeSet>
+
+</databaseChangeLog>

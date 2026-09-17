@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <style>
+    table {
+      border-collapse: collapse;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    }
+
+    .title {
+      font-size: 22px;
+      font-weight: bold;
+      color: #0f172a;
+      margin: 0 0 15px 0;
+    }
+
+    .text {
+      font-size: 14px;
+      color: #334155;
+      line-height: 1.4;
+      margin-bottom: 20px;
+    }
+
+    .data-table {
+      width: 100%;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      overflow: hidden;
+      font-size: 14px;
+    }
+
+    .data-table th {
+      background-color: #f8fafc;
+      padding: 10px;
+      text-align: left;
+      font-weight: bold;
+      color: #475569;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .data-table td {
+      padding: 10px;
+      color: #0f172a;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+  </style>
+</head>
+
+<body style="background:#f1f5f9; padding:20px;">
+
+<table class="container">
+  <tr>
+    <td>
+
+      <h2 class="title">Atanan Sipariş</h2>
+
+      <p class="text">
+        Merhaba,<br><br>
+        Aşağıdaki siparişler toplanması için<br>
+        <strong th:text="${wms[0].atanan}">Bos</strong> 'e atandı.
+      </p>
+
+      <table class="data-table outlook-fix">
+        <thead>
+        <tr>
+          <th>Sipariş No</th>
+          <th>Ürünler</th>
+          <th>Atanan</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="wms : ${wms}">
+          <td th:text="${wms.siparisNumarasi}">SIP-2024-001</td>
+          <td th:text="${wms.stokAdi}">Premium Ürün A</td>
+          <td th:text="${wms.atanan}">Premium Ürün A</td>
+        </tr>
+        </tbody>
+      </table>
+
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

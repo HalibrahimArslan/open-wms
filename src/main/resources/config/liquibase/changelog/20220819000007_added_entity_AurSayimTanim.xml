@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity AurSayimTanim
+    -->
+    <changeSet id="20220819000007-1" author="jhipster">
+        <createTable tableName="aur_sayim_tanim">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="status" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="sayim_adi" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="depo_no" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="sayim_tarihi" type="date">
+                <constraints nullable="true" />
+            </column>
+            <column name="aciklama" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="sayimi_bitiren_kullanici" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="sayimi_onaylayan_kullanici" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="create_date" type="date">
+                <constraints nullable="true" />
+            </column>
+            <column name="create_user" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_update_date" type="date">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_update_user" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="sayim_durumu" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

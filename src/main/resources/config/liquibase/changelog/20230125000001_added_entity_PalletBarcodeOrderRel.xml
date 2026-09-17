@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity UserFirmRel.
+    -->
+    <changeSet id="20230125010001-1" author="jhipster">
+        <createTable tableName="pallet_barcode_order_rel">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="pallet_barcode_id" type="bigint">
+
+                <constraints foreignKeyName="fk_pallet_barcode_order_rel__pallet_barcode_id" nullable="false" referencedTableName="pallet_barcode" referencedColumnNames="id" />
+            </column>
+            <column name="aur_order_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="aur_order_detail_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_pallet_barcode_order_rel__aur_order_detail_id" referencedTableName="aur_order_detail" referencedColumnNames="id" />
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_modified_by" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_modified_date" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+    </changeSet>
+    <changeSet id="20230125010001-2" author="jhipster">
+       <addColumn tableName="pallet_barcode_order_rel" >
+           <column name="status" type="boolean">
+               <constraints nullable="false" />
+           </column>
+       </addColumn>
+    </changeSet>
+</databaseChangeLog>

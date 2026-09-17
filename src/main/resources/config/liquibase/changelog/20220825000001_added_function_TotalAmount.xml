@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the function TotalAmount
+    -->
+    <changeSet author="jhipster" id="20220825000001-1">
+        <createProcedure>
+            create function total_amount(barkod character varying, startdate date, finishdate date) returns double precision as
+            $body$
+                declare
+                    Product_amount double PRECISION;
+
+                begin
+                    select sum(aduas.miktar)
+                    into Product_amount
+                    from aur_depo_urun_adres_stok as aduas
+                    where aduas.barcode = barkod and aduas.status = true
+                      and create_date between startDate and finishDate;
+                    return Product_amount;
+
+                end;
+
+            $body$ language plpgsql
+        </createProcedure>
+    </changeSet>
+
+</databaseChangeLog>

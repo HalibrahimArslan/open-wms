@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Uygulamanin menu agaci.
+
+        Bu kayitlar lokal seed verisi degil, urunun kendi menuleridir; bu yuzden
+        seed/local-seed.sql'den alinip migration'a tasindi ve her ortamda kuruluyor.
+
+        parent_menu_id = 0  -> kok menu
+        index = true        -> UI ekrani /d:<depo>/<menuId>/<path> seklinde acar
+                               (rotasinda :menuId parametresi olan ekranlar)
+        company_code = NULL -> tum sirketlerde gorunur; aur_vw_user_menu_rel sorgusu
+                               "company_code = :companyCode or company_code is null"
+                               filtreledigi icin sirkete ozel menuler de eklenebilir.
+
+        Menuleri role baglama adimi (aur_menu_role_rel) dagitima ozgu oldugu icin
+        seed tarafinda kaldi.
+
+        Onkosul: tabloda kayit varsa changeSet MARK_RAN olur, mevcut ortamlardaki
+        menulere dokunulmaz.
+    -->
+    <changeSet id="2026091300000002-1" author="jhipster">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT count(*) FROM aur_menu</sqlCheck>
+        </preConditions>
+        <sql splitStatements="false">
+INSERT INTO aur_menu (id, parent_menu_id, menu_name, menu_type, path, index, icon, company_code) VALUES
+    (1,   0,  'Kontrol Paneli',              'TERMINAL', 'dashboard',                            false, 'mdi:view-dashboard',        NULL),
+
+    (10,  0,  'Mal Kabul',                   'TERMINAL', NULL,                                   false, 'mdi:truck-delivery',        NULL),
+    (11,  10, 'Firmadan Mal Kabul',          'TERMINAL', 'firmlist',                             true,  'mdi:domain',                NULL),
+    (12,  10, 'Tekil Barkodlu Mal Kabul',    'TERMINAL', 'unique-barcode-firmlist',              true,  'mdi:barcode-scan',          NULL),
+    (13,  10, 'Irsaliye Kontrol',            'TERMINAL', 'waybill-control',                      false, 'mdi:file-document-check',   NULL),
+
+    (20,  0,  'Sevkiyat',                    'TERMINAL', NULL,                                   false, 'mdi:truck-fast',            NULL),
+    (21,  20, 'Cari Secimi',                 'TERMINAL', 'cari-selection',                       true,  'mdi:account-tie',           NULL),
+    (22,  20, 'Sevkiyatlarim',               'TERMINAL', 'dispatchingorder',                     false, 'mdi:clipboard-list',        NULL),
+
+    (30,  0,  'Adres Islemleri',             'TERMINAL', NULL,                                   false, 'mdi:map-marker',            NULL),
+    (31,  30, 'Adresler',                    'TERMINAL', 'address',                              false, 'mdi:map-marker-multiple',   NULL),
+    (32,  30, 'Kontrol Adres',               'TERMINAL', 'kontroladres',                         false, 'mdi:map-marker-check',      NULL),
+    (33,  30, 'Urun Adres Tanimi',           'TERMINAL', 'productaddressdef',                    false, 'mdi:package-variant',       NULL),
+    (34,  30, 'Adres Operasyonlari',         'TERMINAL', 'address-operations',                   false, 'mdi:cog-transfer',          NULL),
+    (35,  30, 'Urun Adres Degisimi',         'TERMINAL', 'productaddressreplacement',            false, 'mdi:swap-horizontal',       NULL),
+    (36,  30, 'Gecici Adresten Yerlestirme', 'TERMINAL', 'productplacement',                     false, 'mdi:archive-arrow-down',    NULL),
+    (37,  30, 'Adres Tanimlari',             'TERMINAL', 'address-tanim',                        false, 'mdi:map-marker-plus',       NULL),
+    (371, 37, 'Bolum',                       'TERMINAL', 'address-tanim/department',             false, 'mdi:office-building',       NULL),
+    (372, 37, 'Reyon',                       'TERMINAL', 'address-tanim/hall',                   false, 'mdi:view-column',           NULL),
+    (373, 37, 'Unite',                       'TERMINAL', 'address-tanim/unit',                   false, 'mdi:cube-outline',          NULL),
+    (374, 37, 'Kat',                         'TERMINAL', 'address-tanim/flat',                   false, 'mdi:layers',                NULL),
+    (375, 37, 'Goz',                         'TERMINAL', 'address-tanim/room',                   false, 'mdi:grid',                  NULL),
+    (376, 37, 'Adres Tipi',                  'TERMINAL', 'address-tanim/address-type',           false, 'mdi:shape',                 NULL),
+
+    (40,  0,  'Sayim',                       'TERMINAL', NULL,                                   false, 'mdi:counter',               NULL),
+    (41,  40, 'Sayim Islemleri',             'TERMINAL', 'counting',                             false, 'mdi:clipboard-check',       NULL),
+    (42,  40, 'Sayim Tanimlari',             'TERMINAL', 'counting-definition',                  false, 'mdi:clipboard-edit',        NULL),
+
+    (50,  0,  'Palet Barkod',                'TERMINAL', 'palletbarcode',                        false, 'mdi:barcode',               NULL),
+
+    (60,  0,  'Raporlar',                    'TERMINAL', NULL,                                   false, 'mdi:chart-bar',             NULL),
+    (61,  60, 'Siparis Takibi',              'TERMINAL', 'ordertracing',                         false, 'mdi:magnify',               NULL),
+    (62,  60, 'Yerlestirme Gecmisi',         'TERMINAL', 'placementhistory',                     false, 'mdi:history',               NULL),
+    (63,  60, 'Performans Kontrol',          'TERMINAL', 'performance-control',                  false, 'mdi:speedometer',           NULL),
+    (64,  60, 'Mikro Rapor',                 'TERMINAL', 'report',                               false, 'mdi:file-chart',            NULL),
+
+    (70,  0,  'Tanimlar',                    'TERMINAL', 'definitions',                          false, 'mdi:cog',                   NULL),
+    (71,  70, 'Mail Tanimlari',              'TERMINAL', 'definitions/mails',                    false, 'mdi:email',                 NULL),
+    (72,  70, 'Menu Tanimlari',              'TERMINAL', 'definitions/menus',                    false, 'mdi:menu',                  NULL),
+    (73,  70, 'Kural Tanimlari',             'TERMINAL', 'definitions/rules',                    false, 'mdi:gavel',                 NULL),
+    (74,  70, 'Rol Tanimlari',               'TERMINAL', 'definitions/role-definitions',         false, 'mdi:shield-account',        NULL),
+    (75,  70, 'Kullanici Rol Tanimlari',     'TERMINAL', 'definitions/user-role-definitions',    false, 'mdi:account-key',           NULL),
+    (76,  70, 'Rol-Menu Iliskileri',         'TERMINAL', 'definitions/role-menu-definitions',    false, 'mdi:link-variant',          NULL),
+    (77,  70, 'Sofor Tanimlari',             'TERMINAL', 'definitions/driver-definitions',       false, 'mdi:card-account-details',  NULL),
+    (78,  70, 'Rezerve Urunler',             'TERMINAL', 'definitions/reserve-products',         false, 'mdi:bookmark',              NULL),
+
+    (80,  0,  'Kullanicilar',                'TERMINAL', 'users',                                false, 'mdi:account-group',         NULL),
+    (81,  0,  'Geri Bildirimler',            'TERMINAL', 'feedbacks',                            false, 'mdi:comment-quote',         NULL),
+    (82,  0,  'CSV Yukleme',                 'TERMINAL', 'csv-upload',                           false, 'mdi:file-upload',           NULL),
+    (83,  0,  'Depolar Arasi Transfer',      'TERMINAL', 'depolararasitransfer',                 false, 'mdi:transfer',              NULL),
+    (84,  0,  'Parcali Urunler',             'TERMINAL', 'partial-item',                         false, 'mdi:puzzle',                NULL),
+    (85,  0,  'Lot Urun Tanimi',             'TERMINAL', 'lot-product-definition',               false, 'mdi:tag-multiple',          NULL)
+ON CONFLICT (id) DO NOTHING;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

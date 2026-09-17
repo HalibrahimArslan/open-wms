@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity AurAddressPlacementHistory
+    -->
+    <changeSet id="20220818000001-1" author="jhipster">
+        <createTable tableName="aur_address_placement_history">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="aur_user_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="stok_kodu" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="barcode" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <column name="process_amount" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="placement_address_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="placement_updated_amount" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="origin_address_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="origin_updated_amount" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="create_date" type="date">
+                <constraints nullable="true" />
+            </column>
+            <column name="create_user" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20220818000001-2" author="jhipster">
+        <addColumn tableName="aur_address_placement_history">
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20220818000001-3" author="jhipster">
+        <renameColumn tableName="aur_address_placement_history" oldColumnName="create_date" newColumnName="created_date"  />
+        <renameColumn tableName="aur_address_placement_history" oldColumnName="create_user" newColumnName="created_by"  />
+        <modifyDataType tableName="aur_address_placement_history" columnName="created_date" newDataType="timestamp"/>
+    </changeSet>
+
+    <changeSet id="20220818000001-4" author="jhipster">
+        <addColumn tableName="aur_address_placement_history">
+            <column name="movement_type" type="varchar(50)"/>
+        </addColumn>
+
+    </changeSet>
+
+
+
+</databaseChangeLog>

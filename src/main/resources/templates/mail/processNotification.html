@@ -1,0 +1,274 @@
+<!DOCTYPE HTML>
+<html lang="tr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WMS - Modern Dashboard</title>
+  <!--[if mso]>
+  <noscript>
+    <xml>
+      <o:OfficeDocumentSettings>
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+      </o:OfficeDocumentSettings>
+    </xml>
+  </noscript>
+  <![endif]-->
+
+  <style type="text/css">
+    /* Reset styles */
+    table, td, div, h1, h2, h3, p, a {
+      font-family: Arial, sans-serif;
+    }
+
+    table {
+      border-collapse: collapse !important;
+    }
+
+    .container {
+      width: 100% !important;
+      max-width: 600px !important;
+      margin: 0 auto !important;
+    }
+
+    /* Header styles */
+    .header-table {
+      width: 100% !important;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+      background-color: #667eea !important; /* Fallback */
+      padding: 30px 20px !important;
+      text-align: center !important;
+    }
+
+    .header-title {
+      color: #ffffff !important;
+      font-size: 28px !important;
+      font-weight: bold !important;
+      margin: 0 !important;
+      padding: 0 0 10px 0 !important;
+    }
+
+    .header-subtitle {
+      color: #ffffff !important;
+      font-size: 16px !important;
+      margin: 0 !important;
+      opacity: 0.9;
+    }
+
+    /* Stats grid */
+    .stats-table {
+      width: 100% !important;
+      margin: 20px 0 !important;
+    }
+
+    .stat-cell {
+      width: 25% !important;
+      padding: 10px !important;
+      vertical-align: top !important;
+    }
+
+    .stat-card {
+      background-color: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 8px !important;
+      padding: 20px !important;
+      text-align: center !important;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .stat-icon {
+      color: #6366f1 !important;
+      font-size: 24px !important;
+      margin-bottom: 10px !important;
+    }
+
+    .stat-number {
+      color: #0f172a !important;
+      font-size: 24px !important;
+      font-weight: bold !important;
+      margin: 5px 0 !important;
+    }
+
+    .stat-label {
+      color: #64748b !important;
+      font-size: 14px !important;
+      margin: 0 !important;
+    }
+
+    /* Main content table */
+    .content-table {
+      width: 100% !important;
+      background-color: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 8px !important;
+      margin: 20px 0 !important;
+    }
+
+    .content-header {
+      background-color: #f8fafc !important;
+      padding: 20px !important;
+      border-bottom: 1px solid #e2e8f0 !important;
+    }
+
+    .content-title {
+      color: #0f172a !important;
+      font-size: 20px !important;
+      font-weight: bold !important;
+      margin: 0 0 5px 0 !important;
+    }
+
+    .content-subtitle {
+      color: #64748b !important;
+      font-size: 14px !important;
+      margin: 0 !important;
+    }
+
+    /* Data table */
+    .data-table {
+      width: 100% !important;
+      border-collapse: collapse !important;
+      font-size: 14px !important;
+    }
+
+    .data-table th {
+      background-color: #6366f1 !important;
+      color: #ffffff !important;
+      padding: 12px 8px !important;
+      text-align: left !important;
+      font-weight: bold !important;
+      font-size: 12px !important;
+      border-bottom: 2px solid #4f46e5 !important;
+    }
+
+    .data-table td {
+      padding: 12px 8px !important;
+      border-bottom: 1px solid #e2e8f0 !important;
+      color: #0f172a !important;
+    }
+
+    .data-table tr:nth-child(even) {
+      background-color: #f8fafc !important;
+    }
+
+    .data-table tr:hover {
+      background-color: #f1f5f9 !important;
+    }
+
+    /* Mobile responsive */
+    @media only screen and (max-width: 600px) {
+      .container {
+        width: 100% !important;
+        padding: 10px !important;
+      }
+
+      .stat-cell {
+        width: 50% !important;
+        padding: 5px !important;
+      }
+
+      .stat-card {
+        padding: 15px !important;
+      }
+
+      .header-title {
+        font-size: 24px !important;
+      }
+
+      .data-table {
+        font-size: 12px !important;
+      }
+
+      .data-table th,
+      .data-table td {
+        padding: 8px 4px !important;
+      }
+    }
+
+    /* Outlook specific fixes */
+    .outlook-fix {
+      mso-table-lspace: 0pt !important;
+      mso-table-rspace: 0pt !important;
+    }
+  </style>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f1f5f9;">
+
+<!-- Main Container -->
+<table class="container outlook-fix" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
+  <tr>
+    <td>
+
+      <!-- Header -->
+      <table class="header-table outlook-fix" cellpadding="0" cellspacing="0">
+        <tr>
+          <td>
+            <h1 class="header-title">📦 WMS</h1>
+            <p class="header-subtitle">Depo Yönetim Bilgilendirme Sistemi</p>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Main Content -->
+      <table class="content-table outlook-fix" cellpadding="0" cellspacing="0">
+        <tr>
+          <td class="content-header">
+            <h2 class="content-title">📋 Sipariş Detayları</h2>
+            <p class="content-subtitle">Güncel sevkiyat bilgileri</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <!-- Data Table -->
+            <table class="data-table outlook-fix" cellpadding="0" cellspacing="0">
+              <thead>
+              <tr>
+                <th>Sıra No</th>
+                <th>Sipariş No</th>
+                <th th:if="${wms[0].sipTip == 'FMK'}">Tedarikçi Adı</th>
+                <th th:unless="${wms[0].sipTip == 'FMK'}">Alıcı Adı</th>
+                <th>Teslim Alıcı</th>
+                <th>Ürün Adı</th>
+                <th>Sipariş Miktar</th>
+                <th th:if="${wms[0].sipTip == 'FMK'}">Kabul Miktar</th>
+                <th th:unless="${wms[0].sipTip == 'FMK'}">Sevk Miktar</th>
+                <th>Kalan Miktar</th>
+                <th th:if="${wms[0].sipTip == 'MSK'}">Sevkiyat Adresi</th>
+                <th>Şoför</th>
+                <th>İrtibat Tel</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="wms : ${wms}">
+                <td th:text="${wms.id}">1</td>
+                <td th:text="${wms.siparisNumarasi}">SIP-2024-001</td>
+                <td th:text="${wms.cariAdi}">ABC Tedarik Ltd.</td>
+                <td th:text="${wms.altCariAdi}">XYZ Alıcı Şirket</td>
+                <td th:text="${wms.stokAdi}">Premium Ürün A</td>
+                <td th:text="${wms.siparisMiktari}">100</td>
+                <td th:text="${wms.teslimMiktari}">85</td>
+                <td th:text="${wms.kalanMiktar}">15</td>
+                <td th:if="${wms.sipTip == 'MSK'}" th:text="${wms.sevkiyatAdresi}">İstanbul, Kadıköy</td>
+                <td th:text="${wms.soforAdSoyad}">Mehmet Yılmaz</td>
+                <td th:text="${wms.irtibatTel}">0532 123 45 67</td>
+              </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Footer -->
+      <table class="outlook-fix" cellpadding="0" cellspacing="0" style="width: 100%; margin-top: 20px;">
+        <tr>
+          <td style="text-align: center; padding: 20px; color: #64748b; font-size: 12px;">
+            Bu rapor WMS sistem tarafından otomatik olarak oluşturulmuştur.<br>
+            Sorularınız için lütfen sistem yöneticinizle iletişime geçin.
+          </td>
+        </tr>
+      </table>
+
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

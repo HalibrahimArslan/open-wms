@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql, mariadb"/>
+    <property name="clobType" value="longvarchar" dbms="h2"/>
+    <property name="clobType" value="clob" dbms="mysql, oracle, mssql, mariadb, postgresql"/>
+    <property name="uuidType" value="uuid" dbms="h2, postgresql"/>
+    <property name="datetimeType" value="datetime(6)" dbms="mysql, mariadb"/>
+    <property name="datetimeType" value="datetime" dbms="oracle, mssql, postgresql, h2"/>
+
+    <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211124130733_added_entity_Depo.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211124130734_added_entity_AurMenu.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211124130735_added_entity_AurCompany.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211124130736_added_entity_AurRole.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211124130737_added_entity_AurMenuRoleRel.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211124130738_added_entity_AurUser.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211124130739_added_entity_AurUserRoleRel.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211204083134_added_entity_AurOrderMaster.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220816000001_added_entity_AurMailAddTo.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220816000002_added_entity_AurGrupMailAdres.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220818000001_added_entity_AurAddressPlacementHistory.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220818000002_added_entity_AurBolumKatRel.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220818000003_added_entity_AurDepoUrunAdres.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220818000004_added_entity_AurDepoUrunAdresStok.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220818000005_added_entity_AurErpData.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220818000007_added_entity_AurIntegrationLogs.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220818000008_added_entity_AurLookupTable.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220819000001_added_entity_AurPrmBarkodTipi.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220819000002_added_entity_AurPrmUrunAdresBolum.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220819000003_added_entity_AurPrmUrunAdresKat.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220819000004_added_entity_AurPrmUrunAdresReyon.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220819000005_added_entity_AurPrmUrunAdresTipi.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220819000006_added_entity_AurPrmUrunAdresUnite.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220819000009_added_entity_AurOrderDetail.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/20220819000010_added_entity_ErpJwtData.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220819000011_added_entity_Product.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220819000012_added_entity_OrderPickingTransaction.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220819000012_added_entity_constraints_OrderPickingTransaction.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220825000001_added_function_TotalAmount.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220923231824_added_entity_AurSayimTanim.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220923231825_added_entity_AurSayimUrun.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220923231825_added_entity_column_AurSayimUrun.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221013000001_added_entity_column_OrderPickingTransaction.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221201000001_added_entity_column_AurOrderMaster.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221221050854_added_entity_AurPartialItem.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221221050855_added_entity_AurPartialDetails.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221221050855_added_entity_constraints_AurPartialDetails.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230118071143_added_entity_UserFirmRel.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230124000001_added_entity_PalletBarcode.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230125000001_added_entity_PalletBarcodeOrderRel.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230208080537_added_entity_UserDepoRel.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230314000001_added_entity_AurDispatchAreaControl.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230417080836_added_entity_Order.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230417080837_added_entity_OrderRow.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230417080838_added_entity_OrderStatus.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230417080836_added_entity_constraints_Order.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230417080837_added_entity_constraints_OrderRow.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230807000001_added_entity_ProcessTree.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230807000002_added_entity_ProcessLeaf.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230823000001_added_entity_CustomerAddress.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230824000001_added_column_AurOrderMaster.xml" relativeToChangelogFile="false" />
+    <include file="config/liquibase/changelog/20231106000001_added_column_AurOrderMaster.xml" relativeToChangelogFile="false" />
+    <include file="config/liquibase/changelog/20231201000001_added_column_AurOrderMaster.xml" relativeToChangelogFile="false" />
+    <include file="config/liquibase/changelog/20231214000001_added_column_AurDepoUrunAdres.xml" relativeToChangelogFile="false" />
+    <include file="config/liquibase/changelog/20231214000002_added_entity_CountingAddressException.xml" relativeToChangelogFile="false" />
+    <include file="config/liquibase/changelog/20231223000001_added_column_AurSayimTanim.xml" relativeToChangelogFile="false" />
+    <include file="config/liquibase/changelog/20240102000001_added_column_Order.xml" relativeToChangelogFile="false" />
+    <include file="config/liquibase/changelog/20240117000001_added_entity_constraints_AurOrderDetail.xml" relativeToChangelogFile="false" />
+    <include file="config/liquibase/changelog/20240227000001_added_function_z_raporu.xml" relativeToChangelogFile="false" />
+    <include file="config/liquibase/changelog/20240312000001_added_view_AurVwUserMenuRel.xml" relativeToChangelogFile="false" />
+    <include file="config/liquibase/changelog/20240313000001_delete_columns.xml" relativeToChangelogFile="false" />
+    <include file="config/liquibase/changelog/20240313000002_added_column_AurUser.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240401000001_modify_AurUser.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240415000001_added_entity_Upload.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240417000001_added_entity_Feedback.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240420000001_added_entity_constraints_Upload.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240423000001_added_entity_UploadComment.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240423000002_added_entity_FeedbackComment.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240501000001_delete_column_AurMenuRoleRel.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240501000002_modify_view_AurVwUserMenuRel.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240502000001_added_column_FeedbackCommentl.xml" relativeToChangelogFile="false" />
+    <include file="config/liquibase/changelog/20240527000001_added_view_AurVwZRaporu.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240528000001_modify_column_AurOrderMaster.xml" relativeToChangelogFile="false" />
+    <include file="config/liquibase/changelog/20240603000003_added_view_AurVwDepoStokAdres.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240604000001_modify_entities.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240605000001_added_entity_ProductAddressSkt.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240627000001_added_entity_AurOrderDetailSkt.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240710000001_added_constraint_AurOrderDetail.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240720000001_added_column_AurPartialItem.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240729000001_added_entity_ProductCountingTypePairing.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240802000001_added_entity_VendorMailAddress.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240806000001_added_column_AurSayimTanim.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240806000002_added_column_AurSayimUrun.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240806000003_added_entity_Rule.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240809000001_modify_table_AurDepoUrunAdres.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240812000001_modify_tables.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240819000001_added_column_AurSayimTanim.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240819000002_added_column_AurSayimUrun.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240826000001_modify_entities.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/20240830000001_modify_entities.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/202409110000001_modified_column_AurSayimTanim.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/202409110000001_1_modified_table_Depo.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/202409110000002_modified_table_Depo.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/202409170000001_added_relations.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/202411040000001_modified_table_Vendor_Mail_Address.xml" relativeToChangelogFile="false" />
+    <include file="/config/liquibase/changelog/202411110000001_added_entity_AurTmpSevkPlani.xml" relativeToChangelogFile="false" />
+    <include file="config/liquibase/changelog/202411140000001_added_column_Warehouse.xml" relativeToChangelogFile="false" />
+    <include file="config/liquibase/changelog/202411180000001_added_column_Order_Picking_Transaction.xml" relativeToChangelogFile="false" />
+    <include file="config/liquibase/changelog/202411250000001_added_data_jhi_authority.xml" relativeToChangelogFile="false" />
+    <include file="config/liquibase/changelog/202412170000001_added_column_Aur_Order_Detail.xml" relativeToChangelogFile="false" />
+    <include file="config/liquibase/changelog/202501200000001_added_entity_AurSevkPlani.xml" relativeToChangelogFile="false" />
+    <include file="config/liquibase/changelog/202503110000001_added_column_Warehouse.xml" relativeToChangelogFile="false" />
+    <include file="config/liquibase/changelog/202503250000001_added_column_Warehouse.xml" relativeToChangelogFile="false" />
+    <include file="config/liquibase/changelog/202504150000001_added_entity_AurDriver.xml" relativeToChangelogFile="false" />
+    <include file="config/liquibase/changelog/202506040000001_added_column_AurOrderMaster.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/202506120000001_added_column_Warehouse.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/2025070900000001_added_entity_AurReserve.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/202507080000001_added_entity_CountingUserAddressRel.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/2025120200000001_added_entity_AurOrderAdres.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/2026010900000001_added_entity_UniqueBarcode.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/2026042200000001_modify_entities.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/2026051100000001_modify_OrderPickingTransaction.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/2026060800000001_added_column_UniqueBarcode_status.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/2026060800000002_added_audit_UniqueBarcode.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/2026060900000001_added_audit_AurDepoUrunAdresStok.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/2026061700000001_added_column_UniqueBarcode_address.xml" relativeToChangelogFile="false"/>
+
+    <include file="config/liquibase/changelog/2026091300000001_added_missing_ErpOrderViews.xml" relativeToChangelogFile="false"/>
+
+    <include file="config/liquibase/changelog/2026091300000002_added_data_AurMenu.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/2026091400000001_sequences.xml" relativeToChangelogFile="false"/>
+
+    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+</databaseChangeLog>

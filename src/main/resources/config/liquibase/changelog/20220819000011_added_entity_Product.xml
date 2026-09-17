@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Product (urun karti).
+
+        Bu tablo once "mikro_stok_barkod_rel" adiyla olusturulmus, sonra "erp_stock_info",
+        en son da "product" olarak yeniden adlandirilmisti; kolonlari ve bilesik anahtari
+        yedi ayri changelog'a yayilmisti. Veritabani sifirdan kuruldugu icin hepsi burada
+        tek bir changeSet'te toplandi; olusan tablo eskisinin birebir ayni son halidir.
+
+        Birincil anahtar dogal anahtardir: barkod + company_code. Bu yuzden tablonun
+        uretilen bir id'si ve sekansi yoktur.
+    -->
+    <changeSet id="20220819000011-1" author="jhipster">
+        <createTable tableName="product">
+            <column name="barkod" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_code" type="varchar(25)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="stok_kodu" type="varchar"/>
+            <column name="stok_adi" type="varchar"/>
+            <column name="ana_grup" type="varchar"/>
+            <column name="kategori_adi" type="varchar"/>
+            <column name="stok_birimi" type="varchar(25)"/>
+            <column name="miktar" type="double"/>
+            <column name="description" type="varchar"/>
+            <column name="skt_flag" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <!-- true => urun lot bazinda takip edilir (tekil barkod kaydi olusturulmaz) -->
+            <column name="lot_based_tracking" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <!-- ERP siparis detayindan gelen fiziksel olculer: agirlik, genislik, derinlik, yukseklik, dara -->
+            <column name="physical_attributes" type="jsonb"/>
+        </createTable>
+
+        <addPrimaryKey tableName="product" columnNames="barkod, company_code"/>
+    </changeSet>
+
+</databaseChangeLog>

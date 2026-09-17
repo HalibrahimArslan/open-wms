@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="2026060900000001-drop" author="jhipster">
+
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="aur_depo_urun_adres_stok_aud"/>
+        </preConditions>
+
+        <dropTable tableName="aur_depo_urun_adres_stok_aud" cascadeConstraints="true"/>
+
+    </changeSet>
+
+    <changeSet id="2026060900000001-create" author="jhipster">
+
+        <createTable tableName="aur_depo_urun_adres_stok_aud">
+            <column name="id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rev" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="revtype" type="smallint"/>
+            <column name="status" type="boolean"/>
+            <column name="urun_adres_id" type="bigint"/>
+            <column name="stok_kod" type="varchar(25)"/>
+            <column name="barkod_tipi" type="varchar(25)"/>
+            <column name="palet_barkod_id" type="bigint"/>
+            <column name="company_code" type="varchar(255)"/>
+            <column name="depo_code" type="varchar(50)"/>
+            <column name="miktar" type="double"/>
+            <column name="barcode" type="varchar(255)"/>
+            <column name="created_by" type="varchar(50)"/>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+
+        <addPrimaryKey
+            tableName="aur_depo_urun_adres_stok_aud"
+            columnNames="id, rev"
+            constraintName="pk_aur_depo_urun_adres_stok_aud"/>
+
+        <addForeignKeyConstraint
+            constraintName="fk_aur_depo_urun_adres_stok_aud_revinfo"
+            baseTableName="aur_depo_urun_adres_stok_aud"
+            baseColumnNames="rev"
+            referencedTableName="revinfo"
+            referencedColumnNames="rev"/>
+
+    </changeSet>
+
+</databaseChangeLog>

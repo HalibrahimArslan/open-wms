@@ -1,0 +1,31 @@
+import com.hisarresearch.wms.domain.AurOrderMaster;
+global com.hisarresearch.wms.domain.MailList mailList;
+
+dialect "mvel"
+
+rule "Bayi Genel Alıcılar"
+    ruleflow-group "dispatcherMail"
+    when
+        AurOrderMaster(baglantiTipi == 0 || baglantiTipi == 4 || baglantiTipi == 1)
+    then
+        mailList.addMail("test@gmail.com");
+end
+
+rule "Depo Kodu ** ve Genel Alıcı"
+    ruleflow-group "receivingMail"
+    when
+        AurOrderMaster(orderDepoCode == 6666)
+    then
+        mailList.addMail("test@gmail.com");
+end
+
+rule "OpType FMk ve Genel Alıcı"
+    ruleflow-group "receivingMail"
+    when
+        AurOrderMaster(opType == "FMK" && firmCode == "10.11.12")
+    then
+        mailList.addMail("test@gmail.com");
+        mailList.addMail("test@gmail.com");
+        mailList.addMail("test@gmail.com");
+        mailList.addMail("test@gmail.com");
+end

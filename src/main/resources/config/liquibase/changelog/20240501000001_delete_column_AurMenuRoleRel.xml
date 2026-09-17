@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Delete column AurUserRoleRel.
+    -->
+    <changeSet id="20240501000001-1" author="jhipster">
+        <dropColumn tableName="aur_menu_role_rel" columnName="id" />
+    </changeSet>
+    <changeSet id="20240501000001-2" author="jhipster">
+        <addPrimaryKey tableName="aur_menu_role_rel" columnNames="menu_id,role_id" />
+        <addForeignKeyConstraint baseTableName="aur_menu_role_rel"
+                                 baseColumnNames="menu_id"
+                                 constraintName="aur_menu_role_rel__menu_id_fk"
+                                 referencedTableName="aur_menu"
+                                 referencedColumnNames="id" />
+        <addForeignKeyConstraint baseTableName="aur_menu_role_rel"
+                                 baseColumnNames="role_id"
+                                 constraintName="aur_menu_role_rel__role_id_fk"
+                                 referencedTableName="aur_role"
+                                 referencedColumnNames="id" />
+    </changeSet>
+
+</databaseChangeLog>
+

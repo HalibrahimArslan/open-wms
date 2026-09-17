@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<html lang="tr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
+  <style>
+    @page{
+      @bottom-center {
+        content: 'Sayfa' counter(page);
+      }
+    }
+
+    h1{
+      color: brown;
+    }
+    .quotation {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    .quotation, .quotation th, .quotation td {
+      border: 1px solid brown;
+      border-collapse: collapse;
+    }
+    .quotation th {
+      background-color: brown;
+      color: white;
+    }
+    .top-table{
+      display: flex;
+      justify-content: center;
+      margin-bottom: 5px;
+    }
+    .top-table th {
+      display: -ms-flexbox;
+      flex-direction: row;
+      justify-content: space-around;
+      border: 1px solid black;
+      border-collapse: collapse;
+      margin-bottom: 5px;
+    }
+    .bottom-table{
+      border: 1px solid black;
+      display: flex;
+      bottom: 0;
+      width: 100%;
+    }
+
+    .bottom-table th {
+      display: -ms-flexbox;
+      flex-direction: row;
+      justify-content: space-around;
+      border: 1px solid black;
+      border-collapse: collapse;
+      margin-bottom: 5px;
+    }
+    .bottom-table td {
+      display: -ms-flexbox;
+      flex-direction: row;
+      justify-content: space-around;
+      border: 1px solid black;
+      border-collapse: collapse;
+      text-transform: uppercase;
+
+    }
+
+    .bottom-table td p{
+      display: flex;
+      justify-content: center;
+
+    }
+
+
+  </style>
+</head>
+<body>
+
+<table class="top-table">
+  <tr>
+    <th><img th:if="${!#strings.isEmpty(logoUrl)}" th:src="${logoUrl}" alt="Logo" height="150" width="300"/></th>
+    <th>MALZEME TESLIM ALMA TUTANAGI</th>
+    <th>DEPO YÖNETIM SISTEMI</th>
+  </tr>
+
+</table>
+
+<table class="quotation">
+  <tr>
+    <th>Tedarikci Firma Adi</th>
+    <th>Tarih</th>
+    <th>Evrak Numarasi</th>
+    <th>Tarih</th>
+    <th>Evrak Cinsi</th>
+  </tr>
+  <tr>
+    <td th:text="${aurOrderMaster.firmName}"></td>
+    <td th:text="${aurOrderMaster.lastModifiedDate}"></td>
+    <td th:text="${aurOrderMaster.belgeNo}"></td>
+    <td th:text="${aurOrderMaster.lastModifiedDate}"></td>
+    <td th:text="${aurOrderMaster.opType}"></td>
+  </tr>
+</table>
+
+<table class="quotation">
+  <tr>
+    <th>Sira No</th>
+    <th>Envanter Kodu</th>
+    <th>Malzeme Açiklamasi</th>
+    <th>Miktari</th>
+    <th>Birimi</th>
+  </tr>
+  <tr th:each="item, iterStat: ${aurTmpList}">
+    <td th:text="${iterStat.index + 1}"></td>
+    <td th:text="${item.stokKodu}"></td>
+    <td th:text="${item.stokAdi}"></td>
+    <td th:text="${item.teslimMiktar}"></td>
+    <td th:text="${item.stokBirimi}"></td>
+  </tr>
+</table>
+<table class="bottom-table">
+    <tr>
+      <th>
+        TESLIM EDEN
+      </th>
+      <th>
+        TESLIM ALAN
+      </th>
+      <th>
+        YÖNETIM ONAY
+      </th>
+    </tr>
+    <tr>
+      <td>
+        <p th:text="${aurOrderMaster.soforTel}">Şoför Plaka</p>
+        <p th:text="${aurOrderMaster.soforAdi}">Şoför Adı</p>
+        <p th:text="${aurOrderMaster.soforPlaka}">Şoför Plaka</p>
+        <p th:text="${aurOrderMaster.soforTcNo}">Şoför Tc</p>
+      </td>
+      <td></td>
+      <td></td>
+    </tr>
+</table>
+
+</body>
+
+</html>

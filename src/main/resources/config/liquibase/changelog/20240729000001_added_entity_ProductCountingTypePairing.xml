@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added entity ProductCountingTypePairing
+    -->
+    <changeSet id="20240729000001-1" author="jhipster">
+        <createTable tableName="product_counting_type_pairing">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="barcode" type="varchar(25)" />
+            <column name="company_code" type="varchar(25)" />
+            <column name="counting_type" type="varchar(50)" />
+            <column name="warehouse_code" type="int" />
+            <column name="created_date" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_modified_by" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_modified_date" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="product_counting_type_pairing" baseColumnNames="barcode,company_code" constraintName="fk_product_counting_type_pairing_barcode_company_code"
+                                 referencedTableName="product"
+                                 referencedColumnNames="barkod,company_code" />
+        <addUniqueConstraint tableName="product_counting_type_pairing" columnNames="barcode,counting_type,warehouse_code" constraintName="uq_barcode_warehouse_code_barcode" />
+    </changeSet>
+</databaseChangeLog>
+

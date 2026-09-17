@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity AurDepoUrunAdres
+    -->
+    <changeSet id="20220818000003-1" author="jhipster">
+        <createTable tableName="aur_depo_urun_adres">
+            <column name="urun_adres_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="status" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="adres" type="varchar(100)">
+                <constraints nullable="true" />
+            </column>
+            <column name="depo_no" type="number(4)">
+                <constraints nullable="true" />
+            </column>
+            <column name="company_code" type="varchar(20)">
+                <constraints nullable="true" />
+            </column>
+            <column name="adres_tipi" type="varchar(10)">
+                <constraints nullable="true" />
+            </column>
+            <column name="bolum" type="varchar(2)">
+                <constraints nullable="true" />
+            </column>
+            <column name="reyon" type="varchar(2)">
+                <constraints nullable="true" />
+            </column>
+            <column name="unite" type="varchar(2)">
+                <constraints nullable="true" />
+            </column>
+            <column name="kat" type="number(2)">
+                <constraints nullable="true" />
+            </column>
+            <column name="gecici_adres" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="toplama_gozu" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="create_date" type="date">
+                <constraints nullable="true" />
+            </column>
+            <column name="create_user" type="varchar(25)">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_update_user" type="varchar(25)">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_update_date" type="date">
+                <constraints nullable="true" />
+            </column>
+            <column name="kontrol_adres" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+    </changeSet>
+    <changeSet id="20220818000003-2" author="jhipster">
+        <renameColumn tableName="aur_depo_urun_adres" oldColumnName="urun_adres_id" newColumnName="id" />
+        <renameColumn tableName="aur_depo_urun_adres" oldColumnName="create_date" newColumnName="created_date"  />
+        <renameColumn tableName="aur_depo_urun_adres" oldColumnName="create_user" newColumnName="created_by"  />
+        <renameColumn tableName="aur_depo_urun_adres" oldColumnName="last_update_user" newColumnName="last_modified_by"  />
+        <renameColumn tableName="aur_depo_urun_adres" oldColumnName="last_update_date" newColumnName="last_modified_date"  />
+        <modifyDataType tableName="aur_depo_urun_adres" columnName="created_date" newDataType="timestamp"/>
+        <modifyDataType tableName="aur_depo_urun_adres" columnName="last_modified_date" newDataType="timestamp"/>
+
+
+    </changeSet>
+
+</databaseChangeLog>

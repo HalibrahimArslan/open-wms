@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Create the AurTmpSevkPlan table
+    -->
+
+    <changeSet id="20241111000001-1" author="jhipster">
+        <createTable tableName="aur_tmp_sevk_plani">
+            <column name="id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(25)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="week" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="year" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cari_kod" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cari_unvan" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cari_baglanti_tipi" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bolge_kodu" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bolge_adi" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sip_uid" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="depo_no" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="evrak_seri" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+            <column name="evrak_sira" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="trans_group_code" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+            <column name="trans_group_name" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+            <column name="onaylayan_kullanici" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="durum" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="siparis_miktar" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="teslim_miktar" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="stok_adi" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address_no" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="barkod" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="stok_kodu" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="stok_birimi" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+            <column name="stok_miktar" type="double">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sevk_address" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sevk_tel" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sevk_muhatap" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sevk_acik_address" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+            <column name="version" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modified_by" type="varchar(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modified_date" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
+

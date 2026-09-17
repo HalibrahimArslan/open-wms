@@ -1,0 +1,150 @@
+# Lokal ortam: PostgreSQL + SMTP (mailpit) + uygulama.
+#
+#   docker compose up -d --build      -> hepsini ayağa kaldırır (ilk build uzun sürer)
+#   docker compose up -d postgres mail -> sadece altyapı (uygulamayı IDE'den çalıştırmak için)
+#   docker compose logs -f app         -> uygulama logları
+#   docker compose down -v             -> her şeyi sil (DB dahil)
+#
+# Değerleri ezmek için ana dizine .env koyabilirsin (bkz. .env.example).
+name: wms
+
+services:
+  postgres:
+    image: postgres:18
+    container_name: wms-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-wms}
+      POSTGRES_USER: ${POSTGRES_USER:-wms}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-wms}
+      TZ: Europe/Istanbul
+    ports:
+      - '${POSTGRES_PORT:-5432}:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-wms} -d ${POSTGRES_DB:-wms}']
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+
+  # Lokal SMTP sunucusu. Gönderilen mailler dışarı çıkmaz, http://localhost:8025 adresinden okunur.
+  mail:
+    image: axllent/mailpit:latest
+    container_name: wms-mail
+    environment:
+      TZ: Europe/Istanbul
+    ports:
+      - '${MAILPIT_UI_PORT:-8025}:8025'
+      - '${MAILPIT_SMTP_PORT:-1025}:1025'
+    restart: unless-stopped
+
+  # S3 uyumlu obje deposu. API :9000, web konsolu :9001
+  minio:
+    image: quay.io/minio/minio:latest
+    container_name: wms-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY:-wmsadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY:-wmsadmin123}
+      TZ: Europe/Istanbul
+    ports:
+      - '${MINIO_API_PORT:-9000}:9000'
+      - '${MINIO_CONSOLE_PORT:-9001}:9001'
+    volumes:
+      - miniodata:/data
+    healthcheck:
+      test: ['CMD-SHELL', 'curl -fs http://localhost:9000/minio/health/live || exit 1']
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+
+  # Bildirim websocket sunucusu (../websocket-server, open-wms ile ayni "wms"
+  # dizininin altinda, ayri bir Node.js projesi).
+  # WebSocketClientService @PostConstruct icinde connectBlocking() cagirdigi icin
+  # baglanilacak bir sunucu yoksa uygulama acilista asiliyor; bu servis onu karsilar.
+  websocket:
+    build:
+      context: ../websocket-server
+    image: wms-websocket:local
+    container_name: wms-websocket
+    environment:
+      PORT: '8080'
+      WS_PATH: /websocket
+      TZ: Europe/Istanbul
+    ports:
+      - '${WEBSOCKET_PORT:-8090}:8080'
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- http://localhost:8080/health >/dev/null || exit 1']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    image: wms-app:local
+    container_name: wms-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mail:
+        condition: service_started
+      websocket:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILE:-prod,api-docs}
+      JAVA_OPTS: ${JAVA_OPTS:--Xms256m -Xmx1024m}
+
+      # --- veritabanı ---
+      POSTGRESQL_CONNECTION_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-wms}
+      POSTGRESQL_DB_USERNAME: ${POSTGRES_USER:-wms}
+      POSTGRESQL_DB_PASSWORD: ${POSTGRES_PASSWORD:-wms}
+
+      # --- mail ---
+      MAIL_HOST: mail
+      MAIL_PORT: '1025'
+      MAIL_USERNAME: ''
+      MAIL_PASSWORD: ''
+      MAIL_URL: http://localhost:${APP_PORT:-8080}
+
+      # --- application.yml içindeki zorunlu placeholder'lar ---
+      # Bunlar uygulama açılışında @Value ile okunuyor, boş bırakılırsa context ayağa kalkmaz.
+      WEBSOCKET_URI: ${WEBSOCKET_URI:-ws://websocket:8080/websocket}
+      METABASE_SECRET_URL: ${METABASE_SECRET_URL:-http://localhost:3000}
+      METABASE_SECRET_KEY: ${METABASE_SECRET_KEY:-local-dev-dummy-secret}
+      METABASE_DASHBOARD_CODE: ${METABASE_DASHBOARD_CODE:-1}
+      SENTRY_DSN: ${SENTRY_DSN:-}
+
+      # --- minio / s3 ---
+      # application.yml'deki uzak s3 yerine lokal minio'ya yönlendirilir.
+      # MinioClient.endpoint() şema bekliyor, bu yüzden http:// ile veriliyor.
+      MINIO_URL: ${MINIO_URL:-http://minio:9000}
+      MINIO_ACCESSKEY: ${MINIO_ACCESS_KEY:-wmsadmin}
+      MINIO_SECRETKEY: ${MINIO_SECRET_KEY:-wmsadmin123}
+      MINIO_BUCKETNAME: ${MINIO_BUCKET:-wms}
+
+      # Konfigürasyonda Windows yolu (C:\pdf\) yazılı, linux container için ezildi
+      PDF_DIRECTORY: /app/pdf/
+
+    ports:
+      - '${APP_PORT:-8080}:8080'
+    volumes:
+      - pdf:/app/pdf
+    healthcheck:
+      test: ['CMD-SHELL', 'curl -fs http://localhost:8080/management/health || exit 1']
+      interval: 15s
+      timeout: 5s
+      retries: 20
+      start_period: 90s
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  pdf:
+  miniodata:

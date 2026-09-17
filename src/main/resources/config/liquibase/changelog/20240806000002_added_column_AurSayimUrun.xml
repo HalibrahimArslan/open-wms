@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added column to AurSayimUrun
+    -->
+    <changeSet id="20240806000002-1" author="jhipster">
+        <addColumn tableName="aur_sayim_urun">
+            <column name="skt_date" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="20240806000002-2" author="jhipster">
+        <renameColumn tableName="aur_sayim_urun" oldColumnName="create_date" newColumnName="created_date"  />
+        <renameColumn tableName="aur_sayim_urun" oldColumnName="create_user" newColumnName="created_by" />
+        <renameColumn tableName="aur_sayim_urun" oldColumnName="last_update_date" newColumnName="last_modified_date" />
+        <renameColumn tableName="aur_sayim_urun" oldColumnName="last_update_user" newColumnName="last_modified_by" />
+    </changeSet>
+</databaseChangeLog>
+

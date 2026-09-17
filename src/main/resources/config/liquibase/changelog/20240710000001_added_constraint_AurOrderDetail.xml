@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added constraint to AurOrderDetail
+    -->
+    <changeSet id="20240710000001-1" author="jhipster">
+        <addUniqueConstraint tableName="aur_order_detail"
+                             columnNames="aur_order_id,barcode,sip_uid,aur_partial_item_id"
+                             constraintName="uq_aur_order_detail_order_barcode_sip_uid_partial_item" />
+    </changeSet>
+</databaseChangeLog>
+

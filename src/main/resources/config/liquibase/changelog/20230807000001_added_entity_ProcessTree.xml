@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity ProcessTree.
+    -->
+    <changeSet id="20230807000001-1" author="jhipster">
+        <createTable tableName="process_tree">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="true" foreignKeyName="fk_process_tree__user_id" referencedTableName="aur_user" referencedColumnNames="id"/>
+            </column>
+            <column name="process_type" type="varchar(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="status" type="boolean"/>
+            <column name="target_address_id" type="bigint" >
+                <constraints nullable="true" foreignKeyName="fk_process_tree__target_address_id" referencedTableName="aur_depo_urun_adres" referencedColumnNames="id"/>
+            </column>
+            <column name="amount" type="double">
+                <constraints nullable="true"/>
+            </column>
+            <column name="process_child_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_public" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_code" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="depo_code" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_modified_by" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_modified_date" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+    </changeSet>
+
+
+</databaseChangeLog>

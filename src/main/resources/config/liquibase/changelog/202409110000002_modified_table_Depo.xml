@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Modify table Depo
+    -->
+
+    <changeSet id="20240911000001-1" author="jhipster">
+        <addColumn tableName="warehouse">
+            <column name="transfer_code" type="varchar(25)" defaultValue="8">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addUniqueConstraint tableName="warehouse"
+                             columnNames="depo_no,company_code"
+                             constraintName="uq_depo_no_company_code"/>
+        <addNotNullConstraint tableName="warehouse" columnName="depo_no"/>
+        <addNotNullConstraint tableName="warehouse" columnName="company_code"/>
+        <addNotNullConstraint tableName="warehouse" columnName="depo_name"/>
+    </changeSet>
+    <changeSet id="20240911000001-2" author="jhipster">
+        <modifyDataType tableName="warehouse" columnName="depo_no" newDataType="varchar(25)"/>
+    </changeSet>
+    <changeSet id="20240911000001-3" author="jhipster">
+        <renameColumn tableName="user_depo_rel" oldColumnName="depo_code" newColumnName="depo_id"/>
+    </changeSet>
+    <changeSet id="20240911000001-4" author="jhipster">
+        <modifyDataType tableName="user_depo_rel" columnName="depo_id" newDataType="bigint"/>
+    </changeSet>
+    <changeSet id="20240911000001-5" author="jhipster">
+        <addForeignKeyConstraint baseTableName="user_depo_rel" baseColumnNames="depo_id"
+                                 referencedTableName="warehouse"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_depo_id_user_depo_rel"
+        />
+    </changeSet>
+    <changeSet id="20240911000001-6" author="jhipster">
+        <renameColumn tableName="warehouse" oldColumnName="depo_no" newColumnName="code"/>
+        <renameColumn tableName="warehouse" oldColumnName="depo_name" newColumnName="name"/>
+    </changeSet>
+    <changeSet id="20240911000001-7" author="jhipster">
+        <dropColumn tableName="user_depo_rel" columnName="depo_name" />
+    </changeSet>
+    <changeSet id="20240911000001-8" author="jhipster">
+        <renameColumn tableName="user_depo_rel" oldColumnName="depo_id" newColumnName="warehouse_id" />
+    </changeSet>
+    <changeSet id="20240911000001-9" author="jhipster">
+        <addNotNullConstraint tableName="user_depo_rel" columnName="warehouse_id" />
+    </changeSet>
+    <changeSet id="20240911000001-10" author="jhipster">
+        <modifyDataType tableName="warehouse" columnName="company_code" newDataType="varchar(25)"/>
+    </changeSet>
+</databaseChangeLog>
+

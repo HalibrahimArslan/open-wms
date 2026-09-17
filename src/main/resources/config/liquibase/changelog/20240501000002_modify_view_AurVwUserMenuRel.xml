@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Modify view AurVwUserMenuRel.
+    -->
+    <changeSet id="20240501000002-1" author="jhipster">
+     <dropView viewName="aur_vw_user_menu_rel" />
+    </changeSet>
+    <changeSet id="20240501000002-2" author="jhipster">
+        <createProcedure>
+            create view aur_vw_user_menu_rel(menu_id, menu_type, parent_menu_id, menu_name, user_name) as
+            SELECT DISTINCT (m.id) AS menu_id,
+                   m.menu_type,
+                   m.parent_menu_id,
+                   m.menu_name,
+                   u.login AS user_name
+            FROM aur_menu m
+                     JOIN aur_menu_role_rel mr ON m.id = mr.menu_id
+                     JOIN aur_user_role_rel ur ON mr.role_id = ur.role_id
+                     JOIN aur_user u ON u.id = ur.user_id;
+        </createProcedure>
+    </changeSet>
+
+</databaseChangeLog>
+

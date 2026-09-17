@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="202406040000001-1" author="jhipster">
+        <addColumn tableName="aur_order_master">
+            <column name="control_address_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+
+    </changeSet>
+    <changeSet id="202406040000001-2" author="jhipster">
+        <addForeignKeyConstraint baseTableName="aur_order_master" baseColumnNames="control_address_id"
+                                 constraintName="fk_aur_order_master__address_id"
+                                 referencedTableName="aur_depo_urun_adres"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+    <changeSet id="202406040000001-3" author="jhipster">
+      <sql>
+
+          update aur_order_master aom set control_address_id = (select id from aur_depo_urun_adres aduas
+                                                                where aduas.depo_no = aom.depo_no and
+                                                                    kontrol_adres = true and gecici_adres = false)
+          where aom.status = 'OUT_PROGRESS'
+      </sql>
+    </changeSet>
+
+</databaseChangeLog>

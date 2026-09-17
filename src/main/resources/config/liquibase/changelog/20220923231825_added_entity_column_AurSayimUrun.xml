@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <!--
+        Added the constraints for entity AurSayimUrun.
+    -->
+    <changeSet id="20220923231825-3" author="jhipster">
+
+        <addColumn
+            schemaName="public"
+            tableName="aur_sayim_urun">
+            <column name="barkod"
+                    type="varchar(255)"/>
+            <column name="miktar"
+                    type="double">
+
+            </column>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

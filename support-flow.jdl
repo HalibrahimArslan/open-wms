@@ -1,0 +1,35 @@
+entity Auser {
+    name String
+    lastname String
+    companyCode Long
+}
+
+entity Announcement {
+    title String
+    message String
+    searchBack String
+}
+
+entity UserFeedback {
+    title FeedbackTitle
+    status FeedbackStatus
+    description String
+
+}
+
+enum FeedbackStatus {
+    CREATED, IN_PROGRESS, COMPLETED
+}
+
+enum FeedbackTitle {
+    ERROR, FEEDBACK
+}
+
+relationship OneToMany {
+    Auser to Announcement{auser}
+}
+
+dto * with mapstruct
+paginate all with pagination
+service all with serviceClass
+filter all

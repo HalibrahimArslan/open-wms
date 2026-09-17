@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+
+    <!--
+        Added the entity aur_reserve
+
+        foreign key isimlendirme standardı şu şekildedir
+        fk_{baseTable}{baseColumn}{referencedTable}_{referencedColumn}
+    -->
+    <changeSet id="2025070900000001" author="jhipster">
+        <createTable tableName="aur_reserve">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="order_no" type="varchar(25)" />
+            <column name="barcode" type="varchar" />
+            <column name="description" type="varchar" />
+            <column name="status" type="varchar(25)" />
+            <column name="company_code" type="varchar(5)"/>
+            <column name="created_by" type="varchar"/>
+            <column name="created_date" type="timestamp" />
+            <column name="last_modified_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar"/>
+
+        </createTable>
+        <addForeignKeyConstraint baseTableName="aur_reserve" baseColumnNames="barcode,company_code" constraintName="fk_aur_reserve_barcode_companycode_product_barkod_companycode"
+                                 referencedTableName="product"
+                                 referencedColumnNames="barkod,company_code"/>
+    </changeSet>
+</databaseChangeLog>

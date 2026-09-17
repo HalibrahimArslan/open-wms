@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity ProcessTree.
+    -->
+    <changeSet id="20231106000001-1" author="jhipster">
+        <addColumn tableName="aur_order_master">
+            <column name="transportation_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="aur_order_master">
+            <column name="company_logistic_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="aur_order_master">
+            <column name="carry_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="aur_order_master"
+                                 baseColumnNames="transportation_id"
+                                 constraintName="fk_aur_order_master__transportation_id" referencedTableName="aur_lookup_table"
+                                 referencedColumnNames="id" />
+        <addForeignKeyConstraint baseTableName="aur_order_master"
+                                 baseColumnNames="company_logistic_id"
+                                 constraintName="fk_aur_order_master__company_logistic_id" referencedTableName="aur_lookup_table"
+                                 referencedColumnNames="id" />
+        <addForeignKeyConstraint baseTableName="aur_order_master"
+                                 baseColumnNames="carry_id"
+                                 constraintName="fk_aur_order_master__carry_id" referencedTableName="aur_lookup_table"
+                                 referencedColumnNames="id" />
+
+    </changeSet>
+
+
+</databaseChangeLog>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity OrderPickingTransaction
+    -->
+    <changeSet id="20220819000012-1" author="jhipster">
+        <createTable tableName="order_picking_transaction">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="aur_order_detail_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="urun_adres_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="status" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="transaction_amount" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="create_date" type="date">
+                <constraints nullable="true" />
+            </column>
+            <column name="create_user" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_update_date" type="date">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_update_user" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+    </changeSet>
+    <changeSet id="20220819000012-2" author="jhipster">
+        <addColumn
+            schemaName="public"
+            tableName="order_picking_transaction">
+            <column name="transaction_type"
+                    type="varchar(255)"/>
+        </addColumn>
+
+    </changeSet>
+    <changeSet id="20220819000012-3" author="jhipster">
+        <renameColumn tableName="order_picking_transaction" oldColumnName="create_date" newColumnName="created_date"  />
+        <renameColumn tableName="order_picking_transaction" oldColumnName="create_user" newColumnName="created_by"  />
+        <renameColumn tableName="order_picking_transaction" oldColumnName="last_update_user" newColumnName="last_modified_by"  />
+        <renameColumn tableName="order_picking_transaction" oldColumnName="last_update_date" newColumnName="last_modified_date"  />
+        <modifyDataType tableName="order_picking_transaction" columnName="created_date" newDataType="timestamp"/>
+        <modifyDataType tableName="order_picking_transaction" columnName="last_modified_date" newDataType="timestamp"/>
+    </changeSet>
+
+    <changeSet id="20220819000012-4" author="jhipster">
+        <addColumn tableName="order_picking_transaction">
+            <column name="description" type="varchar"></column>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

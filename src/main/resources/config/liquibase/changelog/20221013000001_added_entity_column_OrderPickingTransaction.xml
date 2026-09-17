@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <!--
+        Added column for entity OrderPickingTransaction.
+    -->
+    <changeSet id="20221013000001-1" author="jhipster">
+
+        <addColumn
+            schemaName="public"
+            tableName="order_picking_transaction">
+            <column name="stock_code"
+                    type="varchar(255)"/>
+
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

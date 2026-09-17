@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity MikroJwt
+    -->
+    <changeSet id="20220819000010-1" author="jhipster">
+        <createTable tableName="mikro_jwt">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="token" type="varchar">
+                <constraints nullable="true" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+
+    </changeSet>
+    <changeSet  author="jhipster"  id="20220819000010-2">
+        <renameTable
+                      newTableName="erp_jwt_data"
+                      oldTableName="mikro_jwt"
+                      schemaName="public"/>
+    </changeSet>
+    <changeSet author="jhipster" id="20220819000010-3">
+        <addColumn
+                   schemaName= "public"
+                   tableName="erp_jwt_data" >
+            <column name="erp_type"
+                    type="varchar(255)"/>
+
+
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

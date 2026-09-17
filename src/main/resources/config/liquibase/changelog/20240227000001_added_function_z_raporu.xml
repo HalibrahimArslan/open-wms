@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added column to ErpStockInfo.
+    -->
+    <changeSet id="20240227000001-1" author="jhipster">
+        <createProcedure>
+            create function z_raporu(howmanydays character varying)
+                returns TABLE
+                        (
+                            id             bigint,
+                            order_info     character varying,
+                            firm_name      character varying,
+                            baglanti_tipi  character varying,
+                            alt_cari_adi   character varying,
+                            belge_no       character varying,
+                            op_type        character varying,
+                            erp_order_info character varying,
+                            miktar         bigint
+                        )
+                language plpgsql
+as
+$$
+            BEGIN
+            RETURN QUERY
+            SELECT row_number()         OVER (ORDER BY aom.order_info) AS id, aom.order_info,
+                   aom.firm_name,
+                   aom.baglanti_tipi,
+                   aom.baglanti_tipi AS alt_cari_adi,
+                   aom.belge_no,
+                   aom.op_type,
+                   aod.erp_order_info::character varying AS erp_order_info,
+                    aod.count AS miktar
+            FROM
+                aur_order_master aom
+                JOIN (
+                SELECT
+                aodd.aur_order_id, aodd.siparis_no AS erp_order_info, COUNT (*) AS count
+                FROM
+                aur_order_detail aodd
+                GROUP BY
+                aodd.aur_order_id, aodd.siparis_no
+                ) aod
+            ON aom.id = aod.aur_order_id
+            WHERE
+                (aom.create_date
+                > (now() - howManyDays:: interval)
+               OR aom.last_update_date
+                > (now() - howManyDays:: interval))
+              AND aom.status::text = 'DONE'::text
+            ORDER BY
+                aom.order_info, aom.op_type;
+            END;
+$$;
+        </createProcedure>
+    </changeSet>
+</databaseChangeLog>
+

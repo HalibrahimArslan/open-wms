@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Modify column AurSayimTanim
+    -->
+
+    <changeSet id="20240911000001-1" author="jhipster">
+        <renameColumn tableName="aur_sayim_tanim" oldColumnName="create_date" newColumnName="created_date"  />
+        <renameColumn tableName="aur_sayim_tanim" oldColumnName="create_user" newColumnName="created_by"  />
+        <renameColumn tableName="aur_sayim_tanim" oldColumnName="last_update_user" newColumnName="last_modified_by"  />
+        <renameColumn tableName="aur_sayim_tanim" oldColumnName="last_update_date" newColumnName="last_modified_date"  />
+        <modifyDataType tableName="aur_sayim_tanim" columnName="created_date" newDataType="timestamp"/>
+        <modifyDataType tableName="aur_sayim_tanim" columnName="last_modified_date" newDataType="timestamp"/>
+    </changeSet>
+
+
+
+
+
+
+</databaseChangeLog>
+
