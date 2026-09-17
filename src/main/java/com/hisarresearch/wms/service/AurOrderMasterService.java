@@ -100,6 +100,7 @@ public class AurOrderMasterService {
     private CustomerAddressService customerAddressService;
 
     @Autowired
+    @Lazy
     private OrderService orderService;
 
     @Autowired
