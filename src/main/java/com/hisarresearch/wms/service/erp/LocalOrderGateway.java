@@ -27,6 +27,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * ERP entegrasyonu olmadan calisan {@link ErpOrderGateway} implementasyonu.
@@ -94,7 +96,43 @@ public class LocalOrderGateway implements ErpOrderGateway {
 
     @Override
     public List<AurCariOrderDetailListDto> getCariOrderDetailList(String token, String apiPath, AurFirmListDto aurFirmListDto) {
-        return aurLocalService.getCariOrderDetailList(aurFirmListDto);
+        List<AurCariOrderDetailListDto> orderDetails = aurLocalService.getCariOrderDetailList(aurFirmListDto);
+        fillDepoStockAmount(token, apiPath, orderDetails, aurFirmListDto);
+        return orderDetails;
+    }
+
+    /**
+     * Siparis satirlarina {@code stokMiktar} (depodaki mevcut miktar) yazar.
+     *
+     * <p>Mikro modunda bu alan ERP yanitinin icinde geliyor; yerel modda ERP olmadigi
+     * icin ayni deger {@code aur_depo_urun_adres_stok} toplamindan uretilir. Alan
+     * doldurulmazsa yanit ERP'ye gore farkli sekilde donmus olur (adaptor kurali 3) ve
+     * Sevkiyat ekrani depoda stogu gorunmeyen satirlari secilemez kabul ettigi icin
+     * yerel modda hicbir siparis sevkiyata alinamaz.
+     */
+    private void fillDepoStockAmount(String token, String apiPath, List<AurCariOrderDetailListDto> orderDetails,
+                                     AurFirmListDto aurFirmListDto) {
+        List<String> barcodes = orderDetails.stream()
+            .map(AurCariOrderDetailListDto::getBarkod)
+            .filter(Objects::nonNull)
+            .distinct()
+            .collect(Collectors.toList());
+
+        if (barcodes.isEmpty()) {
+            return;
+        }
+
+        // Yerel modda ERP depo numarasi ile WMS depo kodu ayni; istek tek depo listesiyle geliyor.
+        Integer depoNo = aurFirmListDto.getDepoList() == null || aurFirmListDto.getDepoList().isEmpty()
+            ? null
+            : aurFirmListDto.getDepoList().get(0);
+
+        Map<String, StockDetailResponseDto> stockByBarcode = getStockDetails(token, apiPath, barcodes, depoNo);
+
+        for (AurCariOrderDetailListDto dto : orderDetails) {
+            StockDetailResponseDto stock = stockByBarcode.get(dto.getBarkod());
+            dto.setStokMiktar(stock == null ? 0d : stock.getDepodakiMiktar());
+        }
     }
 
     @Override
