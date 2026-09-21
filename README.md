@@ -63,10 +63,11 @@ Ayarları değiştirmek için `.env.example` dosyasını `.env` olarak kopyalay�
 | Dizin | İçerik |
 |---|---|
 | `src/main/java` | Spring Boot uygulaması (Java 11, JHipster 7 tabanlı) |
-| `src/main/webapp` | React arayüzü |
 | `src/main/resources/config/liquibase` | Veritabanı şeması |
 | `seed/` | Lokal geliştirme için örnek veri |
 | `.claude/rules/` | Projeye özel mimari kurallar |
+
+Arayüz bu reponun dışında, `../open-wms-app` deposunda yer alır.
 
 Bildirimler için küçük Node.js WebSocket sunucusu bu reponun dışında,
 `../websocket-server` (bu repoyla aynı `wms/` dizininin altında) yer alır.
@@ -75,11 +76,10 @@ Bildirimler için küçük Node.js WebSocket sunucusu bu reponun dışında,
 
 ```bash
 ./mvnw                # backend (dev profili)
-npm start             # frontend (webpack dev server)
 ./mvnw verify         # testler
 ```
 
-Gereksinimler: JDK 11, Node 14, PostgreSQL 13. Docker ile çalışırken hiçbiri
+Gereksinimler: JDK 11, PostgreSQL 13. Docker ile çalışırken hiçbiri
 yerel olarak kurulu olmak zorunda değildir — `Dockerfile.local` derlemeyi
 kendi içinde yapar.
 

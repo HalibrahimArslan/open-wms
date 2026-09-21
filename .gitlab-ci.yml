@@ -22,14 +22,18 @@ build_image:
   tags:
     - 'docker'
   before_script:
-    - apt-get update && apt-get install -y jq docker.io
+    - apt-get update && apt-get install -y docker.io
     - docker login -u "$DOCKER_HUB_USERNAME" -p "$DOCKER_HUB_PASSWORD"
   script:
     - mvn clean package -DskipTests
-    - export PACKAGE_VERSION=$(jq -r .version package.json)
+    - export PACKAGE_VERSION=$(mvn -q help:evaluate -Dexpression=project.version -DforceStdout | sed 's/-SNAPSHOT$//')
     - export LATEST_VERSION="${PACKAGE_VERSION}-${CI_PIPELINE_ID}"
+    - echo "LATEST_VERSION=$LATEST_VERSION" > build.env
     - docker build -t "$IMAGE_NAME:$LATEST_VERSION" .
     - docker push "$IMAGE_NAME:$LATEST_VERSION"
+  artifacts:
+    reports:
+      dotenv: build.env
   only:
     - master
 
@@ -51,8 +55,7 @@ deploy_test:
   environment:
     name: test
   script:
-    - export PACKAGE_VERSION=$(jq -r .version package.json)
-    - export LATEST_VERSION="${PACKAGE_VERSION}-${CI_PIPELINE_ID}"
+    # LATEST_VERSION, build_image isinin dotenv artefaktindan gelir
     - kubectl --kubeconfig=$KUBE_CONFIG set image deployment/api-1 api=$IMAGE_NAME:$LATEST_VERSION -n wms --insecure-skip-tls-verify
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_TAG == null

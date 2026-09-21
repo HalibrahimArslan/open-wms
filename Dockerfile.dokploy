@@ -6,9 +6,8 @@
 FROM maven:3.8.6-openjdk-11 AS build
 WORKDIR /build
 COPY . .
-# frontend-maven-plugin node/npm'i kendisi indirir; .m2 ve .npm cache'lenir
+# .m2 cache'lenir
 RUN --mount=type=cache,target=/root/.m2 \
-    --mount=type=cache,target=/root/.npm \
     mvn -B -ntp clean package -DskipTests
 
 # ---------- 2) Calistirma ----------
