@@ -1,18 +1,21 @@
 package com.hisarresearch.wms.config;
 
 import java.util.*;
-import javax.servlet.*;
+import jakarta.servlet.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.filter.UrlHandlerFilter;
 import com.hisarresearch.wms.framework.config.JHipsterConstants;
 import com.hisarresearch.wms.framework.config.JHipsterProperties;
 
@@ -40,6 +43,20 @@ public class WebConfigurer implements ServletContextInitializer {
         }
 
         log.info("Web application fully configured");
+    }
+
+    /**
+     * Spring Boot 2'de {@code /api/x/} istegi {@code /api/x} ucuna eslesiyordu; Spring 6 bunu
+     * kaldirdi. Arayuzun sonu / ile biten cagrilari bozulmasin diye / istek guvenlik
+     * zincirinden once kirpilir.
+     */
+    @Bean
+    public FilterRegistrationBean<UrlHandlerFilter> trailingSlashFilter() {
+        FilterRegistrationBean<UrlHandlerFilter> registration = new FilterRegistrationBean<>(
+            UrlHandlerFilter.trailingSlashHandler("/api/**", "/management/**").wrapRequest().build()
+        );
+        registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        return registration;
     }
 
     @Bean

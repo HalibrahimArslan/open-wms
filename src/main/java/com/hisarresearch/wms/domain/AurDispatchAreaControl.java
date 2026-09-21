@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 @Entity
 @Table(name = "aur_dispatch_area_control")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)

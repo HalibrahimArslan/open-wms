@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.http.MediaType;
@@ -47,6 +48,12 @@ class ApiContractIT extends AbstractIntegrationTest {
     )
     void getEndpointMatchesSnapshot(String snapshot, String url) throws Exception {
         assertSnapshot(snapshot, get(url));
+    }
+
+    @Test
+    void trailingSlashStillMatches() throws Exception {
+        // Boot 2 davranisi: sonu / ile biten istek ayni uca gider (WebConfigurer.trailingSlashFilter)
+        assertSnapshot("depo-list", get("/api/depoList/"));
     }
 
     @ParameterizedTest(name = "POST {1}")

@@ -16,11 +16,11 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import com.hisarresearch.wms.framework.config.JHipsterProperties;
 
-import javax.mail.*;
-import javax.mail.internet.*;
-import javax.activation.*;
-import javax.mail.internet.MimeMessage;
-import javax.mail.util.ByteArrayDataSource;
+import jakarta.mail.*;
+import jakarta.mail.internet.*;
+import jakarta.activation.*;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.util.ByteArrayDataSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidKeyException;

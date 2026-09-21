@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import com.hisarresearch.wms.exception.api.BadRequestAlertException;
 import com.hisarresearch.wms.exception.api.InvalidPasswordException;
@@ -28,6 +28,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import org.zalando.problem.DefaultProblem;
 import org.zalando.problem.Problem;
 import org.zalando.problem.ProblemBuilder;
@@ -165,6 +166,15 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
             request,
             HeaderUtil.createFailureAlert(applicationName, true, ex.getEntityName(), ex.getErrorKey(), ex.getMessage())
         );
+    }
+
+    /**
+     * Spring 6.1+ eslesmeyen adresler icin NoResourceFoundException firlatir; problem
+     * kutuphanesi bunu tanimadigi icin 500 donuyordu. Diger HTTP hatalari gibi 404 doner.
+     */
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleNoResourceFound(NoResourceFoundException ex, NativeWebRequest request) {
+        return create(Status.NOT_FOUND, ex, request);
     }
 
     @ExceptionHandler

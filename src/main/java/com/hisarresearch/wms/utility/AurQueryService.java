@@ -7,7 +7,7 @@ import com.hisarresearch.wms.framework.service.filter.InstantFilter;
 import com.hisarresearch.wms.framework.service.filter.LongFilter;
 import com.hisarresearch.wms.framework.service.filter.StringFilter;
 
-import javax.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.metamodel.SingularAttribute;
 import java.beans.Introspector;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

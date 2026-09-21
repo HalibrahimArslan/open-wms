@@ -8,9 +8,9 @@ import com.hisarresearch.wms.domain.address.AurDepoUrunAdres_;
 
 import java.util.List;
 import java.util.Optional;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
 
 import com.hisarresearch.wms.service.dto.AurPartialItemDTO;
 import com.hisarresearch.wms.service.mapper.CountingDetailMapper;

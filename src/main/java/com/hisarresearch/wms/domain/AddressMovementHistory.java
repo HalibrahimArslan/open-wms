@@ -3,7 +3,7 @@ package com.hisarresearch.wms.domain;
 import com.hisarresearch.wms.domain.address.AurDepoUrunAdres;
 import com.hisarresearch.wms.domain.enumeration.AddressMovementType;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity

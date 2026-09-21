@@ -7,7 +7,7 @@ import org.hibernate.envers.Audited;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Date;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Audited(auditParents = {AbstractAuditingEntity.class})

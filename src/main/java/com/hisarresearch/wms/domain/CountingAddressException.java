@@ -4,7 +4,7 @@ import com.hisarresearch.wms.domain.address.AurDepoUrunAdres;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "counting_address_exception")

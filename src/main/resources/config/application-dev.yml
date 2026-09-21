@@ -47,7 +47,6 @@ spring:
       poolName: Hikari
       auto-commit: false
   jpa:
-    database-platform: com.hisarresearch.wms.framework.domain.util.FixedPostgreSQL10Dialect
     properties:
       org:
         hibernate:
@@ -109,7 +108,7 @@ jhipster:
       enabled: false
       host: localhost
       port: 5000
-      queue-size: 512
+      ring-buffer-size: 512
 
 # ===================================================================
 # Application specific properties
@@ -132,8 +131,7 @@ metabase:
 
 sentry:
   dsn: ${SENTRY_DSN:}
-  enable-tracing: false
-  traces-sample-rate: 0.3
+  # traces-sample-rate verilmedigi icin dev'de tracing kapali (enable-tracing Sentry 7.22'de kalkti)
   logging:
     enabled: false
     minimum-event-level: error

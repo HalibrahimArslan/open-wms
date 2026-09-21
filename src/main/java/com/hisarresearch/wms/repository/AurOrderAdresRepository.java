@@ -9,9 +9,9 @@ import java.util.List;
 @Repository
 public interface AurOrderAdresRepository extends JpaRepository<AurOrderAdres, Long> {
 
-    AurOrderAdres findByErpOrderInfo(Long aurOrderId);
+    AurOrderAdres findByErpOrderInfo(String erpOrderInfo);
 
-    AurOrderAdres findByMagentoOrderId(Long magentoOrderId);
+    AurOrderAdres findByMagentoOrderId(String magentoOrderId);
 
     AurOrderAdres save(AurOrderAdres orderAdres);
 

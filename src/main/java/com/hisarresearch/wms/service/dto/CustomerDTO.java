@@ -3,7 +3,7 @@ package com.hisarresearch.wms.service.dto;
 import com.hisarresearch.wms.domain.enumeration.FirmConnectionType;
 
 import javax.annotation.Nullable;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 public class CustomerDTO {
     @Nullable

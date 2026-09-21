@@ -7,7 +7,7 @@ import com.hisarresearch.wms.service.criteria.UserDepoRelCriteria;
 import com.hisarresearch.wms.service.dto.UserDepoRelDTO;
 import com.hisarresearch.wms.service.mapper.UserDepoRelMapper;
 import java.util.List;
-import javax.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.JoinType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

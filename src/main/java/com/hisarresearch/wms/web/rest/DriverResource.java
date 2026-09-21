@@ -20,7 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.hisarresearch.wms.framework.web.util.HeaderUtil;
 import com.hisarresearch.wms.framework.web.util.PaginationUtil;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 

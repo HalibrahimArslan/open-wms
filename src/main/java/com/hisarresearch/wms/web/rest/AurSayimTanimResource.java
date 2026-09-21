@@ -29,7 +29,7 @@ import com.hisarresearch.wms.framework.web.util.HeaderUtil;
 import com.hisarresearch.wms.framework.web.util.PaginationUtil;
 import com.hisarresearch.wms.framework.web.util.ResponseUtil;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * REST controller for managing {@link com.hisarresearch.wms.domain.AurSayimTanim}.

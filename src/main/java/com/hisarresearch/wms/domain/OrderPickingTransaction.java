@@ -1,6 +1,6 @@
 package com.hisarresearch.wms.domain;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import com.hisarresearch.wms.domain.address.AurDepoUrunAdres;
 import com.hisarresearch.wms.domain.enumeration.TransactionType;

@@ -1,7 +1,7 @@
 package com.hisarresearch.wms.service.dto;
 import com.hisarresearch.wms.domain.User;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 public class UserDepoRelSaveDto {

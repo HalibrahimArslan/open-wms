@@ -3,8 +3,8 @@ package com.hisarresearch.wms.domain.audit;
 import com.hisarresearch.wms.security.SecurityUtils;
 import org.hibernate.envers.RevisionListener;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import java.time.Instant;
 
 public class CustomRevisionEntityListener implements RevisionListener {

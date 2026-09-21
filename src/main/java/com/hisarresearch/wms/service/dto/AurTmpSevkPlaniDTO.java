@@ -3,7 +3,7 @@ package com.hisarresearch.wms.service.dto;
 
 import com.hisarresearch.wms.domain.enumeration.AurTmpSevkPlaniStatus;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.time.Instant;
 
 public class AurTmpSevkPlaniDTO {

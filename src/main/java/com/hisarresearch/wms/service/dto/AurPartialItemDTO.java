@@ -2,7 +2,7 @@ package com.hisarresearch.wms.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 
 /**
  * A DTO for the {@link com.hisarresearch.wms.domain.AurPartialItem} entity.

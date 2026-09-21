@@ -4,8 +4,8 @@ import com.hisarresearch.wms.domain.address.AurDepoUrunAdres;
 import com.hisarresearch.wms.domain.enumeration.SayimDurumu;
 import com.hisarresearch.wms.service.dto.product.ProductWithoutAddressDTO;
 
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.NotNull;
 import java.time.Instant;
 
 public class CountingDetailDTO {

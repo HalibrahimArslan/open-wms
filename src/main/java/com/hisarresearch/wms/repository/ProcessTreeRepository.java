@@ -1,7 +1,6 @@
 package com.hisarresearch.wms.repository;
 
 import com.hisarresearch.wms.domain.ProcessTree;
-import liquibase.pro.packaged.L;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;

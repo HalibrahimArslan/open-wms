@@ -1,7 +1,7 @@
 package com.hisarresearch.wms.service.dto.address;
 
 import javax.annotation.Nullable;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 public class AddressDTO {
     private Long id;

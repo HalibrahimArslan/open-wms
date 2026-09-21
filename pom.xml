@@ -24,7 +24,7 @@
 	<properties>
 		<!-- Build properties -->
 		<maven.version>3.3.9</maven.version>
-		<java.version>17</java.version>
+		<java.version>21</java.version>
 
          <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -46,26 +46,22 @@
 
 		<!-- Dependency versions -->
 		<testcontainers.version>1.21.4</testcontainers.version>
-		<spring-boot.version>2.7.3</spring-boot.version>
+		<spring-boot.version>3.5.16</spring-boot.version>
 		<!-- The hibernate version should match the one managed by https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-dependencies/${spring-boot.version} -->
-		<hibernate.version>5.6.10.Final</hibernate.version>
-		<!-- The javassist version should match the one managed by https://mvnrepository.com/artifact/org.hibernate/hibernate-core/${hibernate.version} -->
-		<javassist.version>3.27.0-GA</javassist.version>
+		<hibernate.version>6.6.53.Final</hibernate.version>
 		<!-- The liquibase version should match the one managed by https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-dependencies/${spring-boot.version} -->
-		<liquibase.version>4.9.1</liquibase.version>
-		<liquibase-hibernate5.version>4.9.1</liquibase-hibernate5.version>
-		<validation-api.version>2.0.1.Final</validation-api.version>
-		<jaxb-runtime.version>2.3.3</jaxb-runtime.version>
+		<liquibase.version>4.31.1</liquibase.version>
+		<liquibase-hibernate6.version>4.31.1</liquibase-hibernate6.version>
 		<archunit-junit5.version>0.19.0</archunit-junit5.version>
-		<problem-spring-web.version>0.27.0</problem-spring-web.version>
+		<problem-spring-web.version>0.29.1</problem-spring-web.version>
 		<jjwt.version>0.11.5</jjwt.version>
-		<logstash-logback-encoder.version>7.2</logstash-logback-encoder.version>
-		<springdoc.version>1.6.11</springdoc.version>
-		<mapstruct.version>1.5.2.Final</mapstruct.version>
+		<logstash-logback-encoder.version>8.1</logstash-logback-encoder.version>
+		<springdoc.version>2.8.17</springdoc.version>
+		<mapstruct.version>1.6.3</mapstruct.version>
 		<!-- Plugin versions -->
 		<maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
 		<maven-site-plugin.version>3.9.1</maven-site-plugin.version>
-		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+		<maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
 		<maven-javadoc-plugin.version>3.3.0</maven-javadoc-plugin.version>
 		<maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
 		<maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
@@ -78,7 +74,7 @@
 		<checkstyle.version>8.43</checkstyle.version>
 		<nohttp-checkstyle.version>0.0.8</nohttp-checkstyle.version>
 		<git-commit-id-plugin.version>4.0.5</git-commit-id-plugin.version>
-		<jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+		<jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
 		<jib-maven-plugin.version>3.1.1</jib-maven-plugin.version>
 		<lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
 		<properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
@@ -108,12 +104,6 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			<!-- typesense-java 2.0.0'i getiriyor; springdoc'un swagger-core surumuyle ayni olmali -->
-			<dependency>
-				<groupId>io.swagger.core.v3</groupId>
-				<artifactId>swagger-annotations</artifactId>
-				<version>2.2.2</version>
-			</dependency>
 			<!-- jhipster-needle-maven-add-dependency-management -->
 		</dependencies>
 	</dependencyManagement>
@@ -122,11 +112,11 @@
         <dependency>
             <groupId>org.springframework.statemachine</groupId>
             <artifactId>spring-statemachine-core</artifactId>
-            <version>3.0.1</version>
+            <version>4.0.2</version>
         </dependency>
 		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
 		</dependency>
         <dependency>
             <groupId>net.sourceforge.barbecue</groupId>
@@ -134,7 +124,7 @@
             <version>1.5-beta1</version>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-envers</artifactId>
         </dependency>
         <dependency>
@@ -144,8 +134,8 @@
         </dependency>
         <dependency>
             <groupId>io.sentry</groupId>
-            <artifactId>sentry-spring-boot-starter</artifactId>
-            <version>7.6.0</version>
+            <artifactId>sentry-spring-boot-starter-jakarta</artifactId>
+            <version>7.22.6</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.rabbitmq/amqp-client -->
 <!--        <dependency>-->
@@ -175,6 +165,13 @@
             <groupId>org.typesense</groupId>
             <artifactId>typesense-java</artifactId>
             <version>1.1.0</version>
+            <exclusions>
+                <!-- javax surumu springdoc'un kullandigi swagger-annotations-jakarta ile ayni siniflari tasir -->
+                <exclusion>
+                    <groupId>io.swagger.core.v3</groupId>
+                    <artifactId>swagger-annotations</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -237,9 +234,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.vladmihalcea</groupId>
-			<artifactId>hibernate-types-52</artifactId>
-			<version>2.9.11</version>
+			<groupId>io.hypersistence</groupId>
+			<artifactId>hypersistence-utils-hibernate-63</artifactId>
+			<version>3.16.0</version>
 		</dependency>
 
 
@@ -250,7 +247,7 @@
         </dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-hibernate5</artifactId>
+			<artifactId>jackson-datatype-hibernate6</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
@@ -268,7 +265,7 @@
 		<!-- OpenAPI dokumani ve Swagger arayuzu; yalnizca api-docs profilinde acilir -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-ui</artifactId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>${springdoc.version}</version>
 		</dependency>
 		<dependency>
@@ -291,18 +288,19 @@
 		<dependency>
 			<groupId>org.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
+			<classifier>jakarta</classifier>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate</groupId>
+			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-jcache</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate</groupId>
+			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-jpamodelgen</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate</groupId>
+			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-core</artifactId>
 		</dependency>
 		<dependency>
@@ -428,6 +426,12 @@
 			<artifactId>problem-spring-web</artifactId>
 			<version>${problem-spring-web.version}</version>
 		</dependency>
+		<!-- 0.29'dan itibaren problem-spring-web Jackson modulunu getirmiyor (JacksonConfiguration kullaniyor) -->
+		<dependency>
+			<groupId>org.zalando</groupId>
+			<artifactId>jackson-datatype-problem</artifactId>
+			<version>0.27.1</version>
+		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
@@ -456,10 +460,6 @@
 			<artifactId>micrometer-registry-prometheus</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>io.dropwizard.metrics</groupId>
-			<artifactId>metrics-core</artifactId>
-		</dependency>
 		<!-- jhipster.logging.use-json-format / logstash icin (framework.config.logging.LoggingUtils) -->
 		<dependency>
 			<groupId>net.logstash.logback</groupId>
@@ -585,6 +585,8 @@
 					<version>${maven-compiler-plugin.version}</version>
 					<configuration>
                         <forceJavacCompilerUse>true</forceJavacCompilerUse>
+						<!-- Spring 6.1+ @PathVariable/@RequestParam adlarini yalnizca buradan okur -->
+						<parameters>true</parameters>
 						<source>${java.version}</source>
 						<target>${java.version}</target>
 						<annotationProcessorPaths>
@@ -600,14 +602,9 @@
 							</path>
 							<!-- For JPA static metamodel generation -->
 							<path>
-								<groupId>org.hibernate</groupId>
+								<groupId>org.hibernate.orm</groupId>
 								<artifactId>hibernate-jpamodelgen</artifactId>
 								<version>${hibernate.version}</version>
-							</path>
-							<path>
-								<groupId>org.glassfish.jaxb</groupId>
-								<artifactId>jaxb-runtime</artifactId>
-								<version>${jaxb-runtime.version}</version>
 							</path>
 							<!-- jhipster-needle-maven-add-annotation-processor -->
 						</annotationProcessorPaths>
@@ -722,7 +719,7 @@
 					<version>${jib-maven-plugin.version}</version>
 					<configuration>
 						<from>
-							<image>eclipse-temurin:17-jre</image>
+							<image>eclipse-temurin:21-jre</image>
 						</from>
 						<to>
 							<image>wms:latest</image>
@@ -766,7 +763,7 @@
 						<defaultSchemaName></defaultSchemaName>
 						<username>wms</username>
 						<password>wms</password>
-						<referenceUrl>hibernate:spring:com.hisarresearch.wms.domain?dialect=com.hisarresearch.wms.framework.domain.util.FixedPostgreSQL10Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
+						<referenceUrl>hibernate:spring:com.hisarresearch.wms.domain?dialect=org.hibernate.dialect.PostgreSQLDialect&amp;hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
 						<verbose>true</verbose>
 						<logging>debug</logging>
 						<contexts>!test</contexts>
@@ -779,23 +776,13 @@
 						</dependency>
 						<dependency>
 							<groupId>org.liquibase.ext</groupId>
-							<artifactId>liquibase-hibernate5</artifactId>
-							<version>${liquibase-hibernate5.version}</version>
+							<artifactId>liquibase-hibernate6</artifactId>
+							<version>${liquibase-hibernate6.version}</version>
 						</dependency>
 						<dependency>
 							<groupId>org.springframework.boot</groupId>
 							<artifactId>spring-boot-starter-data-jpa</artifactId>
 							<version>${spring-boot.version}</version>
-						</dependency>
-						<dependency>
-							<groupId>javax.validation</groupId>
-							<artifactId>validation-api</artifactId>
-							<version>${validation-api.version}</version>
-						</dependency>
-						<dependency>
-							<groupId>org.javassist</groupId>
-							<artifactId>javassist</artifactId>
-							<version>${javassist.version}</version>
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -1064,7 +1051,7 @@
 					<version>${mapstruct.version}</version>
 				</dependency>
 				<dependency>
-					<groupId>org.hibernate</groupId>
+					<groupId>org.hibernate.orm</groupId>
 					<artifactId>hibernate-jpamodelgen</artifactId>
 				</dependency>
 			</dependencies>

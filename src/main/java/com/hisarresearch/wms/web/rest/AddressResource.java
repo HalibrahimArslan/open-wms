@@ -23,7 +23,7 @@ import com.hisarresearch.wms.framework.web.util.HeaderUtil;
 import com.hisarresearch.wms.framework.web.util.PaginationUtil;
 import com.hisarresearch.wms.framework.web.util.ResponseUtil;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;

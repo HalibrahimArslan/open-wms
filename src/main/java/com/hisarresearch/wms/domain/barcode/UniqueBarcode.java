@@ -5,21 +5,19 @@ import com.hisarresearch.wms.domain.AurOrderDetail;
 import com.hisarresearch.wms.domain.Product;
 import com.hisarresearch.wms.domain.address.AurDepoUrunAdres;
 import com.hisarresearch.wms.service.barcode.statemachine.UniqueBarcodeState;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Map;
 
 @Entity
 @Audited
-@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 @Table(
     name = "unique_barcode",
     uniqueConstraints = {
@@ -78,7 +76,7 @@ public class UniqueBarcode extends AbstractAuditingEntity {
     private BigDecimal quantity;
 
     @NotAudited
-    @Type(type = "jsonb")
+    @Type(JsonType.class)
     @Column(name = "description", columnDefinition = "jsonb")
     private Map<String, Object> description;
 

@@ -1,7 +1,7 @@
 package com.hisarresearch.wms.service.dto;
 
 import javax.annotation.Nullable;
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 public class LookupDTO {
     private Long id;

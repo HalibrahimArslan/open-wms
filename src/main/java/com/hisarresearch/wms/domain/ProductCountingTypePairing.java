@@ -3,7 +3,7 @@ package com.hisarresearch.wms.domain;
 import com.hisarresearch.wms.domain.enumeration.CountingType;
 import com.hisarresearch.wms.domain.enumeration.SayimDurumu;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "product_counting_type_pairing")

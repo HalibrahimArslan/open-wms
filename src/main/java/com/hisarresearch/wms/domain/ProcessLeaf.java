@@ -3,7 +3,7 @@ package com.hisarresearch.wms.domain;
 import com.hisarresearch.wms.domain.address.AurDepoUrunAdres;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cache;
-import javax.persistence.*;
+import jakarta.persistence.*;
 @Entity
 @Table(name = "process_leaf")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)

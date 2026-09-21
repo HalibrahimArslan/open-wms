@@ -19,7 +19,6 @@ spring:
       poolName: Hikari
       auto-commit: false
   jpa:
-    database-platform: com.hisarresearch.wms.framework.domain.util.FixedPostgreSQL10Dialect
     properties:
       org:
         hibernate:

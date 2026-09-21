@@ -5,7 +5,7 @@ import com.hisarresearch.wms.domain.AurSayimTanim;
 import com.hisarresearch.wms.repository.AurSayimTanimRepository;
 import com.hisarresearch.wms.service.criteria.AurSayimTanimCriteria;
 import java.util.List;
-import javax.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.JoinType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

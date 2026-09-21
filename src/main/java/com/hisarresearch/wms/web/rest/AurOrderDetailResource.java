@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import com.hisarresearch.wms.framework.web.util.HeaderUtil;
 import com.hisarresearch.wms.framework.web.util.ResponseUtil;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

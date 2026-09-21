@@ -1,5 +1,5 @@
 {
-  "detail" : "Request method 'GET' not supported",
+  "detail" : "Request method 'GET' is not supported",
   "message" : "error.http.405",
   "path" : "/api/address-type",
   "status" : 405,

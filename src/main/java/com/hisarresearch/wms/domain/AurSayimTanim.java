@@ -7,22 +7,16 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
-import com.vladmihalcea.hibernate.type.array.LongArrayType;
-import com.vladmihalcea.hibernate.type.array.StringArrayType;
+import io.hypersistence.utils.hibernate.type.array.StringArrayType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
 
 /**
  * A AurSayimTanim.
  */
-@TypeDef(
-    name = "pgsql_text_array",
-    typeClass = StringArrayType.class
-)
 @Entity
 @Table(name = "aur_sayim_tanim")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -60,7 +54,7 @@ public class AurSayimTanim extends AbstractAuditingEntityWithoutJsonIgnore imple
     @Column(name = "sayimi_onaylayan_kullanici")
     private String sayimiOnaylayanKullanici;
 
-    @Type(type = "pgsql_text_array")
+    @Type(StringArrayType.class)
     @Column(name = "visibility_authorities",columnDefinition = "text[]")
     private String[] visibilityAuthorities;
 

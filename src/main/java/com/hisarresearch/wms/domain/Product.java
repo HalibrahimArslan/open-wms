@@ -1,12 +1,11 @@
 package com.hisarresearch.wms.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Map;
@@ -14,7 +13,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "product")
-@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -48,7 +46,7 @@ public class Product implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @Type(type = "jsonb")
+    @Type(JsonType.class)
     @Column(name = "physical_attributes", columnDefinition = "jsonb")
     private Map<String, Object> physicalAttributes;
 

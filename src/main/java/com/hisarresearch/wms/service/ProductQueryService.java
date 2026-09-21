@@ -14,10 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.hisarresearch.wms.framework.service.QueryService;
 import com.hisarresearch.wms.framework.service.filter.StringFilter;
 
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Path;
+import jakarta.persistence.criteria.Root;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Function;

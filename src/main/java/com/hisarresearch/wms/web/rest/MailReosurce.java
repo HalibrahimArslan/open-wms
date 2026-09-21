@@ -10,8 +10,8 @@ import com.hisarresearch.wms.exception.validation.InvalidOrderException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import java.util.*;
 import java.util.stream.Collectors;
 

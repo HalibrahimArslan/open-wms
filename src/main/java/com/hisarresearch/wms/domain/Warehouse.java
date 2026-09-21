@@ -1,7 +1,7 @@
 package com.hisarresearch.wms.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import com.hisarresearch.wms.domain.enumeration.WarehousePickingRuleType;
 import org.hibernate.annotations.Cache;
