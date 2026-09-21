@@ -1,0 +1,8 @@
+{
+  "detail" : "Request method 'GET' not supported",
+  "message" : "error.http.405",
+  "path" : "/api/address-type",
+  "status" : 405,
+  "title" : "Method Not Allowed",
+  "type" : "https://www.jhipster.tech/problem/problem-with-message"
+}

@@ -6,10 +6,14 @@ import static org.assertj.core.api.Assertions.fail;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -46,7 +50,9 @@ final class ApiSnapshots {
         }
         // Iki taraf da ayni sekilde yazildigi icin metin karsilastirmasi alan, deger ve dizi sirasina
         // birebir bakar; nesne anahtarlarinin sirasi anlam tasimadigi icin siralanir.
-        String expected = normalize(MAPPER.readTree(file.toFile()));
+        JsonNode recorded = MAPPER.readTree(file.toFile());
+        stripVolatile(recorded);
+        String expected = normalize(recorded);
         assertThat(normalized).as("api-snapshots/%s.json", name).isEqualTo(expected);
     }
 
@@ -57,6 +63,14 @@ final class ApiSnapshots {
     private static void stripVolatile(JsonNode node) {
         if (node.isObject()) {
             ((ObjectNode) node).remove(VOLATILE_FIELDS);
+            // Dogrulama hatalari sirasiz bir kumeden gelir; alan adina gore siralanir.
+            JsonNode fieldErrors = node.get("fieldErrors");
+            if (fieldErrors != null && fieldErrors.isArray()) {
+                List<JsonNode> sorted = new ArrayList<>();
+                fieldErrors.forEach(sorted::add);
+                sorted.sort(Comparator.comparing((JsonNode e) -> e.path("field").asText()).thenComparing(e -> e.path("message").asText()));
+                ((ArrayNode) fieldErrors).removeAll().addAll(sorted);
+            }
         }
         node.forEach(ApiSnapshots::stripVolatile);
     }

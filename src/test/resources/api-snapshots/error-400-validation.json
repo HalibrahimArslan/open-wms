@@ -1,0 +1,28 @@
+{
+  "fieldErrors" : [ {
+    "field" : "soforSoyadi",
+    "message" : "must not be blank",
+    "objectName" : "sevkiyatRequestDto"
+  }, {
+    "field" : "soforAdi",
+    "message" : "must not be blank",
+    "objectName" : "sevkiyatRequestDto"
+  }, {
+    "field" : "soforTel",
+    "message" : "must not be blank",
+    "objectName" : "sevkiyatRequestDto"
+  }, {
+    "field" : "soforTckn",
+    "message" : "Kimlik numarası boş olamaz",
+    "objectName" : "sevkiyatRequestDto"
+  }, {
+    "field" : "orderId",
+    "message" : "must not be null",
+    "objectName" : "sevkiyatRequestDto"
+  } ],
+  "message" : "error.validation",
+  "path" : "/api/musteriSevkiyat",
+  "status" : 400,
+  "title" : "Method argument not valid",
+  "type" : "https://www.jhipster.tech/problem/constraint-violation"
+}

@@ -4,6 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -61,7 +62,7 @@ class ApiContractIT extends AbstractIntegrationTest {
     }
 
     private void assertSnapshot(String snapshot, MockHttpServletRequestBuilder request) throws Exception {
-        String body = mockMvc.perform(request.header("Authorization", token)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        String body = mockMvc.perform(request.header("Authorization", token)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         ApiSnapshots.assertMatches(snapshot, body);
     }
 }
