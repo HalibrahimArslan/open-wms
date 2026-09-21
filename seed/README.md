@@ -62,6 +62,12 @@ tum sirketlerde gorunurler.
 
 Idempotenttir (`ON CONFLICT DO NOTHING`), tekrar tekrar calistirilabilir.
 
+Uygulama calisirken seed yuklenirse degisiklikler hemen gorunmeyebilir: kullanicilar,
+depolar ve roller onbellekte tutulur (varsayilan omur 1 saat). Onbellegi bosaltmak icin
+uygulamayi yeniden baslatin ya da admin token'iyla:
+
+    curl -X DELETE -H "Authorization: Bearer <token>" http://localhost:8080/management/caches
+
 ## Dogrulama
 
     TOKEN=$(curl -s -X POST http://localhost:8080/api/authenticate \
