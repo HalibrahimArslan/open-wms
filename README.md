@@ -79,6 +79,13 @@ Bildirimler için küçük Node.js WebSocket sunucusu bu reponun dışında,
 ./mvnw verify         # testler
 ```
 
+`./mvnw verify`, `*IT` entegrasyon testlerini de calistirir; bunlar Testcontainers
+ile PostgreSQL 18 actigi icin Docker gerektirir. Sema Liquibase ile kurulur, uzerine
+`seed/local-seed.sql` yuklenir. `ApiContractIT`, arayuzun kullandigi uclarin
+cevaplarini `src/test/resources/api-snapshots/` altindaki kayitlarla karsilastirir;
+bir cevap bilerek degistiyse kayitlar `-Dsnapshot.update=true` ile yenilenir ve
+fark gozden gecirilip commit edilir.
+
 Gereksinimler: JDK 11, PostgreSQL 13. Docker ile çalışırken hiçbiri
 yerel olarak kurulu olmak zorunda değildir — `Dockerfile.local` derlemeyi
 kendi içinde yapar.

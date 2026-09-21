@@ -1,0 +1,33 @@
+[ {
+  "id" : 1,
+  "login" : "admin",
+  "firstName" : "Administrator",
+  "lastName" : "Administrator",
+  "email" : "admin@localhost",
+  "imageUrl" : "",
+  "companyCode" : 1,
+  "activated" : true,
+  "passwordVersion" : 1,
+  "langKey" : "tr",
+  "createdBy" : "system",
+  "lastModifiedBy" : "system",
+  "authorities" : [ "ROLE_USER", "ROLE_MINIO", "ROLE_ADMIN" ],
+  "roles" : [ "ADMIN" ],
+  "warehouses" : null
+}, {
+  "id" : 2,
+  "login" : "user",
+  "firstName" : "User",
+  "lastName" : "User",
+  "email" : "user@localhost",
+  "imageUrl" : "",
+  "companyCode" : 1,
+  "activated" : true,
+  "passwordVersion" : 1,
+  "langKey" : "tr",
+  "createdBy" : "system",
+  "lastModifiedBy" : "system",
+  "authorities" : [ "ROLE_USER" ],
+  "roles" : [ "ADMIN" ],
+  "warehouses" : null
+} ]

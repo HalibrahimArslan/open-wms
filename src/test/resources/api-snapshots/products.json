@@ -1,0 +1,81 @@
+[ {
+  "id" : {
+    "barkod" : "8690000000011",
+    "companyCode" : "1"
+  },
+  "stokKodu" : "STK-001",
+  "stokAdi" : "Vida M8x40 Galvaniz",
+  "anaGrup" : "BAGLANTI",
+  "kategoriAdi" : "Vida",
+  "stokBirimi" : "ADET",
+  "miktar" : 0.0,
+  "sktFlag" : false,
+  "lotBasedTracking" : false,
+  "description" : "Lokal demo urunu",
+  "physicalAttributes" : null,
+  "productAddresses" : null
+}, {
+  "id" : {
+    "barkod" : "8690000000028",
+    "companyCode" : "1"
+  },
+  "stokKodu" : "STK-002",
+  "stokAdi" : "Somun M8 Paslanmaz",
+  "anaGrup" : "BAGLANTI",
+  "kategoriAdi" : "Somun",
+  "stokBirimi" : "ADET",
+  "miktar" : 0.0,
+  "sktFlag" : false,
+  "lotBasedTracking" : false,
+  "description" : "Lokal demo urunu",
+  "physicalAttributes" : null,
+  "productAddresses" : null
+}, {
+  "id" : {
+    "barkod" : "8690000000035",
+    "companyCode" : "1"
+  },
+  "stokKodu" : "STK-003",
+  "stokAdi" : "Pul M8 Genis",
+  "anaGrup" : "BAGLANTI",
+  "kategoriAdi" : "Pul",
+  "stokBirimi" : "ADET",
+  "miktar" : 0.0,
+  "sktFlag" : false,
+  "lotBasedTracking" : false,
+  "description" : "Lokal demo urunu",
+  "physicalAttributes" : null,
+  "productAddresses" : null
+}, {
+  "id" : {
+    "barkod" : "8690000000042",
+    "companyCode" : "1"
+  },
+  "stokKodu" : "STK-004",
+  "stokAdi" : "Kose Baglanti Sac 90",
+  "anaGrup" : "SAC",
+  "kategoriAdi" : "Profil",
+  "stokBirimi" : "ADET",
+  "miktar" : 0.0,
+  "sktFlag" : false,
+  "lotBasedTracking" : false,
+  "description" : "Lokal demo urunu",
+  "physicalAttributes" : null,
+  "productAddresses" : null
+}, {
+  "id" : {
+    "barkod" : "8690000000059",
+    "companyCode" : "1"
+  },
+  "stokKodu" : "STK-005",
+  "stokAdi" : "Ray Profil 2m",
+  "anaGrup" : "SAC",
+  "kategoriAdi" : "Profil",
+  "stokBirimi" : "MT",
+  "miktar" : 0.0,
+  "sktFlag" : false,
+  "lotBasedTracking" : false,
+  "description" : "Lokal demo urunu",
+  "physicalAttributes" : null,
+  "productAddresses" : null
+} ]

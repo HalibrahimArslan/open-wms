@@ -45,6 +45,7 @@
              mvn sonar:sonar -Dsonar.host.url=... -Dsonar.login=$SONAR_TOKEN -->
 
 		<!-- Dependency versions -->
+		<testcontainers.version>1.21.4</testcontainers.version>
 		<jhipster-dependencies.version>7.1.0</jhipster-dependencies.version>
 		<!-- The spring-boot version should match the one managed by https://mvnrepository.com/artifact/tech.jhipster/jhipster-dependencies/${jhipster-dependencies.version} -->
 		<spring-boot.version>2.4.7</spring-boot.version>
@@ -91,6 +92,14 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- JHipster BOM'undaki 1.15.3, Docker 29'un asgari API surumune (1.40) baglanamiyor -->
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>testcontainers-bom</artifactId>
+				<version>${testcontainers.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 			<dependency>
 				<groupId>tech.jhipster</groupId>
 				<artifactId>jhipster-dependencies</artifactId>

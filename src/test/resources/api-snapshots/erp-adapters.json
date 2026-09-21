@@ -1,0 +1,6 @@
+{
+  "MIKRO_V15" : "MikroServices",
+  "UYUMSOFT" : "UyumsoftOrderGateway",
+  "MIKRO_V16" : "MikroServices",
+  "LOCAL" : "LocalOrderGateway"
+}

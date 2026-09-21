@@ -1,0 +1,29 @@
+{
+  "id" : 1,
+  "login" : "admin",
+  "firstName" : "Administrator",
+  "lastName" : "Administrator",
+  "email" : "admin@localhost",
+  "imageUrl" : "",
+  "companyCode" : 1,
+  "activated" : true,
+  "passwordVersion" : 1,
+  "langKey" : "tr",
+  "createdBy" : "system",
+  "lastModifiedBy" : "system",
+  "authorities" : [ "ROLE_USER", "ROLE_MINIO", "ROLE_ADMIN" ],
+  "roles" : [ "ADMIN" ],
+  "warehouses" : [ {
+    "id" : 1,
+    "code" : "1",
+    "name" : "Merkez Depo",
+    "companyCode" : "1",
+    "countable" : true,
+    "transferCode" : "1",
+    "autoScan" : false,
+    "uniquePickingAddress" : false,
+    "pickingRuleType" : "DEFAULT",
+    "receivingCode" : "0",
+    "real" : true
+  } ]
+}

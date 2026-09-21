@@ -1,0 +1,13 @@
+[ {
+  "id" : 1,
+  "code" : "1",
+  "name" : "Merkez Depo",
+  "companyCode" : "1",
+  "countable" : true,
+  "transferCode" : "1",
+  "autoScan" : false,
+  "uniquePickingAddress" : false,
+  "pickingRuleType" : "DEFAULT",
+  "receivingCode" : "0",
+  "real" : true
+} ]
