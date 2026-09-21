@@ -5,6 +5,11 @@
 #   docker compose logs -f app         -> uygulama logları
 #   docker compose down -v             -> her şeyi sil (DB dahil)
 #
+#   docker compose start / stop        -> var olan konteynerleri başlat / durdur
+#
+# Konteynerler bilgisayar açılınca kendiliğinden başlamaz (restart politikası yok);
+# ortam yalnızca yukarıdaki komutlarla ayağa kalkar.
+#
 # Değerleri ezmek için ana dizine .env koyabilirsin (bkz. .env.example).
 name: wms
 
@@ -26,7 +31,6 @@ services:
       interval: 5s
       timeout: 5s
       retries: 30
-    restart: unless-stopped
 
   # Lokal SMTP sunucusu. Gönderilen mailler dışarı çıkmaz, http://localhost:8025 adresinden okunur.
   mail:
@@ -37,7 +41,6 @@ services:
     ports:
       - '${MAILPIT_UI_PORT:-8025}:8025'
       - '${MAILPIT_SMTP_PORT:-1025}:1025'
-    restart: unless-stopped
 
   # S3 uyumlu obje deposu. API :9000, web konsolu :9001
   minio:
@@ -58,7 +61,6 @@ services:
       interval: 5s
       timeout: 5s
       retries: 30
-    restart: unless-stopped
 
   # Bildirim websocket sunucusu (../websocket-server, open-wms ile ayni "wms"
   # dizininin altinda, ayri bir Node.js projesi).
@@ -80,7 +82,6 @@ services:
       interval: 5s
       timeout: 5s
       retries: 20
-    restart: unless-stopped
 
   app:
     build:
@@ -142,7 +143,6 @@ services:
       timeout: 5s
       retries: 20
       start_period: 90s
-    restart: unless-stopped
 
 volumes:
   pgdata:
