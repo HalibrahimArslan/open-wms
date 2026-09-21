@@ -17,8 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import tech.jhipster.web.util.HeaderUtil;
-import tech.jhipster.web.util.PaginationUtil;
+import com.hisarresearch.wms.framework.web.util.HeaderUtil;
+import com.hisarresearch.wms.framework.web.util.PaginationUtil;
 
 import javax.validation.Valid;
 import java.util.List;

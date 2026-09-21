@@ -5,6 +5,8 @@
 # ===================================================================
 
 springdoc:
+  # Dokumana yalnizca uygulamanin REST uclari girer
+  paths-to-match: /api/**
   api-docs:
     enabled: true
   swagger-ui:

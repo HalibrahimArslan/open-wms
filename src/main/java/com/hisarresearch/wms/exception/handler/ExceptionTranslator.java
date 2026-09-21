@@ -36,8 +36,8 @@ import org.zalando.problem.StatusType;
 import org.zalando.problem.spring.web.advice.ProblemHandling;
 import org.zalando.problem.spring.web.advice.security.SecurityAdviceTrait;
 import org.zalando.problem.violations.ConstraintViolationProblem;
-import tech.jhipster.config.JHipsterConstants;
-import tech.jhipster.web.util.HeaderUtil;
+import com.hisarresearch.wms.framework.config.JHipsterConstants;
+import com.hisarresearch.wms.framework.web.util.HeaderUtil;
 import io.sentry.Sentry;
 
 /**

@@ -1,10 +1,10 @@
 package com.hisarresearch.wms.service.criteria;
 
-import tech.jhipster.service.Criteria;
-import tech.jhipster.service.filter.BooleanFilter;
-import tech.jhipster.service.filter.IntegerFilter;
-import tech.jhipster.service.filter.LongFilter;
-import tech.jhipster.service.filter.StringFilter;
+import com.hisarresearch.wms.framework.service.Criteria;
+import com.hisarresearch.wms.framework.service.filter.BooleanFilter;
+import com.hisarresearch.wms.framework.service.filter.IntegerFilter;
+import com.hisarresearch.wms.framework.service.filter.LongFilter;
+import com.hisarresearch.wms.framework.service.filter.StringFilter;
 
 import java.io.Serializable;
 import java.util.Objects;

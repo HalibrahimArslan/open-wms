@@ -25,8 +25,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import tech.jhipster.web.util.HeaderUtil;
-import tech.jhipster.web.util.ResponseUtil;
+import com.hisarresearch.wms.framework.web.util.HeaderUtil;
+import com.hisarresearch.wms.framework.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link com.hisarresearch.wms.domain.AurCompany}.

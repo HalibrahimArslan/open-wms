@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
-import tech.jhipster.async.ExceptionHandlingAsyncTaskExecutor;
+import com.hisarresearch.wms.framework.async.ExceptionHandlingAsyncTaskExecutor;
 
 @Configuration
 @EnableAsync

@@ -24,11 +24,12 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import tech.jhipster.config.DefaultProfileUtil;
-import tech.jhipster.config.JHipsterConstants;
+import com.hisarresearch.wms.framework.config.DefaultProfileUtil;
+import com.hisarresearch.wms.framework.config.JHipsterConstants;
+import com.hisarresearch.wms.framework.config.JHipsterProperties;
 
 @SpringBootApplication
-@EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class })
+@EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class, JHipsterProperties.class })
 public class WmsApp {
 
     private static final Logger log = LoggerFactory.getLogger(WmsApp.class);

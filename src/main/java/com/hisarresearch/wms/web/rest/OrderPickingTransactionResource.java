@@ -23,9 +23,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import tech.jhipster.web.util.HeaderUtil;
-import tech.jhipster.web.util.PaginationUtil;
-import tech.jhipster.web.util.ResponseUtil;
+import com.hisarresearch.wms.framework.web.util.HeaderUtil;
+import com.hisarresearch.wms.framework.web.util.PaginationUtil;
+import com.hisarresearch.wms.framework.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link com.hisarresearch.wms.domain.OrderPickingTransaction}.

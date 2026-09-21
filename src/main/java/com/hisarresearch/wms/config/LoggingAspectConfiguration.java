@@ -3,7 +3,7 @@ package com.hisarresearch.wms.config;
 import com.hisarresearch.wms.aop.logging.LoggingAspect;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
-import tech.jhipster.config.JHipsterConstants;
+import com.hisarresearch.wms.framework.config.JHipsterConstants;
 
 @Configuration
 @EnableAspectJAutoProxy

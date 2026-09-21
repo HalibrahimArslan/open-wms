@@ -16,7 +16,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
-import tech.jhipster.config.JHipsterProperties;
+import com.hisarresearch.wms.framework.config.JHipsterProperties;
 
 @Component
 public class TokenProvider {

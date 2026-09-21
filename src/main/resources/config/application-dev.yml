@@ -16,7 +16,7 @@
 logging:
   level:
     ROOT: DEBUG
-    tech.jhipster: DEBUG
+    com.hisarresearch.wms.framework: DEBUG
     org.hibernate.SQL: DEBUG
     com.hisarresearch.wms: DEBUG
 
@@ -47,7 +47,7 @@ spring:
       poolName: Hikari
       auto-commit: false
   jpa:
-    database-platform: tech.jhipster.domain.util.FixedPostgreSQL10Dialect
+    database-platform: com.hisarresearch.wms.framework.domain.util.FixedPostgreSQL10Dialect
     properties:
       org:
         hibernate:

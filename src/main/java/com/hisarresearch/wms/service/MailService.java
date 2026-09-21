@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
-import tech.jhipster.config.JHipsterProperties;
+import com.hisarresearch.wms.framework.config.JHipsterProperties;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;

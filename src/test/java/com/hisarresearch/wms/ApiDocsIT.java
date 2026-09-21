@@ -16,16 +16,18 @@ class ApiDocsIT extends AbstractIntegrationTest {
     void swaggerUiIsServed() throws Exception {
         mockMvc.perform(get("/swagger-ui.html")).andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/swagger-ui/index.html"));
         mockMvc.perform(get("/swagger-ui/index.html")).andExpect(status().isOk()).andExpect(content().string(containsString("swagger-ui")));
-        mockMvc.perform(get("/v3/api-docs/swagger-config")).andExpect(status().isOk()).andExpect(jsonPath("$.urls").isArray());
+        mockMvc.perform(get("/v3/api-docs/swagger-config")).andExpect(status().isOk()).andExpect(jsonPath("$.url").value("/v3/api-docs"));
     }
 
     @Test
     void openApiDocumentDeclaresJwtBearer() throws Exception {
         mockMvc
-            .perform(get("/v3/api-docs/springdocDefault"))
+            .perform(get("/v3/api-docs"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.components.securitySchemes.JWT.scheme").value("bearer"))
             .andExpect(jsonPath("$.security[0].JWT").isArray())
-            .andExpect(jsonPath("$.paths['/api/depoList']").exists());
+            .andExpect(jsonPath("$.info.title").value("wms API"))
+            .andExpect(jsonPath("$.paths['/api/depoList']").exists())
+            .andExpect(jsonPath("$.paths['/management/health']").doesNotExist());
     }
 }

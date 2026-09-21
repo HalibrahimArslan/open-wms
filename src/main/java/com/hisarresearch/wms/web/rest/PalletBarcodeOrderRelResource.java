@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tech.jhipster.web.util.HeaderUtil;
+import com.hisarresearch.wms.framework.web.util.HeaderUtil;
 
 import java.net.URI;
 import java.net.URISyntaxException;

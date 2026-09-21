@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-import tech.jhipster.config.JHipsterProperties;
+import com.hisarresearch.wms.framework.config.JHipsterProperties;
 
 import javax.mail.*;
 import javax.mail.internet.*;

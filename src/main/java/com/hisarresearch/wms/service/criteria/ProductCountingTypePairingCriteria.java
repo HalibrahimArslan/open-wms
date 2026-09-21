@@ -1,10 +1,10 @@
 package com.hisarresearch.wms.service.criteria;
 
 import com.hisarresearch.wms.domain.enumeration.CountingType;
-import tech.jhipster.service.Criteria;
-import tech.jhipster.service.filter.Filter;
-import tech.jhipster.service.filter.IntegerFilter;
-import tech.jhipster.service.filter.StringFilter;
+import com.hisarresearch.wms.framework.service.Criteria;
+import com.hisarresearch.wms.framework.service.filter.Filter;
+import com.hisarresearch.wms.framework.service.filter.IntegerFilter;
+import com.hisarresearch.wms.framework.service.filter.StringFilter;
 
 import java.io.Serializable;
 

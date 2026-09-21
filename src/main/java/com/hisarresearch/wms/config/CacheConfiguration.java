@@ -17,8 +17,8 @@ import org.springframework.boot.info.GitProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.*;
-import tech.jhipster.config.JHipsterProperties;
-import tech.jhipster.config.cache.PrefixedKeyGenerator;
+import com.hisarresearch.wms.framework.config.JHipsterProperties;
+import com.hisarresearch.wms.framework.config.cache.PrefixedKeyGenerator;
 
 @Configuration
 @EnableCaching

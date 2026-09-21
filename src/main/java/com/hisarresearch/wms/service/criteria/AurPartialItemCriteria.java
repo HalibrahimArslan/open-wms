@@ -3,9 +3,9 @@ package com.hisarresearch.wms.service.criteria;
 import java.io.Serializable;
 import java.util.Objects;
 
-import tech.jhipster.service.Criteria;
-import tech.jhipster.service.filter.BooleanFilter;
-import tech.jhipster.service.filter.StringFilter;
+import com.hisarresearch.wms.framework.service.Criteria;
+import com.hisarresearch.wms.framework.service.filter.BooleanFilter;
+import com.hisarresearch.wms.framework.service.filter.StringFilter;
 
 
 public class AurPartialItemCriteria implements Serializable, Criteria {

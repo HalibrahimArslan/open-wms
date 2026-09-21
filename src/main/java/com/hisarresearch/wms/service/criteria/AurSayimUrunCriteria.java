@@ -3,15 +3,15 @@ package com.hisarresearch.wms.service.criteria;
 import com.hisarresearch.wms.domain.enumeration.SayimDurumu;
 import java.io.Serializable;
 import java.util.Objects;
-import tech.jhipster.service.Criteria;
-import tech.jhipster.service.filter.BooleanFilter;
-import tech.jhipster.service.filter.DoubleFilter;
-import tech.jhipster.service.filter.Filter;
-import tech.jhipster.service.filter.FloatFilter;
-import tech.jhipster.service.filter.InstantFilter;
-import tech.jhipster.service.filter.IntegerFilter;
-import tech.jhipster.service.filter.LongFilter;
-import tech.jhipster.service.filter.StringFilter;
+import com.hisarresearch.wms.framework.service.Criteria;
+import com.hisarresearch.wms.framework.service.filter.BooleanFilter;
+import com.hisarresearch.wms.framework.service.filter.DoubleFilter;
+import com.hisarresearch.wms.framework.service.filter.Filter;
+import com.hisarresearch.wms.framework.service.filter.FloatFilter;
+import com.hisarresearch.wms.framework.service.filter.InstantFilter;
+import com.hisarresearch.wms.framework.service.filter.IntegerFilter;
+import com.hisarresearch.wms.framework.service.filter.LongFilter;
+import com.hisarresearch.wms.framework.service.filter.StringFilter;
 
 /**
  * Criteria class for the {@link com.hisarresearch.wms.domain.AurSayimUrun} entity. This class is used

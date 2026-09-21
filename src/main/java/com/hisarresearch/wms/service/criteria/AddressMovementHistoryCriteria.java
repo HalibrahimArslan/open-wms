@@ -2,10 +2,10 @@ package com.hisarresearch.wms.service.criteria;
 
 import com.hisarresearch.wms.domain.enumeration.AddressMovementType;
 import com.hisarresearch.wms.domain.enumeration.SayimDurumu;
-import tech.jhipster.service.Criteria;
-import tech.jhipster.service.filter.Filter;
-import tech.jhipster.service.filter.InstantFilter;
-import tech.jhipster.service.filter.StringFilter;
+import com.hisarresearch.wms.framework.service.Criteria;
+import com.hisarresearch.wms.framework.service.filter.Filter;
+import com.hisarresearch.wms.framework.service.filter.InstantFilter;
+import com.hisarresearch.wms.framework.service.filter.StringFilter;
 
 import java.io.Serializable;
 

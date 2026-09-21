@@ -1,9 +1,9 @@
 package com.hisarresearch.wms.service.criteria;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import tech.jhipster.service.Criteria;
-import tech.jhipster.service.filter.BooleanFilter;
-import tech.jhipster.service.filter.StringFilter;
+import com.hisarresearch.wms.framework.service.Criteria;
+import com.hisarresearch.wms.framework.service.filter.BooleanFilter;
+import com.hisarresearch.wms.framework.service.filter.StringFilter;
 
 import java.io.Serializable;
 import java.util.Objects;
