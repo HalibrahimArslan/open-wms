@@ -1,5 +1,6 @@
 package com.hisarresearch.wms;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -10,8 +11,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Set;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 
 /**
  * Bir ucun JSON cevabini {@code src/test/resources/api-snapshots/<ad>.json} ile karsilastirir.
@@ -28,14 +27,16 @@ final class ApiSnapshots {
     /** Her calistirmada degisen alanlar; karsilastirmadan once cikarilir. */
     private static final Set<String> VOLATILE_FIELDS = Set.of("createdDate", "lastModifiedDate");
 
-    private static final ObjectMapper MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+    private static final ObjectMapper MAPPER = new ObjectMapper()
+        .enable(SerializationFeature.INDENT_OUTPUT)
+        .enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
 
     private ApiSnapshots() {}
 
     static void assertMatches(String name, String actualJson) throws Exception {
         JsonNode actual = MAPPER.readTree(actualJson);
         stripVolatile(actual);
-        String normalized = MAPPER.writeValueAsString(actual) + "\n";
+        String normalized = normalize(actual);
 
         Path file = DIR.resolve(name + ".json");
         if (Boolean.getBoolean("snapshot.update") || !Files.exists(file)) {
@@ -43,7 +44,14 @@ final class ApiSnapshots {
             Files.writeString(file, normalized, StandardCharsets.UTF_8);
             fail("Snapshot yazildi: %s. Icerigi kontrol edip commit edin ve testi yeniden calistirin.", file);
         }
-        JSONAssert.assertEquals(name, Files.readString(file, StandardCharsets.UTF_8), normalized, JSONCompareMode.STRICT);
+        // Iki taraf da ayni sekilde yazildigi icin metin karsilastirmasi alan, deger ve dizi sirasina
+        // birebir bakar; nesne anahtarlarinin sirasi anlam tasimadigi icin siralanir.
+        String expected = normalize(MAPPER.readTree(file.toFile()));
+        assertThat(normalized).as("api-snapshots/%s.json", name).isEqualTo(expected);
+    }
+
+    private static String normalize(JsonNode node) throws Exception {
+        return MAPPER.writeValueAsString(MAPPER.treeToValue(node, Object.class)) + "\n";
     }
 
     private static void stripVolatile(JsonNode node) {
