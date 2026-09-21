@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * OpenAPI dokumaninin basligi ve JWT bearer semasi. Sema sayesinde Swagger
@@ -18,9 +20,16 @@ import org.springframework.context.annotation.Profile;
  */
 @Configuration
 @Profile(JHipsterConstants.SPRING_PROFILE_API_DOCS)
-public class ApiDocsConfiguration {
+public class ApiDocsConfiguration implements WebMvcConfigurer {
 
     private static final String JWT_SCHEME = "JWT";
+
+    /** Springfox doneminin /swagger-ui/ adresi (eski yer imleri) springdoc sayfasina gider. */
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addRedirectViewController("/swagger-ui", "/swagger-ui/index.html");
+        registry.addRedirectViewController("/swagger-ui/", "/swagger-ui/index.html");
+    }
 
     @Bean
     public OpenAPI wmsOpenApi(@Value("${spring.application.name}") String applicationName) {
