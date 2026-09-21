@@ -42,6 +42,17 @@ class ApiErrorContractIT extends AbstractIntegrationTest {
     }
 
     @Test
+    void badRequestException() throws Exception {
+        // exception.validation.BadRequestException: eskiden (Undertow sinifiyken) 500 donuyordu
+        assertError(
+            "error-400-bad-request",
+            post("/api/v2/product-address").contentType(MediaType.APPLICATION_JSON).content("{\"id\":1}"),
+            400,
+            true
+        );
+    }
+
+    @Test
     void businessException() throws Exception {
         assertError("error-business", get("/api/address-by-depo-code/BULUNMAYAN/1"), 417, true);
     }

@@ -1,13 +1,16 @@
 package com.hisarresearch.wms.exception.validation;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
 /**
- * Eskiden kullanilan Undertow {@code io.undertow.util.BadRequestException} sinifinin yerine
- * gecer; Spring Boot 4 Undertow'u kaldirdi.
+ * Istemcinin gecersiz istegi icin firlatilir; ExceptionTranslator {@code @ResponseStatus}
+ * uzerinden 400 ve {@code message: error.http.400} ile doner.
  * <p>
- * Davranis bilerek ayni tutuldu: sinif bir HTTP durum kodu tasimadigi icin
- * ExceptionTranslator bu hatayi (adina ragmen) 500 ve mesajiyla doner. 400 donmesi
- * isteniyorsa bu ayri bir davranis degisikligi olarak ele alinmalidir.
+ * Eskiden Undertow'un {@code io.undertow.util.BadRequestException} sinifi kullaniliyordu.
+ * O sinif Spring'e bir durum kodu bildirmedigi icin bu hatalar adina ragmen 500 donuyordu.
  */
+@ResponseStatus(HttpStatus.BAD_REQUEST)
 public class BadRequestException extends Exception {
 
     private static final long serialVersionUID = 1L;
