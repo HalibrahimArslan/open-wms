@@ -45,7 +45,7 @@ public class AurDepoUrunAdresStokQueryService extends QueryService<AurDepoUrunAd
 
 
     protected Specification<AurDepoUrunAdresStok> createSpecification(AurDepoUrunAdresStokCriteria criteria) {
-        Specification<AurDepoUrunAdresStok> specification = Specification.where(null);
+        Specification<AurDepoUrunAdresStok> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), AurDepoUrunAdresStok_.id));

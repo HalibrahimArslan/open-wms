@@ -76,7 +76,7 @@ public class OrderQueryService extends QueryService<Order> {
      * @return the matching {@link Specification} of the entity.
      */
     protected Specification<Order> createSpecification(OrderCriteria criteria) {
-        Specification<Order> specification = Specification.where(null);
+        Specification<Order> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), Order_.id));

@@ -1,0 +1,9 @@
+{
+  "entityName" : "aurRole",
+  "errorKey" : "idexists",
+  "message" : "error.idexists",
+  "params" : "aurRole",
+  "status" : 400,
+  "title" : "A new aurRole cannot already have an ID",
+  "type" : "https://www.jhipster.tech/problem/problem-with-message"
+}

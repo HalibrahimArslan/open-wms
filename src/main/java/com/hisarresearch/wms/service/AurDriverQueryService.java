@@ -32,7 +32,7 @@ public class AurDriverQueryService extends QueryService<AurDriver> {
     }
 
     protected Specification<AurDriver> createSpecification(AurDriverCriteria criteria) {
-        Specification<AurDriver> specification = Specification.where(null);
+        Specification<AurDriver> specification = Specification.unrestricted();
 
         if (criteria != null) {
 

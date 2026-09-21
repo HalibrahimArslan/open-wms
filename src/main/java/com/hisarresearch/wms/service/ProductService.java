@@ -14,7 +14,7 @@ import com.hisarresearch.wms.service.dto.product.ProductWithoutAddressDTO;
 import com.hisarresearch.wms.service.erp.ErpTokenService;
 import com.hisarresearch.wms.service.mapper.ProductWithoutAddressMapper;
 import com.hisarresearch.wms.service.erp.UyumsoftService;
-import io.undertow.util.BadRequestException;
+import com.hisarresearch.wms.exception.validation.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

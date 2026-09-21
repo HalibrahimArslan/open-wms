@@ -81,7 +81,7 @@ public class UserDepoRelQueryService extends QueryService<UserDepoRel> {
      * @return the matching {@link Specification} of the entity.
      */
     protected Specification<UserDepoRel> createSpecification(UserDepoRelCriteria criteria) {
-        Specification<UserDepoRel> specification = Specification.where(null);
+        Specification<UserDepoRel> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), UserDepoRel_.id));

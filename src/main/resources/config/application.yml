@@ -61,6 +61,10 @@ management:
 spring:
   application:
     name: wms
+  jackson:
+    # Jackson 3 (Boot 4) varsayilanlari yerine Boot'un Jackson 2 varsayilanlari; istek/cevap
+    # davranisi (null -> primitive, tarih bicimi, alan sirasi) gecisten once oldugu gibi kalir
+    use-jackson2-defaults: true
   profiles:
     # The commented value for `active` can be replaced with valid Spring profiles to load.
     # Otherwise, it will be filled in by maven when building the JAR file
@@ -97,7 +101,7 @@ spring:
       ddl-auto: none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
-        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+        implicit-strategy: org.springframework.boot.hibernate.SpringImplicitNamingStrategy
   messages:
     basename: i18n/messages
     encoding: UTF-8

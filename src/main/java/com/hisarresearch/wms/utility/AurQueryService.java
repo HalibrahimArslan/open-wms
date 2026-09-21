@@ -18,7 +18,7 @@ public class AurQueryService extends QueryService<Object> {
 
     @SuppressWarnings("unchecked")
     public <ENTITY> Specification<ENTITY> createSpecification(Object criteria, Class<?> metaModelClass) {
-        Specification<ENTITY> specification = Specification.where(null);
+        Specification<ENTITY> specification = Specification.unrestricted();
 
         for (Method getter : criteria.getClass().getMethods()) {
             if (getter.getName().startsWith("get") && !getter.getName().equals("getClass")) {

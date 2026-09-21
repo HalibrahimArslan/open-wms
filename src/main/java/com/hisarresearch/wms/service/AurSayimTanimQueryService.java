@@ -76,7 +76,7 @@ public class AurSayimTanimQueryService extends QueryService<AurSayimTanim> {
      * @return the matching {@link Specification} of the entity.
      */
     protected Specification<AurSayimTanim> createSpecification(AurSayimTanimCriteria criteria) {
-        Specification<AurSayimTanim> specification = Specification.where(null);
+        Specification<AurSayimTanim> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), AurSayimTanim_.id));

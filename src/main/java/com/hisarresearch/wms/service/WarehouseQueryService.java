@@ -46,7 +46,7 @@ public class WarehouseQueryService extends QueryService<Warehouse> {
     }
 
     private Specification<Warehouse> createSpecification(WarehouseCriteria criteria) {
-        Specification<Warehouse> specification = Specification.where(null);
+        Specification<Warehouse> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getId() != null) {
                 specification = specification.and(buildSpecification(criteria.getId(), Warehouse_.id));

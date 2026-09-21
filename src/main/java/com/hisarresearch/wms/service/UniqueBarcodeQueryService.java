@@ -41,7 +41,7 @@ public class UniqueBarcodeQueryService extends QueryService<UniqueBarcode> {
      * @return the matching {@link Specification} of the entity.
      */
     protected Specification<UniqueBarcode> createSpecification(UniqueBarcodeCriteria criteria) {
-        Specification<UniqueBarcode> specification = Specification.where(null);
+        Specification<UniqueBarcode> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getErpOrderInfo() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getErpOrderInfo(), UniqueBarcode_.erpOrderInfo));

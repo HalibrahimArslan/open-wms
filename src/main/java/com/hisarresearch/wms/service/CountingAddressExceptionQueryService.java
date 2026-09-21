@@ -74,7 +74,7 @@ public class CountingAddressExceptionQueryService extends QueryService<CountingA
      * @return the matching {@link Specification} of the entity.
      */
     protected Specification<CountingAddressException> createSpecification(CountingAddressExceptionCriteria criteria) {
-        Specification<CountingAddressException> specification = Specification.where(null);
+        Specification<CountingAddressException> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getCountingDefinitionId() != null) {
                 specification = specification.and(buildSpecification(criteria.getCountingDefinitionId(),root -> root.join(CountingAddressException_.countingDefinition, JoinType.INNER).get(AurSayimTanim_.id)));

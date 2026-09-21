@@ -1,12 +1,13 @@
 package com.hisarresearch.wms.exception.validation;
 
-import com.hisarresearch.wms.exception.constants.ErrorConstants;
-import org.zalando.problem.AbstractThrowableProblem;
-import org.zalando.problem.Status;
+import com.hisarresearch.wms.exception.ProblemException;
+import org.springframework.http.HttpStatus;
 
-public class InvalidIdException extends AbstractThrowableProblem {
+import com.hisarresearch.wms.exception.constants.ErrorConstants;
+
+public class InvalidIdException extends ProblemException {
     private static final long serialVersionUID = 1L;
     public InvalidIdException() {
-        super(ErrorConstants.ERR_INVALID_ID,"Invalid id", Status.BAD_REQUEST);
+        super(ErrorConstants.ERR_INVALID_ID,"Invalid id", HttpStatus.BAD_REQUEST);
     }
 }

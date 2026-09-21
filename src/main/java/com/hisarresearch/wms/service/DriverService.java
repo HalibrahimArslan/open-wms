@@ -9,7 +9,7 @@ import com.hisarresearch.wms.service.dto.AurDriverDTO;
 import com.hisarresearch.wms.service.mapper.AurDriverMapper;
 import com.hisarresearch.wms.utility.AurQueryService;
 import com.hisarresearch.wms.exception.business.BusinessException;
-import io.undertow.util.BadRequestException;
+import com.hisarresearch.wms.exception.validation.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

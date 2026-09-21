@@ -2,7 +2,7 @@ package com.hisarresearch.wms.service;
 
 import com.hisarresearch.wms.domain.AurLookupTable;
 import com.hisarresearch.wms.service.erp.UyumsoftService;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,7 +48,7 @@ public class UyumsoftServiceTest {
 
         boolean result = uyumsoftService.getInvoiceStatus();
 
-        Assert.assertEquals("No Response Test is executed",false, result);
+        Assertions.assertEquals(false, result, "No Response Test is executed");
     }
 
     @Test
@@ -58,7 +58,7 @@ public class UyumsoftServiceTest {
 
         boolean result = uyumsoftService.getInvoiceStatus();
 
-        Assert.assertEquals("Active Scenario Test is executed",true, result);
+        Assertions.assertEquals(true, result, "Active Scenario Test is executed");
     }
 
     @Test
@@ -68,6 +68,6 @@ public class UyumsoftServiceTest {
 
         boolean result = uyumsoftService.getInvoiceStatus();
 
-        Assert.assertEquals("Deactivated Scenario Test is executed",false, result);
+        Assertions.assertEquals(false, result, "Deactivated Scenario Test is executed");
     }
 }

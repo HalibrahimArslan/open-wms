@@ -47,7 +47,7 @@ public class AddressMovementHistoryQueryService extends QueryService<AddressMove
     }
 
     protected Specification<AddressMovementHistory> createSpecification(AddressMovementHistoryCriteria criteria) {
-        Specification<AddressMovementHistory> specification = Specification.where(null);
+        Specification<AddressMovementHistory> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getAddressMovementType() != null) {
                 specification = specification.and(buildSpecification(criteria.getAddressMovementType(), AddressMovementHistory_.movementType));

@@ -88,7 +88,7 @@ public class OrderPickingTransactionQueryService extends QueryService<OrderPicki
      * @return the matching {@link Specification} of the entity.
      */
     protected Specification<OrderPickingTransaction> createSpecification(OrderPickingTransactionCriteria criteria) {
-        Specification<OrderPickingTransaction> specification = Specification.where(null);
+        Specification<OrderPickingTransaction> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), OrderPickingTransaction_.id));

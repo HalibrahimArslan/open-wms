@@ -62,7 +62,7 @@ Ayarları değiştirmek için `.env.example` dosyasını `.env` olarak kopyalay�
 
 | Dizin | İçerik |
 |---|---|
-| `src/main/java` | Spring Boot uygulaması (Java 21) |
+| `src/main/java` | Spring Boot 4 uygulaması (Java 25) |
 | `src/main/resources/config/liquibase` | Veritabanı şeması |
 | `seed/` | Lokal geliştirme için örnek veri |
 | `.claude/rules/` | Projeye özel mimari kurallar |
@@ -86,9 +86,16 @@ cevaplarini `src/test/resources/api-snapshots/` altindaki kayitlarla karsilastir
 bir cevap bilerek degistiyse kayitlar `-Dsnapshot.update=true` ile yenilenir ve
 fark gozden gecirilip commit edilir.
 
-Gereksinimler: JDK 21, PostgreSQL 13. Docker ile çalışırken hiçbiri
+Gereksinimler: JDK 25, PostgreSQL 13. Docker ile çalışırken hiçbiri
 yerel olarak kurulu olmak zorunda değildir — `Dockerfile.local` derlemeyi
 kendi içinde yapar.
+
+### Liquibase sürümü
+
+Spring Boot 4.1 Liquibase 5.x'i yönetir; ancak Liquibase 5 ile lisans Apache 2.0'dan
+FSL-1.1'e (Functional Source License) geçti. Proje bu yüzden Apache 2.0 lisanslı son
+seri olan 4.x'te (`liquibase.version`, `pom.xml`) tutuluyor. 5.x'e geçmek bir lisans
+kararıdır.
 
 ## Yapılandırma
 

@@ -14,7 +14,7 @@ import jakarta.persistence.criteria.Predicate;
 
 import com.hisarresearch.wms.service.dto.AurPartialItemDTO;
 import com.hisarresearch.wms.service.mapper.CountingDetailMapper;
-import io.undertow.util.BadRequestException;
+import com.hisarresearch.wms.exception.validation.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -93,7 +93,7 @@ public class AurSayimUrunQueryService extends QueryService<AurSayimUrun> {
      * @return the matching {@link Specification} of the entity.
      */
     protected Specification<AurSayimUrun> createSpecification(AurSayimUrunCriteria criteria) throws BadRequestException {
-        Specification<AurSayimUrun> specification = Specification.where(null);
+        Specification<AurSayimUrun> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), AurSayimUrun_.id));

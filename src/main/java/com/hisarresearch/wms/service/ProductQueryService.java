@@ -56,7 +56,7 @@ public class ProductQueryService extends QueryService<Product> {
     }
 
     protected Specification<Product> createSpecification(ProductCriteria criteria) {
-        Specification<Product> specification = Specification.where(null);
+        Specification<Product> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getBarkod() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getBarkod(), root -> root.get(Product_.id).get(ProductId_.barkod)));

@@ -32,6 +32,21 @@ class ApiErrorContractIT extends AbstractIntegrationTest {
     }
 
     @Test
+    void badRequestAlert() throws Exception {
+        assertError(
+            "error-400-bad-request-alert",
+            post("/api/aur-roles").contentType(MediaType.APPLICATION_JSON).content("{\"id\":1,\"roleName\":\"X\"}"),
+            400,
+            true
+        );
+    }
+
+    @Test
+    void businessException() throws Exception {
+        assertError("error-business", get("/api/address-by-depo-code/BULUNMAYAN/1"), 417, true);
+    }
+
+    @Test
     void methodNotAllowed() throws Exception {
         assertError("error-405", get("/api/address-type"), 405, true);
     }

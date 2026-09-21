@@ -53,7 +53,7 @@ public class ProductAddressQueryService extends QueryService<ProductAddressv2> {
     }
 
     protected Specification<ProductAddressv2> createSpecification(ProductAddressCriteria criteria) {
-        Specification<ProductAddressv2> specification = Specification.where(null);
+        Specification<ProductAddressv2> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getDepoCode() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getDepoCode(), ProductAddressv2_.depoCode));

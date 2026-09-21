@@ -104,7 +104,7 @@ public class AurOrderMasterQueryService extends QueryService<AurOrderMaster> {
 
     protected Specification<AurOrderMaster> createSpecification(OrderMasterCriteria criteria) {
 
-        Specification<AurOrderMaster> specification = Specification.where(null);
+        Specification<AurOrderMaster> specification = Specification.unrestricted();
 
         if (criteria != null) {
 

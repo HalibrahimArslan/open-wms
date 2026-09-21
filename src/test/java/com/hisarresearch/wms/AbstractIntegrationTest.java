@@ -3,23 +3,23 @@ package com.hisarresearch.wms;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hisarresearch.wms.service.WebSocketClientService;
 import java.nio.file.Path;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.Container.ExecResult;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.utility.MountableFile;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Uygulamanin tamamini gercek bir PostgreSQL uzerinde ayaga kaldiran testlerin tabani.
@@ -33,7 +33,7 @@ import org.testcontainers.utility.MountableFile;
 @ActiveProfiles({ "test", "api-docs" })
 public abstract class AbstractIntegrationTest {
 
-    private static final PostgreSQLContainer<?> POSTGRES = new PostgreSQLContainer<>("postgres:18")
+    private static final PostgreSQLContainer POSTGRES = new PostgreSQLContainer("postgres:18")
         .withDatabaseName("wms")
         .withUsername("wms")
         .withPassword("wms")
@@ -53,14 +53,14 @@ public abstract class AbstractIntegrationTest {
     }
 
     /** Acilista baglanti denemesiyle bekleten gercek istemcinin yerine gecer. */
-    @MockBean
+    @MockitoBean
     protected WebSocketClientService webSocketClientService;
 
     @Autowired
     protected MockMvc mockMvc;
 
     @Autowired
-    protected ObjectMapper objectMapper;
+    protected JsonMapper objectMapper;
 
     @BeforeEach
     void loadSeedOnce() throws Exception {

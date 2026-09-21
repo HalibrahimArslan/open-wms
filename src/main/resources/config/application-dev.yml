@@ -100,8 +100,8 @@ jhipster:
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000
-  mail: # specific JHipster mail property, for standard properties see MailProperties
-#    base-url: ${MAIL_URL:http://localhost:8080}
+  # mail:
+  #   base-url: ${MAIL_URL:http://localhost:8080}
   logging:
     use-json-format: false # By default, logs are not in Json format
     logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration

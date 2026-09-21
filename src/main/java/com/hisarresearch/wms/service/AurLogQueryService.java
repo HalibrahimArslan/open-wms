@@ -50,7 +50,7 @@ public class AurLogQueryService extends QueryService<AurIntegrationLogs> {
 
 
     protected Specification<AurIntegrationLogs> createSpecification(AurLogCriteria criteria) {
-        Specification<AurIntegrationLogs> specification = Specification.where(null);
+        Specification<AurIntegrationLogs> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getLogId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getLogId(), AurIntegrationLogs_.logId));

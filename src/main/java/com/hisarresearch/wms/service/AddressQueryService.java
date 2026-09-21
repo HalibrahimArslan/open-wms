@@ -50,7 +50,7 @@ public class AddressQueryService extends QueryService<AurDepoUrunAdres> {
 
 
     protected Specification<AurDepoUrunAdres> createSpecification(AurDepoUrunAdresCriteria criteria) {
-        Specification<AurDepoUrunAdres> specification = Specification.where(null);
+        Specification<AurDepoUrunAdres> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getUrunAdresId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getUrunAdresId(), AurDepoUrunAdres_.urunAdresId));

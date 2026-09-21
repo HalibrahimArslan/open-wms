@@ -25,6 +25,8 @@ public class TokenProvider {
 
     private static final String AUTHORITIES_KEY = "auth";
 
+    private static final String FACTOR_AUTHORITY_PREFIX = "FACTOR_";
+
     private final Key key;
 
     private final JwtParser jwtParser;
@@ -55,7 +57,14 @@ public class TokenProvider {
     }
 
     public String createToken(Authentication authentication, boolean rememberMe) {
-        String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
+        // Spring Security 7 parola ile girise FACTOR_PASSWORD yetkisi ekler (MFA altyapisi);
+        // token'a yalnizca uygulama rolleri yazilir, icerik Security 6'daki gibi kalir.
+        String authorities = authentication
+            .getAuthorities()
+            .stream()
+            .map(GrantedAuthority::getAuthority)
+            .filter(authority -> !authority.startsWith(FACTOR_AUTHORITY_PREFIX))
+            .collect(Collectors.joining(","));
 
         long now = (new Date()).getTime();
         Date validity;

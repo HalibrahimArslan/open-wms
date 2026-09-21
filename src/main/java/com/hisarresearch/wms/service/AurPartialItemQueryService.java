@@ -58,7 +58,7 @@ public class AurPartialItemQueryService extends QueryService<AurPartialItem> {
      * @return the matching {@link Specification} of the entity.
      */
     protected Specification<AurPartialItem> createSpecification(AurPartialItemCriteria criteria) {
-        Specification<AurPartialItem> specification = Specification.where(null);
+        Specification<AurPartialItem> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getPackageBarcode() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getPackageBarcode(), AurPartialItem_.packageBarcode));

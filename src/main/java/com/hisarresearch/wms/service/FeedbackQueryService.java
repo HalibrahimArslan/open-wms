@@ -49,7 +49,7 @@ public class FeedbackQueryService extends QueryService<Feedback> {
 
 
     protected Specification<Feedback> createSpecification(FeedbackCriteria criteria) {
-        Specification<Feedback> specification = Specification.where(null);
+        Specification<Feedback> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), Feedback_.id ));

@@ -69,7 +69,7 @@ public class ProcessTreeQueryService extends QueryService<ProcessTree> {
      * @return the matching {@link Specification} of the entity.
      */
     protected Specification<ProcessTree> createSpecification(ProcessTreeCriteria criteria) {
-        Specification<ProcessTree> specification = Specification.where(null);
+        Specification<ProcessTree> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), ProcessTree_.id));

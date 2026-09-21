@@ -51,7 +51,7 @@ public class ProductCountingTypePairingQueryService extends QueryService<Product
 
 
     protected Specification<ProductCountingTypePairing> createSpecification(ProductCountingTypePairingCriteria criteria) {
-        Specification<ProductCountingTypePairing> specification = Specification.where(null);
+        Specification<ProductCountingTypePairing> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getWarehouseCode() != null) {
                 specification = specification.and(buildSpecification(criteria.getWarehouseCode(), ProductCountingTypePairing_.warehouseCode));
