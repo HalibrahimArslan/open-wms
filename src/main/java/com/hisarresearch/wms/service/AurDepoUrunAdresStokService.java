@@ -1,5 +1,7 @@
 package com.hisarresearch.wms.service;
 
+import org.springframework.context.annotation.Lazy;
+
 import com.hisarresearch.wms.domain.*;
 import com.hisarresearch.wms.domain.address.AurDepoUrunAdres;
 import com.hisarresearch.wms.domain.address.AurDepoUrunAdresStok;
@@ -87,9 +89,11 @@ public class AurDepoUrunAdresStokService {
     @Autowired
     private ProductAddressService productAddressService;
 
+    @Lazy
     @Autowired
     private AurDepoUrunAdresStokService aurDepoUrunAdresStokService;
 
+    @Lazy
     @Autowired
     AurOrderMasterService aurOrderMasterService;
 

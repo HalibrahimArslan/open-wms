@@ -1,5 +1,7 @@
 package com.hisarresearch.wms.service;
 
+import org.springframework.context.annotation.Lazy;
+
 import com.hisarresearch.wms.domain.AurDispatchAreaControl;
 import com.hisarresearch.wms.domain.AurOrderDetail;
 import com.hisarresearch.wms.repository.AurDispatchAreaControlRepository;
@@ -24,6 +26,7 @@ public class AurDispatchAreaControlService {
     @Autowired
     private AurDispatchAreaControlRepository aurDispatchAreaControlRepository;
 
+    @Lazy
     @Autowired
     private AurOrderMasterService aurOrderMasterService;
 

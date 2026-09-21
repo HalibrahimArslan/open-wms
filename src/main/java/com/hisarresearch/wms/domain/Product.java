@@ -2,7 +2,7 @@ package com.hisarresearch.wms.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
@@ -52,7 +52,7 @@ public class Product implements Serializable {
     @Column(name = "physical_attributes", columnDefinition = "jsonb")
     private Map<String, Object> physicalAttributes;
 
-    @ApiModelProperty(hidden = true)
+    @Schema(hidden = true)
     @OneToMany(mappedBy = "product")
     @JsonIgnoreProperties(value = {"product"}, allowSetters = true)
     private Set<ProductAddressv2> productAddresses = new HashSet<>();

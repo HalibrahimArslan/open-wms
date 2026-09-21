@@ -46,20 +46,21 @@
 
 		<!-- Dependency versions -->
 		<testcontainers.version>1.21.4</testcontainers.version>
-		<jhipster-dependencies.version>7.1.0</jhipster-dependencies.version>
+		<jhipster-dependencies.version>7.9.3</jhipster-dependencies.version>
 		<!-- The spring-boot version should match the one managed by https://mvnrepository.com/artifact/tech.jhipster/jhipster-dependencies/${jhipster-dependencies.version} -->
-		<spring-boot.version>2.4.7</spring-boot.version>
+		<spring-boot.version>2.7.3</spring-boot.version>
 		<!-- The hibernate version should match the one managed by https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-dependencies/${spring-boot.version} -->
-		<hibernate.version>5.4.32.Final</hibernate.version>
+		<hibernate.version>5.6.10.Final</hibernate.version>
 		<!-- The javassist version should match the one managed by https://mvnrepository.com/artifact/org.hibernate/hibernate-core/${hibernate.version} -->
 		<javassist.version>3.27.0-GA</javassist.version>
 		<!-- The liquibase version should match the one managed by https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-dependencies/${spring-boot.version} -->
-		<liquibase.version>4.3.5</liquibase.version>
-		<liquibase-hibernate5.version>4.3.5</liquibase-hibernate5.version>
+		<liquibase.version>4.9.1</liquibase.version>
+		<liquibase-hibernate5.version>4.9.1</liquibase-hibernate5.version>
 		<validation-api.version>2.0.1.Final</validation-api.version>
 		<jaxb-runtime.version>2.3.3</jaxb-runtime.version>
 		<archunit-junit5.version>0.19.0</archunit-junit5.version>
-		<mapstruct.version>1.4.2.Final</mapstruct.version>
+		<springdoc.version>1.6.11</springdoc.version>
+		<mapstruct.version>1.5.2.Final</mapstruct.version>
 		<!-- Plugin versions -->
 		<maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
 		<maven-site-plugin.version>3.9.1</maven-site-plugin.version>
@@ -105,6 +106,12 @@
 				<version>${jhipster-dependencies.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+			<!-- typesense-java 2.0.0'i getiriyor; springdoc'un swagger-core surumuyle ayni olmali -->
+			<dependency>
+				<groupId>io.swagger.core.v3</groupId>
+				<artifactId>swagger-annotations</artifactId>
+				<version>2.2.2</version>
 			</dependency>
 			<!-- jhipster-needle-maven-add-dependency-management -->
 		</dependencies>
@@ -261,25 +268,11 @@
 			<artifactId>h2</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- OpenAPI dokumani ve Swagger arayuzu; yalnizca api-docs profilinde acilir -->
 		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-oas</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-bean-validators</artifactId>
-		</dependency>
-		<!-- Swagger arayuzu; eskiden webpack swagger-ui-dist'i static/ altina kopyaliyordu.
-		     Boot 3 gecisinde springdoc ile degisecek. -->
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>3.0.0</version>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>${springdoc.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.zaxxer</groupId>

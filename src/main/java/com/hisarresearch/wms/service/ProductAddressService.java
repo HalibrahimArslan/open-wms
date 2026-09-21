@@ -1,5 +1,7 @@
 package com.hisarresearch.wms.service;
 
+import org.springframework.context.annotation.Lazy;
+
 import com.hisarresearch.wms.domain.ProductAddressv2;
 import com.hisarresearch.wms.domain.address.AurDepoUrunAdres;
 import com.hisarresearch.wms.repository.ProductAddressv2Repository;
@@ -47,7 +49,7 @@ public class ProductAddressService {
     public ProductAddressService(ProductAddressQueryService productAddressQueryService,
                                  ErpTokenService erpTokenService, UserService userService,
                                  HttpService httpService, ProductAddressv2Repository productAddressv2Repository,
-                                 ProductAddressStrategyFactory productAddressStrategyFactory, AddressService addressService) {
+                                 ProductAddressStrategyFactory productAddressStrategyFactory, @Lazy AddressService addressService) {
         this.productAddressQueryService = productAddressQueryService;
         this.erpTokenService = erpTokenService;
         this.userService = userService;

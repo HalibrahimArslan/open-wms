@@ -1,5 +1,7 @@
 package com.hisarresearch.wms.service;
 
+import org.springframework.context.annotation.Lazy;
+
 import com.hisarresearch.wms.domain.AddressMovementHistory;
 import com.hisarresearch.wms.domain.address.AurDepoUrunAdres;
 import com.hisarresearch.wms.domain.address.AurDepoUrunAdresStok;
@@ -30,6 +32,7 @@ public class AddressMovementHistoryService {
     @Autowired
     private UserService userService;
 
+    @Lazy
     @Autowired
     private AurDepoUrunAdresStokService aurDepoUrunAdresStokService;
 

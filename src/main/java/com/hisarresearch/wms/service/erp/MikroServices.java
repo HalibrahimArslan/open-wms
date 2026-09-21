@@ -55,6 +55,7 @@ public class MikroServices implements ErpOrderGateway {
     @Autowired
     private AurOrderMasterRepository aurOrderMasterRepository;
 
+    @Lazy
     @Autowired
     private AurOrderMasterService aurOrderMasterService;
 
@@ -65,9 +66,11 @@ public class MikroServices implements ErpOrderGateway {
     @Autowired
     private HttpService httpService;
 
+    @Lazy
     @Autowired
     private AurDepoUrunAdresStokService aurDepoUrunAdresStokService;
 
+    @Lazy
     @Autowired
     private ReceivingAddressService receivingAddressService;
 

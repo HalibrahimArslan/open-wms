@@ -1,6 +1,6 @@
 package com.hisarresearch.wms.service.criteria;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import tech.jhipster.service.Criteria;
 import tech.jhipster.service.filter.BooleanFilter;
 import tech.jhipster.service.filter.StringFilter;
@@ -17,7 +17,7 @@ public class ProductCriteria implements Serializable, Criteria {
     private StringFilter stokAdi;
     private StringFilter stokKodu;
 
-    @ApiModelProperty(value = "Barkod, stok kodu ve stok adı üzerinde tek alanla arama yapar (OR). Örn: multiSearch.contains=ABC")
+    @Schema(description = "Barkod, stok kodu ve stok adı üzerinde tek alanla arama yapar (OR). Örn: multiSearch.contains=ABC")
     private StringFilter multiSearch;
     private BooleanFilter lotBasedTracking;
 
