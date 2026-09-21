@@ -29,7 +29,8 @@ class ApiContractIT extends AbstractIntegrationTest {
     @CsvSource(
         {
             "account,                 /api/account",
-            "admin-users,             /api/admin/users",
+            // Uc siralama belirtilmezse satirlari fiziksel sirayla doner; guncellenen satir sona kayar
+            "admin-users,             '/api/admin/users?sort=id,asc'",
             "company-info,            /api/users/companyInfo",
             "menus,                   /api/aur-menus",
             "warehouses,              /api/warehouse",
