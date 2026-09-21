@@ -298,6 +298,13 @@
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-bean-validators</artifactId>
 		</dependency>
+		<!-- Swagger arayuzu; eskiden webpack swagger-ui-dist'i static/ altina kopyaliyordu.
+		     Boot 3 gecisinde springdoc ile degisecek. -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>3.0.0</version>
+		</dependency>
 		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
