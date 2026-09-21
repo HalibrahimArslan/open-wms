@@ -16,7 +16,7 @@ cache:
 
 build_image:
   stage: build
-  image: maven:3.8.6-openjdk-11
+  image: maven:3.9.9-eclipse-temurin-17
   services:
     - name: docker:24.0.6-dind  # Docker-in-Docker service to build Docker images
   tags:
@@ -40,7 +40,7 @@ build_image:
 # Test stage: Runs the unit tests for the project
 test:
   stage: test
-  image: maven:3.8.6-openjdk-11
+  image: maven:3.9.9-eclipse-temurin-17
   tags:
     - 'k10t'
   script:

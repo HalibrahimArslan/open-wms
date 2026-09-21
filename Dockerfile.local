@@ -1,9 +1,9 @@
 # Lokalde tek komutla ayağa kaldırmak için multi-stage imaj.
 # Derleme adımı CI (.gitlab-ci.yml) ile aynı imajı ve aynı maven komutunu kullanır,
-# böylece makinede JDK 11 kurulu olmasına gerek kalmaz.
+# böylece makinede JDK 17 kurulu olmasına gerek kalmaz.
 
 # ---------- 1) Derleme ----------
-FROM maven:3.8.6-openjdk-11 AS build
+FROM maven:3.9.9-eclipse-temurin-17 AS build
 WORKDIR /build
 COPY . .
 # .m2 cache'lenir
@@ -11,7 +11,7 @@ RUN --mount=type=cache,target=/root/.m2 \
     mvn -B -ntp clean package -DskipTests
 
 # ---------- 2) Çalıştırma ----------
-FROM eclipse-temurin:11-jre
+FROM eclipse-temurin:17-jre
 ENV TZ=Europe/Istanbul
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
     && apt-get update && apt-get install -y --no-install-recommends curl \

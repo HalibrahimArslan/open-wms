@@ -62,7 +62,7 @@ Ayarları değiştirmek için `.env.example` dosyasını `.env` olarak kopyalay�
 
 | Dizin | İçerik |
 |---|---|
-| `src/main/java` | Spring Boot uygulaması (Java 11, JHipster 7 tabanlı) |
+| `src/main/java` | Spring Boot uygulaması (Java 17, JHipster 7 tabanlı) |
 | `src/main/resources/config/liquibase` | Veritabanı şeması |
 | `seed/` | Lokal geliştirme için örnek veri |
 | `.claude/rules/` | Projeye özel mimari kurallar |
@@ -86,7 +86,7 @@ cevaplarini `src/test/resources/api-snapshots/` altindaki kayitlarla karsilastir
 bir cevap bilerek degistiyse kayitlar `-Dsnapshot.update=true` ile yenilenir ve
 fark gozden gecirilip commit edilir.
 
-Gereksinimler: JDK 11, PostgreSQL 13. Docker ile çalışırken hiçbiri
+Gereksinimler: JDK 17, PostgreSQL 13. Docker ile çalışırken hiçbiri
 yerel olarak kurulu olmak zorunda değildir — `Dockerfile.local` derlemeyi
 kendi içinde yapar.
 
