@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Sirket Yonetimi ekrani icin menu kaydi.
+
+        2026091300000002_added_data_AurMenu.xml zaten calismis ortamlarda bir
+        daha calismayacagi (preConditions MARK_RAN) icin yeni menu buraya,
+        ayri bir changeSet'e eklendi. id=86, tanimlar altina degil kok menuye
+        eklendi; cunku ekran /d:<depo>/companies yolunda bagimsiz bir sayfa,
+        tanim ekranlarinin alt sayfasi degil.
+
+        ON CONFLICT DO NOTHING: id=86 zaten baska bir kurulumda farkli amacla
+        kullanilmissa kayit sessizce atlanir, ortam bozulmaz.
+    -->
+    <changeSet id="2026092200000001-1" author="jhipster">
+        <sql splitStatements="false">
+INSERT INTO aur_menu (id, parent_menu_id, menu_name, menu_type, path, index, icon, company_code) VALUES
+    (86, 0, 'Sirket Yonetimi', 'TERMINAL', 'companies', false, 'mdi:domain', NULL)
+ON CONFLICT (id) DO NOTHING;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
