@@ -68,10 +68,13 @@ public class LocalOrderGateway implements ErpOrderGateway {
         "                   from aur_depo_urun_adres_stok s " +
         "                  where s.barcode = p.barkod " +
         "                    and s.company_code = p.company_code " +
-        "                    and (:depoNo is null or s.depo_code = :depoNo)), 0) as depodaki_miktar " +
+        "                    and (cast(:depoNo as varchar) is null or s.depo_code = :depoNo)), 0) as depodaki_miktar " +
         "  from product p " +
         " where p.barkod in (:barcodes) " +
         "   and p.company_code = :companyCode";
+
+    private static final String PRODUCT_BARCODES_BY_STOCK_CODE_SQL =
+        "select p.barkod from product p where p.stok_kodu = :stockCode and p.company_code = :companyCode";
 
     private final EntityManager em;
     private final UserService userService;
@@ -200,10 +203,30 @@ public class LocalOrderGateway implements ErpOrderGateway {
         return result;
     }
 
-    /** TODO yerel urun bilgisi sorgusu; su an yalnizca MIKRO_V16 icin uygulandi. */
+    /**
+     * Urun bilgisini barkod(lar)a ya da stok koduna gore yerel {@code product} tablosundan okur.
+     * Arayuz barkodla (sayim, urun adres tanimi) ya da yalnizca stok koduyla (sevkiyat) sorar;
+     * {@code depoNo} 0 ya da bos ise stok tum depolarda toplanir.
+     * TODO stokAdi ile arama henuz yok.
+     */
     @Override
+    @SuppressWarnings("unchecked")
     public List<StockDetailResponseDto> getProductInfo(String token, String apiPath, ProductInfoRequestDto request) {
-        return Collections.emptyList();
+        List<String> barcodes = new ArrayList<>();
+        if (request.getBarkod() != null && !request.getBarkod().isBlank()) {
+            barcodes.add(request.getBarkod());
+        }
+        if (request.getBarkodList() != null) {
+            request.getBarkodList().stream().filter(b -> b != null && !b.isBlank()).forEach(barcodes::add);
+        }
+        if (barcodes.isEmpty() && request.getStokKodu() != null && !request.getStokKodu().isBlank()) {
+            Query q = em.createNativeQuery(PRODUCT_BARCODES_BY_STOCK_CODE_SQL);
+            q.setParameter("stockCode", request.getStokKodu());
+            q.setParameter("companyCode", String.valueOf(userService.getUserCompanyCode()));
+            barcodes.addAll(q.getResultList());
+        }
+        Integer depoNo = request.getDepoNo() == null || request.getDepoNo() == 0 ? null : request.getDepoNo();
+        return new ArrayList<>(getStockDetails(token, apiPath, barcodes, depoNo).values());
     }
 
     @Override
