@@ -1,6 +1,7 @@
 package com.hisarresearch.wms.service.erp;
 
 import com.hisarresearch.wms.domain.ApiParameters;
+import com.hisarresearch.wms.service.AurDepoUrunAdresStokService;
 import com.hisarresearch.wms.service.AurOrderMasterService;
 import com.hisarresearch.wms.service.ReceivingAddressService;
 import com.hisarresearch.wms.service.UserService;
@@ -15,6 +16,7 @@ import com.hisarresearch.wms.service.dto.FirmStockOrderListRequestDto;
 import com.hisarresearch.wms.service.dto.MalKabulRequestDto;
 import com.hisarresearch.wms.service.dto.OrderLineItemDto;
 import com.hisarresearch.wms.service.dto.ProductInfoRequestDto;
+import com.hisarresearch.wms.service.dto.SevkiyatOrderLineItemDto;
 import com.hisarresearch.wms.service.dto.SevkiyatRequestDto;
 import com.hisarresearch.wms.service.dto.WaybillQueryRequestDto;
 import com.hisarresearch.wms.service.dto.erp.ErpOperationResult;
@@ -86,20 +88,27 @@ public class LocalOrderGateway implements ErpOrderGateway {
         "update aur_erp_data set sip_teslim_miktar = sip_teslim_miktar + :amount " +
         " where sip_guid = :sipUid and sip_tip = 1";
 
+    private static final String DISPATCH_LINE_SQL =
+        "update aur_erp_data set sip_teslim_miktar = sip_teslim_miktar + :amount " +
+        " where sip_guid = :sipUid and sip_tip = 0";
+
     private final EntityManager em;
     private final UserService userService;
     private final AurLocalService aurLocalService;
     private final ReceivingAddressService receivingAddressService;
     private final AurOrderMasterService aurOrderMasterService;
+    private final AurDepoUrunAdresStokService aurDepoUrunAdresStokService;
 
     public LocalOrderGateway(EntityManager em, UserService userService, AurLocalService aurLocalService,
                              @Lazy ReceivingAddressService receivingAddressService,
-                             @Lazy AurOrderMasterService aurOrderMasterService) {
+                             @Lazy AurOrderMasterService aurOrderMasterService,
+                             @Lazy AurDepoUrunAdresStokService aurDepoUrunAdresStokService) {
         this.em = em;
         this.userService = userService;
         this.aurLocalService = aurLocalService;
         this.receivingAddressService = receivingAddressService;
         this.aurOrderMasterService = aurOrderMasterService;
+        this.aurDepoUrunAdresStokService = aurDepoUrunAdresStokService;
     }
 
     @Override
@@ -299,15 +308,34 @@ public class LocalOrderGateway implements ErpOrderGateway {
     }
 
     /**
-     * TODO yerel sevkiyat is kurallari.
-     *
-     * <p>Mikro tarafinda sevkiyat sonrasi siparis satirlari kapatiliyor; yerel modda
-     * ayni etki {@code aur_erp_data.sip_teslim_miktar} artirilarak saglanabilir.
+     * Yerel sevkiyat. Mikro adaptoruyle ayni WMS adimlarini calistirir: siparisin
+     * urunleri kontrol adresinden dusulur, WMS siparisi irsaliye bilgileriyle kapatilir.
+     * ERP'ye gonderim yerine yerel siparis kaynagi {@code aur_erp_data}'daki teslim
+     * miktari artirilir. Adimlardan biri basarisiz olursa hepsi geri alinir.
+     * TODO siparis maili (Mikro'da OrderMailEvent) yok; ERP belge numarasi olusmaz.
      */
     @Override
-    public Object dispatchOrder(String token, String apiPath, SevkiyatRequestDto sevkiyatRequestDto) {
-        log.warn("Yerel sevkiyat heniz uygulanmadi");
-        return ErpOperationResult.notImplemented("Sevkiyat");
+    @Transactional(rollbackFor = Exception.class)
+    public Object dispatchOrder(String token, String apiPath, SevkiyatRequestDto sevkiyatRequestDto) throws Exception {
+        aurDepoUrunAdresStokService.deleteProductsFromControlAreaByOrder(sevkiyatRequestDto.getOrderId());
+        aurOrderMasterService.completeDispatcher(sevkiyatRequestDto);
+
+        List<SevkiyatOrderLineItemDto> lines = sevkiyatRequestDto.getOrderDetailList() == null
+            ? Collections.emptyList() : sevkiyatRequestDto.getOrderDetailList();
+        for (SevkiyatOrderLineItemDto line : lines) {
+            if (line.getSipUid() == null || line.getKabulMiktar() == null || line.getKabulMiktar() <= 0) {
+                continue;
+            }
+            int updated = em.createNativeQuery(DISPATCH_LINE_SQL)
+                .setParameter("amount", line.getKabulMiktar())
+                .setParameter("sipUid", line.getSipUid())
+                .executeUpdate();
+            if (updated == 0) {
+                log.warn("Local ERP: {} sip_guid'li sevkiyat satiri bulunamadi", line.getSipUid());
+            }
+        }
+        log.debug("Local ERP: {} siparisi icin sevkiyat tamamlandi ({} satir)", sevkiyatRequestDto.getOrderId(), lines.size());
+        return new ErpOperationResult(true, "Yerel mod: sevkiyat ERP'ye gonderilmedi", null);
     }
 
     /**
