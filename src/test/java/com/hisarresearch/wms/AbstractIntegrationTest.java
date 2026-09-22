@@ -33,7 +33,7 @@ import tools.jackson.databind.json.JsonMapper;
 @ActiveProfiles({ "test", "api-docs" })
 public abstract class AbstractIntegrationTest {
 
-    private static final PostgreSQLContainer POSTGRES = new PostgreSQLContainer("postgres:18")
+    private static final PostgreSQLContainer POSTGRES = new PostgreSQLContainer("postgres:18.6")
         .withDatabaseName("wms")
         .withUsername("wms")
         .withPassword("wms")
