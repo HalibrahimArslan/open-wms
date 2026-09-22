@@ -104,7 +104,6 @@ public class MikroServices implements ErpOrderGateway {
         List<Integer> depoNoList = aurCompanyDto.getApiParameters().getDepoNo();
 
         RequestDto dto = new RequestDto();
-        dto.setData(depoNoList);
         dto.setServiceName("depoService.getDepoList");
 
         return httpService.executeService(token, apiPath, dto);
