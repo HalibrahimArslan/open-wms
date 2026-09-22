@@ -5,7 +5,6 @@ import com.hisarresearch.wms.domain.AddressMovementHistory;
 import com.hisarresearch.wms.service.AddressMovementHistoryQueryService;
 import com.hisarresearch.wms.service.AddressMovementHistoryService;
 import com.hisarresearch.wms.service.criteria.AddressMovementHistoryCriteria;
-import com.hisarresearch.wms.service.dto.AddressPlacementDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,12 +42,6 @@ public class AddressMovementHistoryResource {
     @GetMapping("/aur-address-placement-history")
     public List<AddressMovementHistory> getHistoryList() {
         return addressMovementHistoryService.getAllPlacementHistory();
-    }
-
-    @PostMapping("/aur-address-placement-history")
-    public AddressMovementHistory saveAddressPlacementHistory(@RequestBody AddressPlacementDto addressPlacementDto)  {
-        log.debug("REST request to save address placement history by addressPlacementDto {}",addressPlacementDto);
-        return addressMovementHistoryService.saveAddressPlacementFromTmp(addressPlacementDto);
     }
 
     /**

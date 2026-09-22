@@ -234,6 +234,14 @@ public class AurDepoUrunAdresStokService {
             productAtTmpArea.setMiktar(transactionAmount);
         }
 
+        AurDepoUrunAdres placementAddress = aurDepoAdresRepository.findByAdresAndDepoNoAndCompanyCodeAndStatus(
+            productAddressSaveDTO.getUrunAdres(), productAddressSaveDTO.getDepoCode(), productAddressSaveDTO.getCompanyCode(), true)
+            .orElseThrow(InvalidAddressException::new);
+        AurDepoUrunAdresStok placementStock = aurDepoUrunAdresStokRepository.findByBarcodeAndUrunAdresIdAndStatusAndDepoCode(
+            productAddressSaveDTO.getBarcode(), placementAddress.getUrunAdresId(), true, productAddressSaveDTO.getDepoCode())
+            .orElseThrow(() -> new IllegalStateException("Yerlestirilen urun hedef adreste bulunamadi"));
+        addressMovementHistoryService.saveTemporaryPlacementMovement(productAddressSaveDTO, productAtTmpArea, placementStock);
+
         logService.logResponse(logId, "success");
     }
 

@@ -1,13 +1,12 @@
 package com.hisarresearch.wms.service;
 
-import org.springframework.context.annotation.Lazy;
 
 import com.hisarresearch.wms.domain.AddressMovementHistory;
 import com.hisarresearch.wms.domain.address.AurDepoUrunAdres;
 import com.hisarresearch.wms.domain.address.AurDepoUrunAdresStok;
 import com.hisarresearch.wms.domain.enumeration.AddressMovementType;
 import com.hisarresearch.wms.repository.AddressMovementHistoryRepository;
-import com.hisarresearch.wms.service.dto.AddressPlacementDto;
+import com.hisarresearch.wms.service.dto.ProductAddressSaveDTO;
 import com.hisarresearch.wms.service.dto.productaddress.ProductAddressDefinitionDTO;
 import com.hisarresearch.wms.service.dto.address.AurProductAddressReplacementDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Service class for address movements.
@@ -32,12 +30,7 @@ public class AddressMovementHistoryService {
     @Autowired
     private UserService userService;
 
-    @Lazy
-    @Autowired
-    private AurDepoUrunAdresStokService aurDepoUrunAdresStokService;
 
-    @Autowired
-    private AddressService addressService;
 
 
     public List<AddressMovementHistory> getAllPlacementHistory(){
@@ -45,40 +38,26 @@ public class AddressMovementHistoryService {
     }
 
 
-    public AddressMovementHistory saveAddressPlacementFromTmp(AddressPlacementDto dto) {
-        Optional<AurDepoUrunAdresStok> originAddress = aurDepoUrunAdresStokService.findByBarcodeAndUrunAdresIdAndStatusAndDepoCode(dto.getBarcode(),dto.getOriginAddressId(),true,dto.getDepoCode());
-        Optional<AurDepoUrunAdresStok> placementAddress = aurDepoUrunAdresStokService.findByBarcodeAndUrunAdresIdAndStatusAndDepoCode(dto.getBarcode(),dto.getPlacementAddressId(),true,dto.getDepoCode());
-        AddressMovementHistory adph = new AddressMovementHistory();
+    /**
+     * Gecici adresten rafa yerlestirmeyi, stok hareketiyle ayni islem icinde yazar. Iki stok
+     * kaydi da cagrildiginda guncellenmistir; bosalan gecici adres kaydi pasife cekildigi
+     * icin kalan miktar 0 yazilir.
+     */
+    public void saveTemporaryPlacementMovement(ProductAddressSaveDTO dto,
+                                               AurDepoUrunAdresStok temporaryStock,
+                                               AurDepoUrunAdresStok placementStock) {
+        AddressMovementHistory amh = new AddressMovementHistory();
+        amh.setAurUser(userService.getUser());
+        amh.setStokKodu(dto.getStokKod());
+        amh.setBarcode(dto.getBarcode());
+        amh.setProcessAmount(dto.getMiktar());
+        amh.setOriginAddress(generateAddress(temporaryStock.getUrunAdresId()));
+        amh.setOriginUpdatedAmount(Boolean.TRUE.equals(temporaryStock.getStatus()) ? temporaryStock.getMiktar() : 0.0);
+        amh.setPlacementAddress(generateAddress(placementStock.getUrunAdresId()));
+        amh.setPlacementUpdatedAmount(placementStock.getMiktar());
+        amh.setMovementType(AddressMovementType.PLACEMENT_FROM_TMP);
 
-        adph.setProcessAmount(dto.getChangeAmount());
-        adph.setStokKodu(dto.getStokKodu());
-        adph.setBarcode(dto.getBarcode());
-        adph.setAurUser(userService.getUser());
-
-       if(originAddress.isPresent()){
-           adph.setOriginAddress(generateAddress(originAddress.get().getUrunAdresId()));
-           // Arayuz bu kaydi yerlestirmeden sonra ayri bir istekle yazar; gecici adresteki
-           // miktar o anda zaten dusulmustur.
-           adph.setOriginUpdatedAmount(originAddress.get().getMiktar());
-       }
-       else{
-           AurDepoUrunAdres temporaryAddress = addressService.checkTemporaryAddress(dto.getDepoCode());
-           adph.setOriginAddress(temporaryAddress);
-           adph.setOriginUpdatedAmount(0.0);
-       }
-
-       if(placementAddress.isPresent()){
-           adph.setPlacementAddress(generateAddress(placementAddress.get().getUrunAdresId()));
-           adph.setPlacementUpdatedAmount(placementAddress.get().getMiktar());
-       }
-       else{
-           adph.setPlacementAddress(generateAddress(dto.getPlacementAddressId()));
-           adph.setPlacementUpdatedAmount(dto.getChangeAmount());
-       }
-
-        adph.setMovementType(AddressMovementType.PLACEMENT_FROM_TMP);
-        addressMovementHistoryRepository.save(adph);
-        return adph;
+        addressMovementHistoryRepository.save(amh);
     }
 
     public void saveAddressDefinitionMovement(ProductAddressDefinitionDTO dto, Double previousAmount){
