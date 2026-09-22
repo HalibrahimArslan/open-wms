@@ -13,7 +13,7 @@ Iceridigi kayitlar:
 | Tablo | Kayit |
 |---|---|
 | `aur_company` | `1 / WMS Lokal` |
-| `warehouse` | `1 / Merkez Depo`, `2 / Yan Depo` (`receiving_code = 2`) |
+| `warehouse` | `1 / Merkez Depo`, `2 / Yan Depo` (`transfer_code` ve `receiving_code` depo koduyla ayni) |
 | `aur_role` | `ADMIN` |
 | `aur_user` | `admin` ve `user` kullanicilarina `company_code = 1` |
 | `aur_user_role_rel` | her iki kullanici da `ADMIN` rolunde |
@@ -24,8 +24,8 @@ Iceridigi kayitlar:
 | `product` | 5 demo urun (`8690000000011`..`59`) |
 | `aur_erp_data` | mal kabul (`sip_tip = 1`): 3 siparis / 7 satir, `320.01.001` ve `320.01.002` |
 | `aur_erp_data` | sevkiyat (`sip_tip = 0`): `S-3001` / 3 satir, `320.02.001` |
-| `aur_adres_*` | adres bilesenleri (tek haneli unite/kat/goz kodlari, adresler 6 hane). Merkez Depo: 1 bolum, 3 reyon, `RAF` + `KNT`; Yan Depo: 1 bolum, 2 reyon, `RAF` + `GEC` |
-| `aur_depo_urun_adres` | Merkez Depo: `A01111` ve `A02111` toplama gozleri, `A03111` kontrol adresi; Yan Depo: `B99111` gecici adres, `B01111` toplama gozu |
+| `aur_adres_*` | adres bilesenleri (tek haneli unite/kat/goz kodlari, adresler 6 hane). Merkez Depo: 1 bolum, 4 reyon, `RAF` + `KNT` + `GEC`; Yan Depo: 1 bolum, 2 reyon, `RAF` + `GEC` |
+| `aur_depo_urun_adres` | Merkez Depo: `A01111` ve `A02111` toplama gozleri, `A03111` kontrol adresi, `A99111` gecici adres; Yan Depo: `B99111` gecici adres, `B01111` toplama gozu |
 | `aur_depo_urun_adres_stok` | `S-3001` satirlarinin urunleri toplama gozlerinde (250 / 180 / 60) |
 | `aur_order_master` / `aur_order_detail` | `A-1001`'den devam eden bir mal kabul siparisi (3 acik satir) |
 | `aur_order_master` / `aur_order_detail` | `S-3001`'den `admin`e atanmis bir sevkiyat siparisi (`MSK`, 3 satir) |
@@ -65,9 +65,12 @@ Depo'nun gecici adresi `B99111`'e duser. Ardindan depo secicisinden Yan Depo'ya
 gecilip **Gecici Adresten Yerlestirme** ekraninda `B01111` adresi ve ayni barkod
 okutularak urun rafa yerlestirilir.
 
-Transfer, urunu giris deposunun `receiving_code` degerine gore buldugu gecici
-adrese koyar. Merkez Depo'nun `receiving_code`'u `0` ve gecici adresi olmadigi
-icin ters yondeki transfer "Depoda gecici adres bulunamadi" hatasi verir.
+Ters yon de denenebilir: Yan Depo'dan Merkez Depo'ya aktarilan urun `A99111`
+gecici adresine duser ve Merkez Depo'da `A01111` gibi bir rafa yerlestirilir.
+
+Mal kabul ve transfer, urunu giris deposunun `receiving_code` degerine gore
+buldugu gecici adrese koyar; bu yuzden her depoda `receiving_code` depo koduyla
+ayni ve tek bir gecici adres vardir. Birden fazla gecici adres desteklenmez.
 
 ## Calistirma
 

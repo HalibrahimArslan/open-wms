@@ -20,6 +20,6 @@
   "autoScan" : false,
   "uniquePickingAddress" : false,
   "pickingRuleType" : "DEFAULT",
-  "receivingCode" : "0",
+  "receivingCode" : "1",
   "real" : true
 } ]

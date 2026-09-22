@@ -22,12 +22,13 @@ ON CONFLICT (id) DO NOTHING;
 INSERT INTO warehouse (id, code, name, company_code, is_real, countable,
                        transfer_code, auto_scan, unique_picking_address,
                        picking_rule_type, receiving_code)
-VALUES (1, '1', 'Merkez Depo', '1', true, true, '1', false, false, 'DEFAULT', '0')
+VALUES (1, '1', 'Merkez Depo', '1', true, true, '1', false, false, 'DEFAULT', '1')
 ON CONFLICT (id) DO NOTHING;
 
 -- Yan Depo, depolar arasi transferi ve gecici adresten yerlestirmeyi denemek icindir.
--- Transfer, urunu giris deposunun receiving_code'u ile bulunan gecici adrese koyar;
--- bu yuzden receiving_code dolu ve depoda tek bir gecici adres (B99111) vardir.
+-- Mal kabul ve transfer, urunu deponun receiving_code'u ile bulunan gecici adrese
+-- koyar; bu yuzden iki depoda da receiving_code depo koduyla ayni ve her depoda tek
+-- bir gecici adres vardir (A99111, B99111).
 INSERT INTO warehouse (id, code, name, company_code, is_real, countable,
                        transfer_code, auto_scan, unique_picking_address,
                        picking_rule_type, receiving_code)
@@ -35,10 +36,10 @@ VALUES (2, '2', 'Yan Depo', '1', true, true, '2', false, false, 'DEFAULT', '2')
 ON CONFLICT (id) DO NOTHING;
 
 -- transfer_code, UI'in adres/stok sorgularinda depo kodu yerine kullandigi degerdir
--- (Sevkiyat ekrani adresleri ve kontrol adresini bu koda gore ariyor). Lokalde tek
--- depo oldugu icin depo koduyla ayni olmali; seed'i daha once calistirmis
--- veritabanlarinda da duzeltilir.
-UPDATE warehouse SET transfer_code = code WHERE id = 1;
+-- (Sevkiyat ekrani adresleri ve kontrol adresini bu koda gore ariyor); receiving_code
+-- ise gecici adresin aranacagi depodur. Lokalde ikisi de depo koduyla ayni olmali;
+-- seed'i daha once calistirmis veritabanlarinda da duzeltilir.
+UPDATE warehouse SET transfer_code = code, receiving_code = code WHERE id = 1;
 
 -- ------------------------------------------------- kullanicilarin sirketi
 UPDATE aur_user SET company_code = 1 WHERE login IN ('admin', 'user') AND company_code IS NULL;
@@ -173,6 +174,7 @@ ON CONFLICT (id) DO NOTHING;
 INSERT INTO aur_adres_tip (id, code, description, status, company_code, depo_code) VALUES
     (1, 'RAF', 'Raf Adresi',     true, '1', '1'),
     (2, 'KNT', 'Kontrol Adresi', true, '1', '1'),
+    (5, 'GEC', 'Gecici Adres',   true, '1', '1'),
     (3, 'RAF', 'Raf Adresi',     true, '1', '2'),
     (4, 'GEC', 'Gecici Adres',   true, '1', '2')
 ON CONFLICT (code, depo_code, company_code) DO NOTHING;
@@ -186,6 +188,7 @@ INSERT INTO aur_adres_reyon (id, code, description, status, company_code, depo_c
     (1, '01', '1. Reyon',       true, '1', '1'),
     (2, '02', '2. Reyon',       true, '1', '1'),
     (3, '03', 'Kontrol Reyonu', true, '1', '1'),
+    (6, '99', 'Gecici Reyon',   true, '1', '1'),
     (4, '01', '1. Reyon',       true, '1', '2'),
     (5, '99', 'Gecici Reyon',   true, '1', '2')
 ON CONFLICT (code, depo_code, company_code) DO NOTHING;
@@ -216,6 +219,7 @@ VALUES
     (1, true, 'A01111', '1', '1', 'RAF', 'A', '01', '1', '1', '1', false, true,  false, true,  'system', now(), 'system', now()),
     (2, true, 'A02111', '1', '1', 'RAF', 'A', '02', '1', '1', '1', false, true,  false, true,  'system', now(), 'system', now()),
     (3, true, 'A03111', '1', '1', 'KNT', 'A', '03', '1', '1', '1', false, false, true,  false, 'system', now(), 'system', now()),
+    (6, true, 'A99111', '1', '1', 'GEC', 'A', '99', '1', '1', '1', true,  false, false, false, 'system', now(), 'system', now()),
     -- Yan Depo: gecici adres ve bir toplama gozu
     (4, true, 'B99111', '2', '1', 'GEC', 'B', '99', '1', '1', '1', true,  false, false, false, 'system', now(), 'system', now()),
     (5, true, 'B01111', '2', '1', 'RAF', 'B', '01', '1', '1', '1', false, true,  false, true,  'system', now(), 'system', now())

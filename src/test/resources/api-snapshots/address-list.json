@@ -47,6 +47,22 @@
   "kontrolAdres" : true,
   "countable" : false
 }, {
+  "urunAdresId" : 6,
+  "status" : true,
+  "adres" : "A99111",
+  "depoNo" : "1",
+  "companyCode" : "1",
+  "adresTipi" : "GEC",
+  "bolum" : "A",
+  "reyon" : "99",
+  "unite" : "1",
+  "kat" : "1",
+  "oda" : "1",
+  "geciciAdres" : true,
+  "toplamaGozu" : false,
+  "kontrolAdres" : false,
+  "countable" : false
+}, {
   "urunAdresId" : 4,
   "status" : true,
   "adres" : "B99111",
