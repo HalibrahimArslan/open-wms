@@ -245,7 +245,10 @@ public class OrderPickingTransactionServiceImpl implements OrderPickingTransacti
         opt.setStatus(true);
         opt.setTransactionAmount(dto.getMiktar());
         opt.setStockCode(dto.getBarcode());
-        opt.setDescription(dto.getDescription().concat("-").concat("Erp_document_no : " + erpDocumentNo));
+        // Yerel modda ERP belgesi olusmadigi icin numara yalnizca varsa eklenir.
+        opt.setDescription(erpDocumentNo == null
+            ? dto.getDescription()
+            : dto.getDescription().concat("-").concat("Erp_document_no : " + erpDocumentNo));
         opt.setTransactionType(TransactionType.INTER_WAREHOUSE_TRANSFER);
         orderPickingTransactionRepository.save(opt);
 

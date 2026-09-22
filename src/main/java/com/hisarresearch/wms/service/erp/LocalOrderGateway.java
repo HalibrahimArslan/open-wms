@@ -8,6 +8,7 @@ import com.hisarresearch.wms.service.dto.AurCariOrderDetailListDto;
 import com.hisarresearch.wms.service.dto.AurCariOrderDto;
 import com.hisarresearch.wms.service.dto.AurFirmListDto;
 import com.hisarresearch.wms.service.dto.AurWaybillDto;
+import com.hisarresearch.wms.service.dto.DepolarArasiTransferErpDto;
 import com.hisarresearch.wms.service.dto.FirmStockOrderListRequestDto;
 import com.hisarresearch.wms.service.dto.MalKabulRequestDto;
 import com.hisarresearch.wms.service.dto.ProductInfoRequestDto;
@@ -287,6 +288,15 @@ public class LocalOrderGateway implements ErpOrderGateway {
     public Object generateBarcode(String token, String apiPath, String stokKod) {
         log.warn("Yerel barkod uretimi heniz uygulanmadi (stokKod={})", stokKod);
         return ErpOperationResult.notImplemented("Barkod uretimi");
+    }
+
+    /**
+     * Yerel modda bildirilecek bir ERP yok; stok hareketi WMS tarafinda yapildigi icin
+     * transfer basarili sayilir, ERP belge numarasi olusmaz.
+     */
+    @Override
+    public ErpOperationResult interWarehouseTransfer(String token, String apiPath, DepolarArasiTransferErpDto dto) {
+        return new ErpOperationResult(true, "Yerel mod: transfer ERP'ye gonderilmedi", null);
     }
 
     /**

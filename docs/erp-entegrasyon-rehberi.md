@@ -67,6 +67,17 @@ yazıldığında ortak bir yanıt şekli (`ErpOperationResult` gibi) sabitlenmel
 Yerel adaptör (`LocalOrderGateway`) bu üçü için `ErpOperationResult.notImplemented(...)`
 döner — istisna fırlatmaz, ekran akışı yerelde de bozulmaz.
 
+Kanonik şekle geçmiş ilk yazma metodu depolar arası transferdir:
+
+| Metot | İş | Mikro'da gerçek karşılığı |
+|---|---|---|
+| `interWarehouseTransfer(token, apiPath, DepolarArasiTransferErpDto)` → `ErpOperationResult` | Depolar arası transferin ERP'ye bildirimi; `reference` ERP belge numarası | `POST {apiPath}/depolarArasiTransferYap` |
+
+Yerel adaptör ERP'ye bir şey göndermeden `success = true` döner (stok hareketini
+WMS zaten yapar). `success = false` dönerse `DepolarArasiTransferService` istisna
+fırlatır; servis `rollbackOn = Exception.class` ile işaretli olduğu için yerel stok
+hareketi de geri alınır.
+
 ```java
 public class ErpOperationResult {
     boolean success;

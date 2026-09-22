@@ -9,7 +9,9 @@ import com.hisarresearch.wms.service.dto.AurCariOrderDto;
 import com.hisarresearch.wms.service.dto.AurFirmListDto;
 import com.hisarresearch.wms.service.dto.AurWaybillDto;
 import com.hisarresearch.wms.service.dto.FirmStockOrderListRequestDto;
+import com.hisarresearch.wms.service.dto.DepolarArasiTransferErpDto;
 import com.hisarresearch.wms.service.dto.MalKabulRequestDto;
+import com.hisarresearch.wms.service.dto.erp.ErpOperationResult;
 import com.hisarresearch.wms.service.dto.ProductInfoRequestDto;
 import com.hisarresearch.wms.service.dto.SevkiyatRequestDto;
 import com.hisarresearch.wms.service.dto.WaybillQueryRequestDto;
@@ -108,4 +110,10 @@ public interface ErpOrderGateway {
 
     /** Stok kodundan barkod uretimi. */
     Object generateBarcode(String token, String apiPath, String stokKod) throws Exception;
+
+    /**
+     * Depolar arasi transferi ERP'ye bildirir. Basarili ise {@code reference} alani ERP belge
+     * numarasidir; {@code success = false} donerse cagiran taraf yerel stok hareketini geri alir.
+     */
+    ErpOperationResult interWarehouseTransfer(String token, String apiPath, DepolarArasiTransferErpDto dto) throws Exception;
 }

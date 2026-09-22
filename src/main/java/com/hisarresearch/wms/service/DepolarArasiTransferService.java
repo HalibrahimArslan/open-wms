@@ -4,7 +4,8 @@ import com.hisarresearch.wms.domain.Warehouse;
 import com.hisarresearch.wms.domain.address.AurDepoUrunAdres;
 import com.hisarresearch.wms.exception.business.BusinessException;
 import com.hisarresearch.wms.service.dto.*;
-import com.hisarresearch.wms.service.erp.MikroServices;
+import com.hisarresearch.wms.service.dto.erp.ErpOperationResult;
+import com.hisarresearch.wms.service.erp.ErpGatewayRouter;
 import com.hisarresearch.wms.utility.AurHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional(rollbackOn = Exception.class)
 public class DepolarArasiTransferService {
     private final Logger log = LoggerFactory.getLogger(DepolarArasiTransferService.class);
 
@@ -25,7 +26,7 @@ public class DepolarArasiTransferService {
 
     private final OrderPickingTransactionService orderPickingTransactionService;
 
-    private final MikroServices mikroServices;
+    private final ErpGatewayRouter erpGatewayRouter;
 
     private final UserService userService;
 
@@ -35,10 +36,10 @@ public class DepolarArasiTransferService {
 
     private final TranslationService translationService;
 
-    public DepolarArasiTransferService(AurDepoUrunAdresStokService aurDepoUrunAdresStokService, OrderPickingTransactionService orderPickingTransactionService, MikroServices mikroServices, UserService userService, WarehouseService warehouseService, AddressService addressService, TranslationService translationService) {
+    public DepolarArasiTransferService(AurDepoUrunAdresStokService aurDepoUrunAdresStokService, OrderPickingTransactionService orderPickingTransactionService, ErpGatewayRouter erpGatewayRouter, UserService userService, WarehouseService warehouseService, AddressService addressService, TranslationService translationService) {
         this.aurDepoUrunAdresStokService = aurDepoUrunAdresStokService;
         this.orderPickingTransactionService = orderPickingTransactionService;
-        this.mikroServices = mikroServices;
+        this.erpGatewayRouter = erpGatewayRouter;
         this.userService = userService;
         this.warehouseService = warehouseService;
         this.addressService = addressService;
@@ -95,10 +96,13 @@ public class DepolarArasiTransferService {
         erpDetailList.add(erpDetailDto);
         erpDto.setDetailList(erpDetailList);
 
-        AurCompanyDTO aurCompanyDto = userService.getUserCompanyInfo();
-        String token = mikroServices.getToken(aurCompanyDto.getApiEndPoint(), aurCompanyDto.getApiParameters());
-
-        return (String) mikroServices.depolarArasiTransfer(token, aurCompanyDto.getApiEndPoint(), erpDto,"","","");
+        ErpGatewayRouter.ErpCallContext ctx = erpGatewayRouter.context();
+        ErpOperationResult result = erpGatewayRouter.interWarehouseTransfer(ctx.getToken(), ctx.getApiPath(), erpDto);
+        if (!result.isSuccess()) {
+            // Servis rollbackOn = Exception ile isaretli; yerel stok hareketi de geri alinir.
+            throw new BusinessException(result.getMessage(), depolarArasiTransfer, "erpTransferFailed");
+        }
+        return result.getReference();
 
     }
 
