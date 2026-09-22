@@ -42,7 +42,7 @@ test:
   stage: test
   image: maven:3.9.16-eclipse-temurin-25
   tags:
-    - 'k10t'
+    - 'docker'
   script:
     - mvn test
 
@@ -51,7 +51,7 @@ deploy_test:
   stage: deploy
   image: bitnamilegacy/kubectl
   tags:
-    - 'k10t'
+    - 'docker'
   environment:
     name: test
   script:
