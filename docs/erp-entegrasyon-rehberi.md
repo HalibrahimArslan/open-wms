@@ -64,8 +64,14 @@ yazıldığında ortak bir yanıt şekli (`ErpOperationResult` gibi) sabitlenmel
 | `dispatchOrder(token, apiPath, SevkiyatRequestDto)` | Müşteriye sevkiyat | `POST {apiPath}/sevkiyatYap` |
 | `generateBarcode(token, apiPath, stokKod)` | Stok kodundan barkod üretimi | `GET {apiPath}/produceBarkod/{stokKod}` |
 
-Yerel adaptör (`LocalOrderGateway`) bu üçü için `ErpOperationResult.notImplemented(...)`
-döner — istisna fırlatmaz, ekran akışı yerelde de bozulmaz.
+Yerel adaptör (`LocalOrderGateway`) sevkiyat ve barkod üretimi için
+`ErpOperationResult.notImplemented(...)` döner — istisna fırlatmaz, ekran akışı
+yerelde de bozulmaz. Mal kabul yerelde uygulanmıştır: Mikro'yla aynı WMS adımlarını
+(`ReceivingAddressService.completeReceivingAddressOperation`,
+`AurOrderMasterService.completeReceiving`) çalıştırır, ardından `aur_erp_data`'da
+satırın `sip_teslim_miktar` değerini artırır ve `success = true` döner; adımlardan
+biri hata verirse hepsi geri alınır. Mikro'daki rezerve listesi ve sipariş maili
+yerelde yoktur.
 
 Kanonik şekle geçmiş ilk yazma metodu depolar arası transferdir:
 

@@ -1,6 +1,8 @@
 package com.hisarresearch.wms.service.erp;
 
 import com.hisarresearch.wms.domain.ApiParameters;
+import com.hisarresearch.wms.service.AurOrderMasterService;
+import com.hisarresearch.wms.service.ReceivingAddressService;
 import com.hisarresearch.wms.service.UserService;
 import com.hisarresearch.wms.service.dto.AurCariDto;
 import com.hisarresearch.wms.service.dto.AurCariOrderDetailDto;
@@ -11,6 +13,7 @@ import com.hisarresearch.wms.service.dto.AurWaybillDto;
 import com.hisarresearch.wms.service.dto.DepolarArasiTransferErpDto;
 import com.hisarresearch.wms.service.dto.FirmStockOrderListRequestDto;
 import com.hisarresearch.wms.service.dto.MalKabulRequestDto;
+import com.hisarresearch.wms.service.dto.OrderLineItemDto;
 import com.hisarresearch.wms.service.dto.ProductInfoRequestDto;
 import com.hisarresearch.wms.service.dto.SevkiyatRequestDto;
 import com.hisarresearch.wms.service.dto.WaybillQueryRequestDto;
@@ -19,7 +22,9 @@ import com.hisarresearch.wms.service.dto.mikro.StockDetailResponseDto;
 import com.hisarresearch.wms.service.dto.mikro.v16.OrderParamsDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -77,14 +82,24 @@ public class LocalOrderGateway implements ErpOrderGateway {
     private static final String PRODUCT_BARCODES_BY_STOCK_CODE_SQL =
         "select p.barkod from product p where p.stok_kodu = :stockCode and p.company_code = :companyCode";
 
+    private static final String RECEIVE_LINE_SQL =
+        "update aur_erp_data set sip_teslim_miktar = sip_teslim_miktar + :amount " +
+        " where sip_guid = :sipUid and sip_tip = 1";
+
     private final EntityManager em;
     private final UserService userService;
     private final AurLocalService aurLocalService;
+    private final ReceivingAddressService receivingAddressService;
+    private final AurOrderMasterService aurOrderMasterService;
 
-    public LocalOrderGateway(EntityManager em, UserService userService, AurLocalService aurLocalService) {
+    public LocalOrderGateway(EntityManager em, UserService userService, AurLocalService aurLocalService,
+                             @Lazy ReceivingAddressService receivingAddressService,
+                             @Lazy AurOrderMasterService aurOrderMasterService) {
         this.em = em;
         this.userService = userService;
         this.aurLocalService = aurLocalService;
+        this.receivingAddressService = receivingAddressService;
+        this.aurOrderMasterService = aurOrderMasterService;
     }
 
     @Override
@@ -252,18 +267,35 @@ public class LocalOrderGateway implements ErpOrderGateway {
     // =====================================================================
 
     /**
-     * TODO yerel mal kabul is kurallari.
-     *
-     * <p>ERP'den bagimsiz olan WMS adimlari zaten mevcut ve dogrudan buraya
-     * baglanabilir:
-     * {@code receivingAddressService.completeReceivingAddressOperation(malKabulRequestDto, addressId)}
-     * ve {@code aurOrderMasterService.completeReceiving(malKabulRequestDto)}.
-     * Ardindan {@code aur_erp_data.sip_teslim_miktar} guncellenerek satir kapatilabilir.
+     * Yerel mal kabul. Mikro adaptoruyle ayni WMS adimlarini calistirir: kabul edilen
+     * urunler gecici adrese yerlestirilir, WMS siparisi irsaliye bilgileriyle kapatilir.
+     * ERP'ye gonderim yerine yerel siparis kaynagi {@code aur_erp_data}'daki teslim
+     * miktari artirilir; boylece tamamlanan satirlar listelerden duser. Adimlardan biri
+     * basarisiz olursa hepsi geri alinir.
+     * TODO rezerve listesi ve siparis maili (Mikro'da pushReserveList / OrderMailEvent) yok.
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Object receiveOrder(String token, String apiPath, MalKabulRequestDto malKabulRequestDto, Long addressId) {
-        log.warn("Yerel mal kabul heniz uygulanmadi (addressId={})", addressId);
-        return ErpOperationResult.notImplemented("Mal kabul");
+        receivingAddressService.completeReceivingAddressOperation(malKabulRequestDto, addressId);
+        aurOrderMasterService.completeReceiving(malKabulRequestDto);
+
+        List<OrderLineItemDto> lines = malKabulRequestDto.getOrderDetailList() == null
+            ? Collections.emptyList() : malKabulRequestDto.getOrderDetailList();
+        for (OrderLineItemDto line : lines) {
+            if (line.getSipUid() == null || line.getKabulMiktar() == null || line.getKabulMiktar() <= 0) {
+                continue;
+            }
+            int updated = em.createNativeQuery(RECEIVE_LINE_SQL)
+                .setParameter("amount", line.getKabulMiktar())
+                .setParameter("sipUid", line.getSipUid())
+                .executeUpdate();
+            if (updated == 0) {
+                log.warn("Local ERP: {} sip_guid'li mal kabul satiri bulunamadi", line.getSipUid());
+            }
+        }
+        log.debug("Local ERP: {} siparisi icin mal kabul tamamlandi ({} satir)", malKabulRequestDto.getOrderId(), lines.size());
+        return new ErpOperationResult(true, "Yerel mod: mal kabul ERP'ye gonderilmedi", malKabulRequestDto.getOrderNo());
     }
 
     /**
