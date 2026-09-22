@@ -3,6 +3,7 @@ package com.hisarresearch.wms.web.rest;
 import com.hisarresearch.wms.domain.ApiParameters;
 import com.hisarresearch.wms.domain.AurCompany;
 import com.hisarresearch.wms.repository.AurCompanyRepository;
+import com.hisarresearch.wms.security.ApiPasswordCipher;
 import com.hisarresearch.wms.exception.api.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -62,6 +63,7 @@ public class AurCompanyResource {
         if (aurCompany.getId() != null) {
             throw new BadRequestAlertException("A new aurCompany cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        applyApiPassword(aurCompany.getApiParameters(), null);
         AurCompany result = aurCompanyRepository.save(aurCompany);
         return ResponseEntity
             .created(new URI("/api/aur-companies/" + result.getId()))
@@ -92,10 +94,12 @@ public class AurCompanyResource {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
-        if (!aurCompanyRepository.existsById(id)) {
+        Optional<AurCompany> existing = aurCompanyRepository.findById(id);
+        if (existing.isEmpty()) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
+        applyApiPassword(aurCompany.getApiParameters(), existing.get().getApiParameters());
         AurCompany result = aurCompanyRepository.save(aurCompany);
         return ResponseEntity
             .ok()
@@ -149,10 +153,7 @@ public class AurCompanyResource {
                     }
                     if (aurCompany.getApiParameters() != null) {
                         ApiParameters newApiParameters = aurCompany.getApiParameters();
-                        ApiParameters existingApiParameters = existingAurCompany.getApiParameters();
-                        if (!StringUtils.hasText(newApiParameters.getPassword()) && existingApiParameters != null) {
-                            newApiParameters.setPassword(existingApiParameters.getPassword());
-                        }
+                        applyApiPassword(newApiParameters, existingAurCompany.getApiParameters());
                         existingAurCompany.setApiParameters(newApiParameters);
                     }
 
@@ -206,6 +207,22 @@ public class AurCompanyResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * ERP sifresi entity'de ve DB'de hep sifreli durur (bkz. {@link ApiPasswordCipher}).
+     * Istekten duz metin sifre geldiyse sifrelenir; bos geldiyse mevcut (zaten sifreli)
+     * deger korunur, cunku GET yanitlari sifreyi hic dondurmez.
+     */
+    private void applyApiPassword(ApiParameters incoming, ApiParameters existing) {
+        if (incoming == null) {
+            return;
+        }
+        if (StringUtils.hasText(incoming.getPassword())) {
+            incoming.setPassword(ApiPasswordCipher.encrypt(incoming.getPassword()));
+        } else {
+            incoming.setPassword(existing != null ? existing.getPassword() : null);
+        }
     }
 
     /**

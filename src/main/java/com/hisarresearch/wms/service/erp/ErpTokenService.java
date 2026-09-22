@@ -7,6 +7,7 @@ import com.hisarresearch.wms.service.AurLogService;
 import com.hisarresearch.wms.service.ErpJwtDataService;
 import com.hisarresearch.wms.service.HttpService;
 import com.hisarresearch.wms.service.UserService;
+import com.hisarresearch.wms.security.ApiPasswordCipher;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -76,7 +77,7 @@ public class ErpTokenService {
         String authEndpoint = apiPath + "/authenticate";
 
         Map<String, String> request = new HashMap<>();
-        request.put("password", apiParameters.getPassword());
+        request.put("password", ApiPasswordCipher.decrypt(apiParameters.getPassword()));
         request.put("username", apiParameters.getUsername());
         request.put("rememberMe", "true");
 

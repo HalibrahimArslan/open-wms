@@ -20,11 +20,12 @@ public class ApiParameters implements Serializable {
     private List<Integer> depoNo;
     private String username;
 
-    // Bu alan her zaman duz metin tutulur; DB'ye yazilirken/okunurken sifrelenip
-    // cozulmesi AurCompany'nin @PrePersist/@PostLoad callback'lerinde yapilir
-    // (bkz. ApiPasswordCipher). Burada Jackson erisim kisitlamasi (WRITE_ONLY vb.)
-    // kullanma: hem REST hem de bu jsonb kolonun DB'ye yazilmasi ayni Jackson
-    // mekanizmasini kullaniyor, bu yuzden REST'i kisitlamak DB'ye yazmayi da kirar.
+    // Bu alan her zaman sifreli tutulur (bkz. ApiPasswordCipher): AurCompanyResource
+    // kaydederken sifreler, ErpTokenService token isterken cozer. Entity uzerinde
+    // yerinde sifreleme/cozme (JPA callback) yapilmaz; Hibernate'in dirty-checking'i
+    // ve ModelMapper'in paylastigi referans yuzunden ERP'ye sifreli deger gidiyordu.
+    // Burada Jackson erisim kisitlamasi (WRITE_ONLY vb.) kullanma: hem REST hem de
+    // bu jsonb kolonun DB'ye yazilmasi ayni Jackson mekanizmasini kullaniyor.
     private String password;
 
     public Boolean getErpApiActive() {

@@ -88,7 +88,9 @@ public class HttpService {
 
         HttpGet httpGet = new HttpGet(uri);
 
-        httpGet.addHeader("Authorization", "Bearer " + token);
+        if (token != null && !token.isBlank()) {
+            httpGet.addHeader("Authorization", "Bearer " + token);
+        }
         httpGet.addHeader("Content-Type", "application/json");
         httpGet.setHeader("Accept-Encoding", "UTF-8");
 
@@ -154,7 +156,9 @@ public class HttpService {
     public HttpPost generateHttpPost(String token,String path,String requestBody){
         HttpPost httpPost = new HttpPost(path);
 
-        httpPost.addHeader("Authorization", "Bearer " + token);
+        if (token != null && !token.isBlank()) {
+            httpPost.addHeader("Authorization", "Bearer " + token);
+        }
         httpPost.addHeader("Content-Type", "application/json");
         httpPost.setHeader("Accept-Encoding", "UTF-8");
         StringEntity entity = new StringEntity(requestBody, "UTF-8");

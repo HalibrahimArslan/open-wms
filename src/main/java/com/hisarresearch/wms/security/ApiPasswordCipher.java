@@ -26,9 +26,10 @@ import org.springframework.util.StringUtils;
  * ile override edilir). Bu deger AES anahtari icin dogru uzunlukta olmadigindan
  * (64 byte), SHA-256 ile 256 bit'lik bir AES anahtarina indirgenir.
  *
- * <p>{@link com.hisarresearch.wms.domain.AurCompany} bir JPA entity'si oldugu
- * icin (Hibernate tarafindan olusturulur, Spring bean'i degildir) anahtar
- * burada static olarak tutulur ve bu bean uzerinden ayaga kalkarken doldurulur.
+ * <p>Sifreleme {@code AurCompanyResource} kaydederken, cozme {@code ErpTokenService}
+ * token isterken yapilir; entity ve DTO'lar sifreli degeri tasir. Statik metotlar
+ * Spring bean'i olmayan yerlerden de cagrilabilsin diye anahtar static tutulur ve
+ * bu bean ayaga kalkarken doldurulur.
  */
 @Component
 public class ApiPasswordCipher {

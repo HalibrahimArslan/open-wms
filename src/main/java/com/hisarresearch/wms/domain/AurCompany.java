@@ -1,7 +1,6 @@
 package com.hisarresearch.wms.domain;
 
 import com.hisarresearch.wms.domain.enumeration.ErpConnectionType;
-import com.hisarresearch.wms.security.ApiPasswordCipher;
 import java.io.Serializable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,11 +9,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PostLoad;
-import jakarta.persistence.PostPersist;
-import jakarta.persistence.PostUpdate;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
@@ -78,26 +72,6 @@ public class AurCompany implements Serializable {
 
     public void setApiParameters(ApiParameters apiParameters) {
         this.apiParameters = apiParameters;
-    }
-
-    // ERP sifresi DB'de duz metin durmasin diye yazilmadan once sifrelenir,
-    // okunduktan sonra cozulur; boylece uygulamanin geri kalani (ErpTokenService
-    // dahil) her zaman duz metinle calisir, DB'de ise sadece sifreli hali bulunur.
-    @PrePersist
-    @PreUpdate
-    private void encryptApiPassword() {
-        if (apiParameters != null) {
-            apiParameters.setPassword(ApiPasswordCipher.encrypt(apiParameters.getPassword()));
-        }
-    }
-
-    @PostLoad
-    @PostPersist
-    @PostUpdate
-    private void decryptApiPassword() {
-        if (apiParameters != null) {
-            apiParameters.setPassword(ApiPasswordCipher.decrypt(apiParameters.getPassword()));
-        }
     }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
