@@ -2,12 +2,12 @@ package com.hisarresearch.wms.config;
 
 import com.hisarresearch.wms.domain.AurSayimTanim;
 import com.hisarresearch.wms.domain.ErpJwtData;
-import java.time.Duration;
+import java.util.OptionalLong;
+import java.util.concurrent.TimeUnit;
 
 import com.hisarresearch.wms.domain.Warehouse;
 import com.hisarresearch.wms.service.erp.MikroServices;
-import org.ehcache.config.builders.*;
-import org.ehcache.jsr107.Eh107Configuration;
+import com.github.benmanes.caffeine.jcache.configuration.CaffeineConfiguration;
 import org.hibernate.cache.jcache.ConfigSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.cache.autoconfigure.JCacheManagerCustomizer;
@@ -29,15 +29,13 @@ public class CacheConfiguration {
     private final javax.cache.configuration.Configuration<Object, Object> jcacheConfiguration;
 
     public CacheConfiguration(JHipsterProperties jHipsterProperties) {
-        JHipsterProperties.Cache.Ehcache ehcache = jHipsterProperties.getCache().getEhcache();
+        JHipsterProperties.Cache.Caffeine caffeine = jHipsterProperties.getCache().getCaffeine();
 
-        jcacheConfiguration =
-            Eh107Configuration.fromEhcacheCacheConfiguration(
-                CacheConfigurationBuilder
-                    .newCacheConfigurationBuilder(Object.class, Object.class, ResourcePoolsBuilder.heap(ehcache.getMaxEntries()))
-                    .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofSeconds(ehcache.getTimeToLiveSeconds())))
-                    .build()
-            );
+        CaffeineConfiguration<Object, Object> caffeineConfiguration = new CaffeineConfiguration<>();
+        caffeineConfiguration.setMaximumSize(OptionalLong.of(caffeine.getMaxEntries()));
+        caffeineConfiguration.setExpireAfterWrite(OptionalLong.of(TimeUnit.SECONDS.toNanos(caffeine.getTimeToLiveSeconds())));
+        caffeineConfiguration.setStatisticsEnabled(true);
+        jcacheConfiguration = caffeineConfiguration;
     }
 
     @Bean
@@ -102,7 +100,7 @@ public class CacheConfiguration {
             createCache(cm, com.hisarresearch.wms.domain.CountingUserAddressRel.class.getName());
 
 
-            // jhipster-needle-ehcache-add-entry
+            // jhipster-needle-caffeine-add-entry
         };
     }
 

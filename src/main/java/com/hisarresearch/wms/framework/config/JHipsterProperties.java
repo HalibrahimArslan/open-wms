@@ -26,7 +26,7 @@ import org.springframework.web.cors.CorsConfiguration;
  * {@code jhipster.*} yapilandirmasi.
  * <p>
  * JHipster'in ayni adli sinifinin yalnizca bu uygulamanin kullandigi bolumlerini
- * icerir (clientApp, cache.ehcache, mail, security, logging, cors). Eski
+ * icerir (clientApp, cache.caffeine, mail, security, logging, cors). Eski
  * yapilandirmalarda kalmis diger {@code jhipster.*} anahtarlari acilisi bozmasin diye
  * bilinmeyen alanlar yok sayilir.
  */
@@ -84,13 +84,13 @@ public class JHipsterProperties {
 
     public static class Cache {
 
-        private final Ehcache ehcache = new Ehcache();
+        private final Caffeine caffeine = new Caffeine();
 
-        public Ehcache getEhcache() {
-            return ehcache;
+        public Caffeine getCaffeine() {
+            return caffeine;
         }
 
-        public static class Ehcache {
+        public static class Caffeine {
 
             private int timeToLiveSeconds = 3600; // 1 hour
 
