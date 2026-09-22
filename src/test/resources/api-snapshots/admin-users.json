@@ -11,7 +11,7 @@
   "langKey" : "tr",
   "createdBy" : "system",
   "lastModifiedBy" : "system",
-  "authorities" : [ "ROLE_USER", "ROLE_MINIO", "ROLE_ADMIN" ],
+  "authorities" : [ "ROLE_USER", "ROLE_MINIO", "ROLE_ADMIN", "COUNTER" ],
   "roles" : [ "ADMIN" ],
   "warehouses" : null
 }, {

@@ -57,6 +57,14 @@ INSERT INTO aur_user_role_rel (user_id, role_id)
 SELECT u.id, 1 FROM aur_user u WHERE u.login IN ('admin', 'user')
 ON CONFLICT DO NOTHING;
 
+-- ---------------------------------------------------------------- sayim yetkisi
+-- El terminalindeki sayim listesi, sayim tanimindaki gorunurluk yetkisini (COUNTER /
+-- CHECKER) kullanicinin yetkileriyle karsilastirir. admin'e COUNTER verilir ki
+-- sayim lokalde dogrudan denenebilsin.
+INSERT INTO jhi_user_authority (user_id, authority_name)
+SELECT u.id, 'COUNTER' FROM aur_user u WHERE u.login = 'admin'
+ON CONFLICT DO NOTHING;
+
 -- ---------------------------------------------------------------- depo yetkisi
 INSERT INTO user_depo_rel (id, user_id, warehouse_id, created_by, created_date)
 SELECT u.id, u.id, 1, 'system', now()
@@ -145,6 +153,8 @@ ON CONFLICT (id) DO NOTHING;
 -- uzerindeki bilesik yabanci anahtarlarin karsiligidir; bunlar olmadan adres eklenemez.
 -- Adres metni, AddressService.generateAddress kuralindaki gibi bilesen kodlarinin
 -- sirayla birlestirilmesiyle olusur: bolum + reyon + unite + kat + goz.
+-- Arayuzdeki adres okutma alani (AddressBarcode) 6 haneli adres bekledigi icin
+-- unite, kat ve goz kodlari tek hanedir: A + 01 + 1 + 1 + 1 = A01111.
 INSERT INTO aur_adres_tip (id, code, description, status, company_code, depo_code) VALUES
     (1, 'RAF', 'Raf Adresi',     true, '1', '1'),
     (2, 'KNT', 'Kontrol Adresi', true, '1', '1')
@@ -161,15 +171,15 @@ INSERT INTO aur_adres_reyon (id, code, description, status, company_code, depo_c
 ON CONFLICT (code, depo_code, company_code) DO NOTHING;
 
 INSERT INTO aur_adres_unite (id, code, description, status, company_code, depo_code) VALUES
-    (1, '01', '1. Unite', true, '1', '1')
+    (1, '1', '1. Unite', true, '1', '1')
 ON CONFLICT (code, depo_code, company_code) DO NOTHING;
 
 INSERT INTO aur_adres_kat (id, code, description, status, company_code, depo_code) VALUES
-    (1, '01', '1. Kat', true, '1', '1')
+    (1, '1', '1. Kat', true, '1', '1')
 ON CONFLICT (code, depo_code, company_code) DO NOTHING;
 
 INSERT INTO aur_adres_oda (id, code, description, status, company_code, depo_code) VALUES
-    (1, '01', '1. Goz', true, '1', '1')
+    (1, '1', '1. Goz', true, '1', '1')
 ON CONFLICT (code, depo_code, company_code) DO NOTHING;
 
 -- toplama_gozu = true olan adresler toplama onerisine girer (DefaultStrategy yalnizca
@@ -180,9 +190,9 @@ INSERT INTO aur_depo_urun_adres (id, status, adres, depo_no, company_code, adres
                                  gecici_adres, toplama_gozu, kontrol_adres, countable,
                                  created_by, created_date, last_modified_by, last_modified_date)
 VALUES
-    (1, true, 'A01010101', '1', '1', 'RAF', 'A', '01', '01', '01', '01', false, true,  false, true,  'system', now(), 'system', now()),
-    (2, true, 'A02010101', '1', '1', 'RAF', 'A', '02', '01', '01', '01', false, true,  false, true,  'system', now(), 'system', now()),
-    (3, true, 'A03010101', '1', '1', 'KNT', 'A', '03', '01', '01', '01', false, false, true,  false, 'system', now(), 'system', now())
+    (1, true, 'A01111', '1', '1', 'RAF', 'A', '01', '1', '1', '1', false, true,  false, true,  'system', now(), 'system', now()),
+    (2, true, 'A02111', '1', '1', 'RAF', 'A', '02', '1', '1', '1', false, true,  false, true,  'system', now(), 'system', now()),
+    (3, true, 'A03111', '1', '1', 'KNT', 'A', '03', '1', '1', '1', false, false, true,  false, 'system', now(), 'system', now())
 ON CONFLICT (company_code, depo_no, adres) DO NOTHING;
 
 -- ------------------------------------------------------------- adreslerdeki stok
