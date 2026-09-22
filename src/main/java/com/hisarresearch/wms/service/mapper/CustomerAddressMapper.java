@@ -4,7 +4,7 @@ import com.hisarresearch.wms.domain.CustomerAddress;
 import com.hisarresearch.wms.service.dto.CustomerAddressDTO;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = {CustomerAddressMapper.class})
+@Mapper(componentModel = "spring")
 public interface CustomerAddressMapper {
 
     CustomerAddressDTO toDto(CustomerAddress customerAddress);

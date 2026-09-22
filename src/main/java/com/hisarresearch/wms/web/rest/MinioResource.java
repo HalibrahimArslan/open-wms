@@ -61,7 +61,7 @@ public class MinioResource {
     @PostMapping("/multiple-file-upload")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.MINIO + "\")")
     public ResponseEntity<List<Upload>> handleMultipleFileUpload(@RequestParam("files") MultipartFile[] files) {
-        log.debug("Multiple file upload is started {}",files);
+        log.debug("Multiple file upload is started, {} files", files.length);
         List<Upload> uploadedFiles = new ArrayList<>() ;
         for(MultipartFile file: files){
             Upload uploadedFile = minioService.uploadObject(file);
