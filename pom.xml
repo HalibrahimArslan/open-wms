@@ -93,6 +93,47 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<!-- Gecisli bagimliliklarin farkli surumleri cakisiyor; Maven'in zaten sectigi surumler sabitlenir (enforcer DependencyConvergence) -->
+			<dependency>
+				<groupId>com.squareup.okhttp3</groupId>
+				<artifactId>okhttp</artifactId>
+				<version>4.11.0</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>1.8.3</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>2.5</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.19.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-compress</artifactId>
+				<version>1.26.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.bouncycastle</groupId>
+				<artifactId>bcmail-jdk14</artifactId>
+				<version>1.64</version>
+			</dependency>
+			<dependency>
+				<groupId>org.bouncycastle</groupId>
+				<artifactId>bcprov-jdk14</artifactId>
+				<version>1.64</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jetbrains</groupId>
+				<artifactId>annotations</artifactId>
+				<version>26.1.0</version>
+			</dependency>
 			<!-- jhipster-needle-maven-add-dependency-management -->
 		</dependencies>
 	</dependencyManagement>
@@ -179,14 +220,15 @@
             <artifactId>okhttp</artifactId>
             <version>4.11.0</version>
         </dependency>
+        <!-- Kurallar siniftaki DRL dosyalarindan derlenir; Maven'dan KJAR indiren kie-ci gerekmez -->
         <dependency>
-            <groupId>org.kie</groupId>
-            <artifactId>kie-ci</artifactId>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-engine</artifactId>
             <version>9.44.0.Final</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
-            <artifactId>drools-decisiontables</artifactId>
+            <artifactId>drools-mvel</artifactId>
             <version>9.44.0.Final</version>
         </dependency>
 		<dependency>
@@ -209,10 +251,6 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.5.10</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
 
 
@@ -456,7 +494,7 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
+            <version>26.1.0</version>
             <scope>compile</scope>
         </dependency>
 
@@ -465,12 +503,24 @@
 	<build>
 		<defaultGoal>spring-boot:run</defaultGoal>
         <finalName>${project.artifactId}</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources/</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>config/*.yml</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources/</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>config/*.yml</exclude>
+				</excludes>
+			</resource>
+		</resources>
 		<plugins>
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 			</plugin>
@@ -565,7 +615,7 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>${maven-compiler-plugin.version}</version>
 					<configuration>
-                        <forceJavacCompilerUse>true</forceJavacCompilerUse>
+                        <forceLegacyJavacApi>true</forceLegacyJavacApi>
 						<!-- Spring 6.1+ @PathVariable/@RequestParam adlarini yalnizca buradan okur -->
 						<parameters>true</parameters>
 						<source>${java.version}</source>
@@ -831,38 +881,12 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>${maven-resources-plugin.version}</version>
-					<executions>
-						<execution>
-							<id>default-resources</id>
-							<phase>validate</phase>
-							<goals>
-								<goal>copy-resources</goal>
-							</goals>
-							<configuration>
-								<outputDirectory>${project.build.directory}/classes</outputDirectory>
-								<useDefaultDelimiters>false</useDefaultDelimiters>
-								<delimiters>
-									<delimiter>#</delimiter>
-								</delimiters>
-								<resources>
-									<resource>
-										<directory>src/main/resources/</directory>
-										<filtering>true</filtering>
-										<includes>
-											<include>config/*.yml</include>
-										</includes>
-									</resource>
-									<resource>
-										<directory>src/main/resources/</directory>
-										<filtering>false</filtering>
-										<excludes>
-											<exclude>config/*.yml</exclude>
-										</excludes>
-									</resource>
-								</resources>
-							</configuration>
-						</execution>
-					</executions>
+					<configuration>
+						<useDefaultDelimiters>false</useDefaultDelimiters>
+						<delimiters>
+							<delimiter>#</delimiter>
+						</delimiters>
+					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
