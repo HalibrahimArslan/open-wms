@@ -76,6 +76,7 @@ public class LocalOrderGateway implements ErpOrderGateway {
         "                   from aur_depo_urun_adres_stok s " +
         "                  where s.barcode = p.barkod " +
         "                    and s.company_code = p.company_code " +
+        "                    and s.status = true " +
         "                    and (cast(:depoNo as varchar) is null or s.depo_code = :depoNo)), 0) as depodaki_miktar " +
         "  from product p " +
         " where p.barkod in (:barcodes) " +
