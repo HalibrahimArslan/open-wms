@@ -25,5 +25,17 @@
     "pickingRuleType" : "DEFAULT",
     "receivingCode" : "0",
     "real" : true
+  }, {
+    "id" : 2,
+    "code" : "2",
+    "name" : "Yan Depo",
+    "companyCode" : "1",
+    "countable" : true,
+    "transferCode" : "2",
+    "autoScan" : false,
+    "uniquePickingAddress" : false,
+    "pickingRuleType" : "DEFAULT",
+    "receivingCode" : "2",
+    "real" : true
   } ]
 }

@@ -1,4 +1,13 @@
 [ {
+  "id" : 2,
+  "companyCode" : "1",
+  "countable" : true,
+  "transferCode" : "2",
+  "code" : "2",
+  "name" : "Yan Depo",
+  "autoScan" : false,
+  "real" : true
+}, {
   "id" : 1,
   "companyCode" : "1",
   "countable" : true,

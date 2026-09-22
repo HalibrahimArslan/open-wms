@@ -46,4 +46,36 @@
   "toplamaGozu" : false,
   "kontrolAdres" : true,
   "countable" : false
+}, {
+  "urunAdresId" : 4,
+  "status" : true,
+  "adres" : "B99111",
+  "depoNo" : "2",
+  "companyCode" : "1",
+  "adresTipi" : "GEC",
+  "bolum" : "B",
+  "reyon" : "99",
+  "unite" : "1",
+  "kat" : "1",
+  "oda" : "1",
+  "geciciAdres" : true,
+  "toplamaGozu" : false,
+  "kontrolAdres" : false,
+  "countable" : false
+}, {
+  "urunAdresId" : 5,
+  "status" : true,
+  "adres" : "B01111",
+  "depoNo" : "2",
+  "companyCode" : "1",
+  "adresTipi" : "RAF",
+  "bolum" : "B",
+  "reyon" : "01",
+  "unite" : "1",
+  "kat" : "1",
+  "oda" : "1",
+  "geciciAdres" : false,
+  "toplamaGozu" : true,
+  "kontrolAdres" : false,
+  "countable" : true
 } ]
