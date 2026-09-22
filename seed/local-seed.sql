@@ -116,6 +116,37 @@ VALUES
     ('8690000000059', '1', 'STK-005', 'Ray Profil 2m',         'SAC',      'Profil', 'MT',   0, 'Lokal demo urunu', false, false)
 ON CONFLICT (barkod, company_code) DO NOTHING;
 
+-- ---------------------------------------------------------------- nakliye ve sofor
+-- Mal kabul ve sevkiyatin irsaliye diyalogu, kapanmadan once Logistic Tipi
+-- (transportationType), Firma Tipi (companyLogistics) ve Yukleme Tipi (carryType)
+-- secimi ile tanimli bir sofor ister. Arayuz lookup degerlerini buyuk harfe cevirerek
+-- kaydettigi icin seed'deki adlar da buyuk harftir. Ayni kod ve ad zaten varsa
+-- (orn. arayuzden "Ekle" ile eklenmisse) satir tekrar eklenmez.
+INSERT INTO aur_lookup_table (id, lookup_code, lookup_name, lookup_description)
+SELECT v.id, v.code, v.name, '-'
+FROM (VALUES
+    (1, 'transportationType', 'KARAYOLU'),
+    (2, 'companyLogistics',   'ANLASMALI'),
+    (3, 'carryType',          'PALET'),
+    (4, 'transportationType', 'DENIZYOLU'),
+    (5, 'companyLogistics',   'TEDARIKCI'),
+    (6, 'carryType',          'KOLI')
+) AS v(id, code, name)
+WHERE NOT EXISTS (SELECT 1 FROM aur_lookup_table l WHERE l.lookup_code = v.code AND l.lookup_name = v.name)
+ON CONFLICT (id) DO NOTHING;
+
+-- Arayuz yalnizca uzunluk kontrolu yapar: T.C. ve telefon 11 hane olmalidir.
+-- op_type bilgi amaclidir, sofor listesi buna gore suzulmez.
+INSERT INTO aur_driver (id, driver_name, phone_number, license_plate, trailer_plate, op_type,
+                        identity_number, created_by, created_date, last_modified_by, last_modified_date)
+SELECT v.id, v.name, v.phone, v.plate, v.trailer, v.op, v.tckn, 'system', now(), 'system', now()
+FROM (VALUES
+    (1, 'Test Sofor',    '05550000001', '34ABC123', '34DRS01', 'FMK', '11111111110'),
+    (2, 'Sevkiyat Sofor','05550000002', '35XYZ456', '',        'MSK', '22222222220')
+) AS v(id, name, phone, plate, trailer, op, tckn)
+WHERE NOT EXISTS (SELECT 1 FROM aur_driver d WHERE d.driver_name = v.name)
+ON CONFLICT (id) DO NOTHING;
+
 -- ---------------------------------------------------------------- erp siparis verisi
 -- aur_erp_data, ERP entegrasyonu varken disaridan beslenen tablodur. Local modda
 -- aur_vw_firm_order_exists / aur_vw_firm_order_detail / aur_vw_firm_orderlist_bulk
@@ -367,6 +398,8 @@ SELECT setval('warehouse_seq',     GREATEST(1000, coalesce((SELECT max(id) FROM 
 SELECT setval('aur_role_seq',      GREATEST(1000, coalesce((SELECT max(id) FROM aur_role),      0) + 1), false);
 SELECT setval('aur_user_seq',      GREATEST(1000, coalesce((SELECT max(id) FROM aur_user),      0) + 1), false);
 SELECT setval('user_depo_rel_seq', GREATEST(1000, coalesce((SELECT max(id) FROM user_depo_rel), 0) + 1), false);
+SELECT setval('aur_lookup_table_seq', GREATEST(1000, coalesce((SELECT max(id) FROM aur_lookup_table), 0) + 1), false);
+SELECT setval('aur_driver_seq',       GREATEST(1000, coalesce((SELECT max(id) FROM aur_driver),       0) + 1), false);
 SELECT setval('aur_erp_data_seq',  GREATEST(1000, coalesce((SELECT max(id) FROM aur_erp_data),  0) + 1), false);
 SELECT setval('aur_adres_tip_seq',   GREATEST(1000, coalesce((SELECT max(id) FROM aur_adres_tip),   0) + 1), false);
 SELECT setval('aur_adres_bolum_seq', GREATEST(1000, coalesce((SELECT max(id) FROM aur_adres_bolum), 0) + 1), false);

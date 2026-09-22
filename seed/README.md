@@ -22,6 +22,8 @@ Iceridigi kayitlar:
 | `aur_menu` | — menuler artik seed'de degil, `2026091300000002_added_data_AurMenu.xml` changeset'inde |
 | `aur_menu_role_rel` | tum menuler `ADMIN` rolune bagli |
 | `product` | 5 demo urun (`8690000000011`..`59`) |
+| `aur_lookup_table` | irsaliye diyalogunun nakliye secenekleri: `KARAYOLU`/`DENIZYOLU`, `ANLASMALI`/`TEDARIKCI`, `PALET`/`KOLI` |
+| `aur_driver` | `Test Sofor` (mal kabul) ve `Sevkiyat Sofor` |
 | `aur_erp_data` | mal kabul (`sip_tip = 1`): 3 siparis / 7 satir, `320.01.001` ve `320.01.002` |
 | `aur_erp_data` | sevkiyat (`sip_tip = 0`): `S-3001` / 3 satir, `320.02.001` |
 | `aur_adres_*` | adres bilesenleri (tek haneli unite/kat/goz kodlari, adresler 6 hane). Merkez Depo: 1 bolum, 4 reyon, `RAF` + `KNT` + `GEC`; Yan Depo: 1 bolum, 2 reyon, `RAF` + `GEC` |
