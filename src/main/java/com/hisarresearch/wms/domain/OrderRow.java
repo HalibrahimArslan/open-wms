@@ -2,8 +2,8 @@ package com.hisarresearch.wms.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
-import javax.persistence.*;
-import javax.websocket.ClientEndpoint;
+import jakarta.persistence.*;
+import jakarta.websocket.ClientEndpoint;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;

@@ -6,7 +6,7 @@ import com.hisarresearch.wms.service.dto.base.RequestDto;
 import com.hisarresearch.wms.service.erp.ErpTokenService;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 @Service
 @Transactional

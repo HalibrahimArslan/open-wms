@@ -3,7 +3,7 @@ package com.hisarresearch.wms.service;
 import com.hisarresearch.wms.domain.AurIntegrationLogs;
 import com.hisarresearch.wms.repository.AurIntegrationLogsRepository;
 import java.util.Optional;
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

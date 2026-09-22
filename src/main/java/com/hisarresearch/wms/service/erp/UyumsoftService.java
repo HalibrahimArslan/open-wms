@@ -1,5 +1,7 @@
 package com.hisarresearch.wms.service.erp;
 
+import org.springframework.context.annotation.Lazy;
+
 import com.hisarresearch.wms.domain.AurLookupTable;
 import com.hisarresearch.wms.domain.AurOrderDetail;
 import com.hisarresearch.wms.domain.AurOrderMaster;
@@ -68,7 +70,7 @@ public class UyumsoftService {
 
     public UyumsoftService(AurLogService aurLog,
                            HttpService httpService, AurLookupService lookupService, Environment environment, CustomerService customerService,
-                           TranslationService translationService, RuleService ruleService, AurOrderMasterService aurOrderMasterService,
+                           TranslationService translationService, RuleService ruleService, @Lazy AurOrderMasterService aurOrderMasterService,
                            AddressService addressService, WebSocketClientService webSocketClientService, AurOrderDetailService aurOrderDetailService) {
         this.aurLog = aurLog;
         this.httpService = httpService;

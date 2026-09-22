@@ -23,7 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.jhipster.service.QueryService;
+import com.hisarresearch.wms.framework.service.QueryService;
 
 /**
  * Service for executing complex queries for {@link OrderPickingTransaction} entities in the database.
@@ -88,7 +88,7 @@ public class OrderPickingTransactionQueryService extends QueryService<OrderPicki
      * @return the matching {@link Specification} of the entity.
      */
     protected Specification<OrderPickingTransaction> createSpecification(OrderPickingTransactionCriteria criteria) {
-        Specification<OrderPickingTransaction> specification = Specification.where(null);
+        Specification<OrderPickingTransaction> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), OrderPickingTransaction_.id));

@@ -1,11 +1,12 @@
 package com.hisarresearch.wms.exception.validation;
 
-import com.hisarresearch.wms.exception.constants.ErrorConstants;
-import org.zalando.problem.AbstractThrowableProblem;
-import org.zalando.problem.Status;
+import com.hisarresearch.wms.exception.ProblemException;
+import org.springframework.http.HttpStatus;
 
-public class InvalidAddressException extends AbstractThrowableProblem {
+import com.hisarresearch.wms.exception.constants.ErrorConstants;
+
+public class InvalidAddressException extends ProblemException {
     public InvalidAddressException() {
-        super(ErrorConstants.INVALID_ADDRESS_INFO, "Incorrect addressInfo", Status.BAD_REQUEST);
+        super(ErrorConstants.INVALID_ADDRESS_INFO, "Incorrect addressInfo", HttpStatus.BAD_REQUEST);
     }
 }

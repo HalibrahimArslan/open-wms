@@ -1,0 +1,9 @@
+{
+  "entityName" : "address",
+  "errorKey" : "address.notFound.warehouse",
+  "message" : "error.address.notFound.warehouse",
+  "params" : "address",
+  "status" : 417,
+  "title" : "BULUNMAYAN adres 1 kodlu depoda bulunamadı",
+  "type" : "https://www.jhipster.tech/problem/problem-with-message"
+}

@@ -4,7 +4,7 @@ import com.hisarresearch.wms.domain.User;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.Locale;
 
 

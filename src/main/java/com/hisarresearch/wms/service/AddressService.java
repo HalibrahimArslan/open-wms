@@ -19,7 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -442,11 +442,11 @@ public class AddressService {
     }
 
     public AurOrderAdres findByErpOrderInfo(Long aurOrderId){
-        return aurOrderAdresRepository.findByErpOrderInfo(aurOrderId);
+        return aurOrderAdresRepository.findByErpOrderInfo(String.valueOf(aurOrderId));
     }
 
     public AurOrderAdres findByMagentoOrderId(Long magentoOrderId){
-        return aurOrderAdresRepository.findByMagentoOrderId(magentoOrderId);
+        return aurOrderAdresRepository.findByMagentoOrderId(String.valueOf(magentoOrderId));
     }
 
     public void orderAdres(List<AurOrderAdres> orderAdresList) {

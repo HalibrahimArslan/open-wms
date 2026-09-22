@@ -3,7 +3,7 @@ package com.hisarresearch.wms.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import groovy.transform.AutoClone;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
 

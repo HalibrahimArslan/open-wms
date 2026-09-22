@@ -5,7 +5,7 @@ import com.hisarresearch.wms.domain.AurOrderDetail;
 import com.hisarresearch.wms.domain.address.AurDepoUrunAdres;
 
 import javax.annotation.Nullable;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;

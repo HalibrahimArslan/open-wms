@@ -1,6 +1,6 @@
 package com.hisarresearch.wms.service.dto;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 public class AurErpDataDto {
 

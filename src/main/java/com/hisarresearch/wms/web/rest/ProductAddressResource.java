@@ -27,11 +27,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import tech.jhipster.web.util.PaginationUtil;
+import com.hisarresearch.wms.framework.web.util.PaginationUtil;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.validation.Valid;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

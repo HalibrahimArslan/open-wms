@@ -1,34 +1,29 @@
 package com.hisarresearch.wms.config;
 
-import static java.net.URLDecoder.decode;
-
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import java.util.*;
-import javax.servlet.*;
+import jakarta.servlet.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.web.server.*;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
-import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import tech.jhipster.config.JHipsterConstants;
-import tech.jhipster.config.JHipsterProperties;
+import org.springframework.web.filter.UrlHandlerFilter;
+import com.hisarresearch.wms.framework.config.JHipsterConstants;
+import com.hisarresearch.wms.framework.config.JHipsterProperties;
 
 /**
  * Configuration of web application with Servlet 3.0 APIs.
  */
 @Configuration
-public class WebConfigurer implements ServletContextInitializer, WebServerFactoryCustomizer<WebServerFactory> {
+public class WebConfigurer implements ServletContextInitializer {
 
     private final Logger log = LoggerFactory.getLogger(WebConfigurer.class);
 
@@ -51,44 +46,17 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
     }
 
     /**
-     * Customize the Servlet engine: Mime types, the document root, the cache.
+     * Spring Boot 2'de {@code /api/x/} istegi {@code /api/x} ucuna eslesiyordu; Spring 6 bunu
+     * kaldirdi. Arayuzun sonu / ile biten cagrilari bozulmasin diye / istek guvenlik
+     * zincirinden once kirpilir.
      */
-    @Override
-    public void customize(WebServerFactory server) {
-        // When running in an IDE or with ./mvnw spring-boot:run, set location of the static web assets.
-        setLocationForStaticAssets(server);
-    }
-
-    private void setLocationForStaticAssets(WebServerFactory server) {
-        if (server instanceof ConfigurableServletWebServerFactory) {
-            ConfigurableServletWebServerFactory servletWebServer = (ConfigurableServletWebServerFactory) server;
-            File root;
-            String prefixPath = resolvePathPrefix();
-            root = new File(prefixPath + "target/classes/static/");
-            if (root.exists() && root.isDirectory()) {
-                servletWebServer.setDocumentRoot(root);
-            }
-        }
-    }
-
-    /**
-     * Resolve path prefix to static resources.
-     */
-    private String resolvePathPrefix() {
-        String fullExecutablePath;
-        try {
-            fullExecutablePath = decode(this.getClass().getResource("").getPath(), StandardCharsets.UTF_8.name());
-        } catch (UnsupportedEncodingException e) {
-            /* try without decoding if this ever happens */
-            fullExecutablePath = this.getClass().getResource("").getPath();
-        }
-        String rootPath = Paths.get(".").toUri().normalize().getPath();
-        String extractedPath = fullExecutablePath.replace(rootPath, "");
-        int extractionEndIndex = extractedPath.indexOf("target/");
-        if (extractionEndIndex <= 0) {
-            return "";
-        }
-        return extractedPath.substring(0, extractionEndIndex);
+    @Bean
+    public FilterRegistrationBean<UrlHandlerFilter> trailingSlashFilter() {
+        FilterRegistrationBean<UrlHandlerFilter> registration = new FilterRegistrationBean<>(
+            UrlHandlerFilter.trailingSlashHandler("/api/**", "/management/**").wrapRequest().build()
+        );
+        registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        return registration;
     }
 
     @Bean

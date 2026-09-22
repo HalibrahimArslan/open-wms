@@ -20,15 +20,13 @@ management:
       base-path: /management
       exposure:
         include:
-          ['configprops', 'env', 'health', 'info', 'jhimetrics', 'logfile', 'loggers', 'prometheus', 'threaddump', 'caches', 'liquibase']
+          ['configprops', 'env', 'health', 'info', 'logfile', 'loggers', 'prometheus', 'threaddump', 'caches', 'liquibase']
   endpoint:
     health:
       show-details: WHEN_AUTHORIZED
       roles: 'ROLE_ADMIN'
       probes:
         enabled: true
-    jhimetrics:
-      enabled: true
   info:
     git:
       mode: full
@@ -40,12 +38,12 @@ management:
         include: readinessState,datasource
     mail:
       enabled: false # When using the MailService, configure an SMTP server and set this to true
-  metrics:
-    export:
-      # Prometheus is the default metrics backend
-      prometheus:
+  prometheus:
+    metrics:
+      export:
         enabled: true
         step: 60
+  metrics:
     enable:
       http: true
       jvm: true
@@ -59,15 +57,14 @@ management:
         all: 0, 0.5, 0.75, 0.95, 0.99, 1.0
     tags:
       application: ${spring.application.name}
-    web:
-      server:
-        request:
-          autotime:
-            enabled: true
 
 spring:
   application:
     name: wms
+  jackson:
+    # Jackson 3 (Boot 4) varsayilanlari yerine Boot'un Jackson 2 varsayilanlari; istek/cevap
+    # davranisi (null -> primitive, tarih bicimi, alan sirasi) gecisten once oldugu gibi kalir
+    use-jackson2-defaults: true
   profiles:
     # The commented value for `active` can be replaced with valid Spring profiles to load.
     # Otherwise, it will be filled in by maven when building the JAR file
@@ -103,8 +100,8 @@ spring:
     hibernate:
       ddl-auto: none
       naming:
-        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
-        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+        implicit-strategy: org.springframework.boot.hibernate.SpringImplicitNamingStrategy
   messages:
     basename: i18n/messages
     encoding: UTF-8
@@ -131,6 +128,14 @@ spring:
     multipart:
       max-request-size: 20MB
       max-file-size:  20MB
+
+# OpenAPI dokumani ve Swagger arayuzu varsayilan olarak kapali; api-docs profili
+# (dev grubunun parcasi) application-api-docs.yml ile acar.
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
 
 server:
   servlet:
@@ -164,18 +169,6 @@ jhipster:
   mail:
     #from: test@gmail.com
     from: test@gmail.com
-  api-docs:
-    default-include-pattern: ${server.servlet.context-path:}/api/.*
-    management-include-pattern: ${server.servlet.context-path:}/management/.*
-    title: wms API
-    description: wms API documentation
-    version: 0.0.1
-    terms-of-service-url:
-    contact-name:
-    contact-url:
-    contact-email:
-    license: unlicensed
-    license-url:
   security:
     content-security-policy: "default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:"
 # ===================================================================

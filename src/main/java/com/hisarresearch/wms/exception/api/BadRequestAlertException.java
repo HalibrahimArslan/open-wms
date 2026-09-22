@@ -1,14 +1,16 @@
 package com.hisarresearch.wms.exception.api;
 
+import com.hisarresearch.wms.exception.ProblemException;
+import org.springframework.http.HttpStatus;
+
 import java.net.URI;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.hisarresearch.wms.exception.constants.ErrorConstants;
-import org.zalando.problem.AbstractThrowableProblem;
-import org.zalando.problem.Status;
 
-public class BadRequestAlertException extends AbstractThrowableProblem {
+public class BadRequestAlertException extends ProblemException {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,7 +23,7 @@ public class BadRequestAlertException extends AbstractThrowableProblem {
     }
 
     public BadRequestAlertException(URI type, String defaultMessage, String entityName, String errorKey) {
-        super(type, defaultMessage, Status.BAD_REQUEST, null, null, null, getAlertParameters(entityName, errorKey));
+        super(type, defaultMessage, HttpStatus.BAD_REQUEST, null, getAlertParameters(entityName, errorKey));
         this.entityName = entityName;
         this.errorKey = errorKey;
     }
@@ -32,6 +34,14 @@ public class BadRequestAlertException extends AbstractThrowableProblem {
 
     public String getErrorKey() {
         return errorKey;
+    }
+
+    @Override
+    protected Map<String, Object> extraProperties() {
+        Map<String, Object> properties = new LinkedHashMap<>();
+        properties.put("entityName", entityName);
+        properties.put("errorKey", errorKey);
+        return properties;
     }
 
     private static Map<String, Object> getAlertParameters(String entityName, String errorKey) {

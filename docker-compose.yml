@@ -5,12 +5,17 @@
 #   docker compose logs -f app         -> uygulama logları
 #   docker compose down -v             -> her şeyi sil (DB dahil)
 #
+#   docker compose start / stop        -> var olan konteynerleri başlat / durdur
+#
+# Konteynerler bilgisayar açılınca kendiliğinden başlamaz (restart politikası yok);
+# ortam yalnızca yukarıdaki komutlarla ayağa kalkar.
+#
 # Değerleri ezmek için ana dizine .env koyabilirsin (bkz. .env.example).
 name: wms
 
 services:
   postgres:
-    image: postgres:18
+    image: postgres:18.6
     container_name: wms-postgres
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-wms}
@@ -26,7 +31,6 @@ services:
       interval: 5s
       timeout: 5s
       retries: 30
-    restart: unless-stopped
 
   # Lokal SMTP sunucusu. Gönderilen mailler dışarı çıkmaz, http://localhost:8025 adresinden okunur.
   mail:
@@ -37,7 +41,6 @@ services:
     ports:
       - '${MAILPIT_UI_PORT:-8025}:8025'
       - '${MAILPIT_SMTP_PORT:-1025}:1025'
-    restart: unless-stopped
 
   # S3 uyumlu obje deposu. API :9000, web konsolu :9001
   minio:
@@ -58,7 +61,6 @@ services:
       interval: 5s
       timeout: 5s
       retries: 30
-    restart: unless-stopped
 
   # Bildirim websocket sunucusu (../websocket-server, open-wms ile ayni "wms"
   # dizininin altinda, ayri bir Node.js projesi).
@@ -80,7 +82,6 @@ services:
       interval: 5s
       timeout: 5s
       retries: 20
-    restart: unless-stopped
 
   app:
     build:
@@ -129,22 +130,15 @@ services:
       MINIO_SECRETKEY: ${MINIO_SECRET_KEY:-wmsadmin123}
       MINIO_BUCKETNAME: ${MINIO_BUCKET:-wms}
 
-      # Konfigürasyonda Windows yolu (C:\pdf\) yazılı, linux container için ezildi
-      PDF_DIRECTORY: /app/pdf/
-
     ports:
       - '${APP_PORT:-8080}:8080'
-    volumes:
-      - pdf:/app/pdf
     healthcheck:
       test: ['CMD-SHELL', 'curl -fs http://localhost:8080/management/health || exit 1']
       interval: 15s
       timeout: 5s
       retries: 20
       start_period: 90s
-    restart: unless-stopped
 
 volumes:
   pgdata:
-  pdf:
   miniodata:

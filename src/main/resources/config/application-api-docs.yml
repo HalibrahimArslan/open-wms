@@ -1,0 +1,15 @@
+# ===================================================================
+# "api-docs" profili: OpenAPI dokumani (/v3/api-docs) ve Swagger arayuzu
+# (/swagger-ui/index.html). dev profil grubu bu profili icerir; prod'da
+# ancak acikca eklenirse (--spring.profiles.active=prod,api-docs) acilir.
+# ===================================================================
+
+springdoc:
+  # Dokumana yalnizca uygulamanin REST uclari girer
+  paths-to-match: /api/**
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    # JWT "Authorize" ile girildikten sonra sayfa yenilense de korunsun
+    persist-authorization: true

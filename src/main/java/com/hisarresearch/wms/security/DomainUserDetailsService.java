@@ -4,7 +4,7 @@ import com.hisarresearch.wms.domain.User;
 import com.hisarresearch.wms.repository.UserRepository;
 import java.util.*;
 import java.util.stream.Collectors;
-import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
+import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;

@@ -8,7 +8,7 @@ import com.hisarresearch.wms.domain.User;
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 
 /**
  * A DTO representing a user, with his authorities.
@@ -35,7 +35,7 @@ public class AdminUserDTO {
     @Size(max = 256)
     private String imageUrl;
 
-    private int companyCode;
+    private Integer companyCode;
 
     private boolean activated = false;
 
@@ -205,11 +205,11 @@ public class AdminUserDTO {
         this.roles = roles;
     }
 
-    public int getCompanyCode() {
+    public Integer getCompanyCode() {
         return companyCode;
     }
 
-    public void setCompanyCode(int companyCode) {
+    public void setCompanyCode(Integer companyCode) {
         this.companyCode = companyCode;
     }
 

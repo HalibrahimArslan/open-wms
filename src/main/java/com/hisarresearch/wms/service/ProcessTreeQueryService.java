@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.jhipster.service.QueryService;
+import com.hisarresearch.wms.framework.service.QueryService;
 
 import java.util.List;
 
@@ -69,7 +69,7 @@ public class ProcessTreeQueryService extends QueryService<ProcessTree> {
      * @return the matching {@link Specification} of the entity.
      */
     protected Specification<ProcessTree> createSpecification(ProcessTreeCriteria criteria) {
-        Specification<ProcessTree> specification = Specification.where(null);
+        Specification<ProcessTree> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), ProcessTree_.id));

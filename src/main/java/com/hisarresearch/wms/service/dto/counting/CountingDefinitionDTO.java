@@ -2,17 +2,10 @@ package com.hisarresearch.wms.service.dto.counting;
 
 import com.hisarresearch.wms.domain.enumeration.CountingType;
 import com.hisarresearch.wms.domain.enumeration.SayimDurumu;
-import com.vladmihalcea.hibernate.type.array.StringArrayType;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
 
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.time.Instant;
-@TypeDef(
-    name = "pgsql_text_array",
-    typeClass = StringArrayType.class
-)
 public class CountingDefinitionDTO {
     private Long id;
 
@@ -34,7 +27,6 @@ public class CountingDefinitionDTO {
     private String sayimiOnaylayanKullanici;
 
     @NotNull
-    @Type(type = "pgsql_text_array")
     private String[] visibilityAuthorities;
 
     private CountingType countingType;

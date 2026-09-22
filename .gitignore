@@ -92,7 +92,6 @@ out/
 # Package Files
 ######################
 *.jar
-!elastic-apm-agent-1.52.1.jar
 *.war
 *.ear
 *.db
@@ -146,7 +145,6 @@ Desktop.ini
 ######################
 # Maven Wrapper
 ######################
-!.mvn/wrapper/maven-wrapper.jar
 
 ######################
 # ESLint

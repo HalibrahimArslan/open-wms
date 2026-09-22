@@ -11,9 +11,9 @@ public final class AuthoritiesConstants {
 
     public static final String ANONYMOUS = "ROLE_ANONYMOUS";
 
-    public static final String COUNTER = "ROLE_COUNTER";
+    public static final String COUNTER = "COUNTER";
 
-    public static final String CHECKER = "ROLE_CHECKER";
+    public static final String CHECKER = "CHECKER";
 
     public static final String MINIO = "ROLE_MINIO";
 

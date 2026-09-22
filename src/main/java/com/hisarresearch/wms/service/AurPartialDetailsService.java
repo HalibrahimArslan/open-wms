@@ -1,5 +1,7 @@
 package com.hisarresearch.wms.service;
 
+import org.springframework.context.annotation.Lazy;
+
 import com.hisarresearch.wms.domain.AurPartialDetails;
 import com.hisarresearch.wms.domain.AurPartialItem;
 import com.hisarresearch.wms.repository.AurPartialDetailsRepository;
@@ -38,7 +40,7 @@ public class AurPartialDetailsService {
 
     public AurPartialDetailsService(
         AurPartialDetailsRepository aurPartialDetailsRepository,
-        AurPartialDetailsMapper aurPartialDetailsMapper, UserService userService, MikroServices mikroServices, AurOrderDetailService aurOrderDetailService
+        AurPartialDetailsMapper aurPartialDetailsMapper, UserService userService, MikroServices mikroServices, @Lazy AurOrderDetailService aurOrderDetailService
     ) {
         this.aurPartialDetailsRepository = aurPartialDetailsRepository;
         this.aurPartialDetailsMapper = aurPartialDetailsMapper;

@@ -22,14 +22,24 @@ ON CONFLICT (id) DO NOTHING;
 INSERT INTO warehouse (id, code, name, company_code, is_real, countable,
                        transfer_code, auto_scan, unique_picking_address,
                        picking_rule_type, receiving_code)
-VALUES (1, '1', 'Merkez Depo', '1', true, true, '1', false, false, 'DEFAULT', '0')
+VALUES (1, '1', 'Merkez Depo', '1', true, true, '1', false, false, 'DEFAULT', '1')
+ON CONFLICT (id) DO NOTHING;
+
+-- Yan Depo, depolar arasi transferi ve gecici adresten yerlestirmeyi denemek icindir.
+-- Mal kabul ve transfer, urunu deponun receiving_code'u ile bulunan gecici adrese
+-- koyar; bu yuzden iki depoda da receiving_code depo koduyla ayni ve her depoda tek
+-- bir gecici adres vardir (A99111, B99111).
+INSERT INTO warehouse (id, code, name, company_code, is_real, countable,
+                       transfer_code, auto_scan, unique_picking_address,
+                       picking_rule_type, receiving_code)
+VALUES (2, '2', 'Yan Depo', '1', true, true, '2', false, false, 'DEFAULT', '2')
 ON CONFLICT (id) DO NOTHING;
 
 -- transfer_code, UI'in adres/stok sorgularinda depo kodu yerine kullandigi degerdir
--- (Sevkiyat ekrani adresleri ve kontrol adresini bu koda gore ariyor). Lokalde tek
--- depo oldugu icin depo koduyla ayni olmali; seed'i daha once calistirmis
--- veritabanlarinda da duzeltilir.
-UPDATE warehouse SET transfer_code = code WHERE id = 1;
+-- (Sevkiyat ekrani adresleri ve kontrol adresini bu koda gore ariyor); receiving_code
+-- ise gecici adresin aranacagi depodur. Lokalde ikisi de depo koduyla ayni olmali;
+-- seed'i daha once calistirmis veritabanlarinda da duzeltilir.
+UPDATE warehouse SET transfer_code = code, receiving_code = code WHERE id = 1;
 
 -- ------------------------------------------------- kullanicilarin sirketi
 UPDATE aur_user SET company_code = 1 WHERE login IN ('admin', 'user') AND company_code IS NULL;
@@ -57,10 +67,24 @@ INSERT INTO aur_user_role_rel (user_id, role_id)
 SELECT u.id, 1 FROM aur_user u WHERE u.login IN ('admin', 'user')
 ON CONFLICT DO NOTHING;
 
+-- ---------------------------------------------------------------- sayim yetkisi
+-- El terminalindeki sayim listesi, sayim tanimindaki gorunurluk yetkisini (COUNTER /
+-- CHECKER) kullanicinin yetkileriyle karsilastirir. admin'e COUNTER verilir ki
+-- sayim lokalde dogrudan denenebilsin.
+INSERT INTO jhi_user_authority (user_id, authority_name)
+SELECT u.id, 'COUNTER' FROM aur_user u WHERE u.login = 'admin'
+ON CONFLICT DO NOTHING;
+
 -- ---------------------------------------------------------------- depo yetkisi
 INSERT INTO user_depo_rel (id, user_id, warehouse_id, created_by, created_date)
 SELECT u.id, u.id, 1, 'system', now()
 FROM aur_user u WHERE u.login IN ('admin', 'user')
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO user_depo_rel (id, user_id, warehouse_id, created_by, created_date)
+SELECT u.id + 2, u.id, 2, 'system', now()
+FROM aur_user u WHERE u.login IN ('admin', 'user')
+  AND NOT EXISTS (SELECT 1 FROM user_depo_rel r WHERE r.user_id = u.id AND r.warehouse_id = 2)
 ON CONFLICT (id) DO NOTHING;
 
 -- ---------------------------------------------------------------- menuler
@@ -91,6 +115,37 @@ VALUES
     ('8690000000042', '1', 'STK-004', 'Kose Baglanti Sac 90',  'SAC',      'Profil', 'ADET', 0, 'Lokal demo urunu', false, false),
     ('8690000000059', '1', 'STK-005', 'Ray Profil 2m',         'SAC',      'Profil', 'MT',   0, 'Lokal demo urunu', false, false)
 ON CONFLICT (barkod, company_code) DO NOTHING;
+
+-- ---------------------------------------------------------------- nakliye ve sofor
+-- Mal kabul ve sevkiyatin irsaliye diyalogu, kapanmadan once Logistic Tipi
+-- (transportationType), Firma Tipi (companyLogistics) ve Yukleme Tipi (carryType)
+-- secimi ile tanimli bir sofor ister. Arayuz lookup degerlerini buyuk harfe cevirerek
+-- kaydettigi icin seed'deki adlar da buyuk harftir. Ayni kod ve ad zaten varsa
+-- (orn. arayuzden "Ekle" ile eklenmisse) satir tekrar eklenmez.
+INSERT INTO aur_lookup_table (id, lookup_code, lookup_name, lookup_description)
+SELECT v.id, v.code, v.name, '-'
+FROM (VALUES
+    (1, 'transportationType', 'KARAYOLU'),
+    (2, 'companyLogistics',   'ANLASMALI'),
+    (3, 'carryType',          'PALET'),
+    (4, 'transportationType', 'DENIZYOLU'),
+    (5, 'companyLogistics',   'TEDARIKCI'),
+    (6, 'carryType',          'KOLI')
+) AS v(id, code, name)
+WHERE NOT EXISTS (SELECT 1 FROM aur_lookup_table l WHERE l.lookup_code = v.code AND l.lookup_name = v.name)
+ON CONFLICT (id) DO NOTHING;
+
+-- Arayuz yalnizca uzunluk kontrolu yapar: T.C. ve telefon 11 hane olmalidir.
+-- op_type bilgi amaclidir, sofor listesi buna gore suzulmez.
+INSERT INTO aur_driver (id, driver_name, phone_number, license_plate, trailer_plate, op_type,
+                        identity_number, created_by, created_date, last_modified_by, last_modified_date)
+SELECT v.id, v.name, v.phone, v.plate, v.trailer, v.op, v.tckn, 'system', now(), 'system', now()
+FROM (VALUES
+    (1, 'Test Sofor',    '05550000001', '34ABC123', '34DRS01', 'FMK', '11111111110'),
+    (2, 'Sevkiyat Sofor','05550000002', '35XYZ456', '',        'MSK', '22222222220')
+) AS v(id, name, phone, plate, trailer, op, tckn)
+WHERE NOT EXISTS (SELECT 1 FROM aur_driver d WHERE d.driver_name = v.name)
+ON CONFLICT (id) DO NOTHING;
 
 -- ---------------------------------------------------------------- erp siparis verisi
 -- aur_erp_data, ERP entegrasyonu varken disaridan beslenen tablodur. Local modda
@@ -145,31 +200,43 @@ ON CONFLICT (id) DO NOTHING;
 -- uzerindeki bilesik yabanci anahtarlarin karsiligidir; bunlar olmadan adres eklenemez.
 -- Adres metni, AddressService.generateAddress kuralindaki gibi bilesen kodlarinin
 -- sirayla birlestirilmesiyle olusur: bolum + reyon + unite + kat + goz.
+-- Arayuzdeki adres okutma alani (AddressBarcode) 6 haneli adres bekledigi icin
+-- unite, kat ve goz kodlari tek hanedir: A + 01 + 1 + 1 + 1 = A01111.
 INSERT INTO aur_adres_tip (id, code, description, status, company_code, depo_code) VALUES
     (1, 'RAF', 'Raf Adresi',     true, '1', '1'),
-    (2, 'KNT', 'Kontrol Adresi', true, '1', '1')
+    (2, 'KNT', 'Kontrol Adresi', true, '1', '1'),
+    (5, 'GEC', 'Gecici Adres',   true, '1', '1'),
+    (3, 'RAF', 'Raf Adresi',     true, '1', '2'),
+    (4, 'GEC', 'Gecici Adres',   true, '1', '2')
 ON CONFLICT (code, depo_code, company_code) DO NOTHING;
 
 INSERT INTO aur_adres_bolum (id, code, description, status, company_code, depo_code) VALUES
-    (1, 'A', 'A Bolumu', true, '1', '1')
+    (1, 'A', 'A Bolumu', true, '1', '1'),
+    (2, 'B', 'B Bolumu', true, '1', '2')
 ON CONFLICT (code, depo_code, company_code) DO NOTHING;
 
 INSERT INTO aur_adres_reyon (id, code, description, status, company_code, depo_code) VALUES
     (1, '01', '1. Reyon',       true, '1', '1'),
     (2, '02', '2. Reyon',       true, '1', '1'),
-    (3, '03', 'Kontrol Reyonu', true, '1', '1')
+    (3, '03', 'Kontrol Reyonu', true, '1', '1'),
+    (6, '99', 'Gecici Reyon',   true, '1', '1'),
+    (4, '01', '1. Reyon',       true, '1', '2'),
+    (5, '99', 'Gecici Reyon',   true, '1', '2')
 ON CONFLICT (code, depo_code, company_code) DO NOTHING;
 
 INSERT INTO aur_adres_unite (id, code, description, status, company_code, depo_code) VALUES
-    (1, '01', '1. Unite', true, '1', '1')
+    (1, '1', '1. Unite', true, '1', '1'),
+    (2, '1', '1. Unite', true, '1', '2')
 ON CONFLICT (code, depo_code, company_code) DO NOTHING;
 
 INSERT INTO aur_adres_kat (id, code, description, status, company_code, depo_code) VALUES
-    (1, '01', '1. Kat', true, '1', '1')
+    (1, '1', '1. Kat', true, '1', '1'),
+    (2, '1', '1. Kat', true, '1', '2')
 ON CONFLICT (code, depo_code, company_code) DO NOTHING;
 
 INSERT INTO aur_adres_oda (id, code, description, status, company_code, depo_code) VALUES
-    (1, '01', '1. Goz', true, '1', '1')
+    (1, '1', '1. Goz', true, '1', '1'),
+    (2, '1', '1. Goz', true, '1', '2')
 ON CONFLICT (code, depo_code, company_code) DO NOTHING;
 
 -- toplama_gozu = true olan adresler toplama onerisine girer (DefaultStrategy yalnizca
@@ -180,9 +247,13 @@ INSERT INTO aur_depo_urun_adres (id, status, adres, depo_no, company_code, adres
                                  gecici_adres, toplama_gozu, kontrol_adres, countable,
                                  created_by, created_date, last_modified_by, last_modified_date)
 VALUES
-    (1, true, 'A01010101', '1', '1', 'RAF', 'A', '01', '01', '01', '01', false, true,  false, true,  'system', now(), 'system', now()),
-    (2, true, 'A02010101', '1', '1', 'RAF', 'A', '02', '01', '01', '01', false, true,  false, true,  'system', now(), 'system', now()),
-    (3, true, 'A03010101', '1', '1', 'KNT', 'A', '03', '01', '01', '01', false, false, true,  false, 'system', now(), 'system', now())
+    (1, true, 'A01111', '1', '1', 'RAF', 'A', '01', '1', '1', '1', false, true,  false, true,  'system', now(), 'system', now()),
+    (2, true, 'A02111', '1', '1', 'RAF', 'A', '02', '1', '1', '1', false, true,  false, true,  'system', now(), 'system', now()),
+    (3, true, 'A03111', '1', '1', 'KNT', 'A', '03', '1', '1', '1', false, false, true,  false, 'system', now(), 'system', now()),
+    (6, true, 'A99111', '1', '1', 'GEC', 'A', '99', '1', '1', '1', true,  false, false, false, 'system', now(), 'system', now()),
+    -- Yan Depo: gecici adres ve bir toplama gozu
+    (4, true, 'B99111', '2', '1', 'GEC', 'B', '99', '1', '1', '1', true,  false, false, false, 'system', now(), 'system', now()),
+    (5, true, 'B01111', '2', '1', 'RAF', 'B', '01', '1', '1', '1', false, true,  false, true,  'system', now(), 'system', now())
 ON CONFLICT (company_code, depo_no, adres) DO NOTHING;
 
 -- ------------------------------------------------------------- adreslerdeki stok
@@ -327,6 +398,8 @@ SELECT setval('warehouse_seq',     GREATEST(1000, coalesce((SELECT max(id) FROM 
 SELECT setval('aur_role_seq',      GREATEST(1000, coalesce((SELECT max(id) FROM aur_role),      0) + 1), false);
 SELECT setval('aur_user_seq',      GREATEST(1000, coalesce((SELECT max(id) FROM aur_user),      0) + 1), false);
 SELECT setval('user_depo_rel_seq', GREATEST(1000, coalesce((SELECT max(id) FROM user_depo_rel), 0) + 1), false);
+SELECT setval('aur_lookup_table_seq', GREATEST(1000, coalesce((SELECT max(id) FROM aur_lookup_table), 0) + 1), false);
+SELECT setval('aur_driver_seq',       GREATEST(1000, coalesce((SELECT max(id) FROM aur_driver),       0) + 1), false);
 SELECT setval('aur_erp_data_seq',  GREATEST(1000, coalesce((SELECT max(id) FROM aur_erp_data),  0) + 1), false);
 SELECT setval('aur_adres_tip_seq',   GREATEST(1000, coalesce((SELECT max(id) FROM aur_adres_tip),   0) + 1), false);
 SELECT setval('aur_adres_bolum_seq', GREATEST(1000, coalesce((SELECT max(id) FROM aur_adres_bolum), 0) + 1), false);

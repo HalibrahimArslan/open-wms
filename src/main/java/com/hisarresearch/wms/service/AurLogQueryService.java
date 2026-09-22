@@ -12,7 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.jhipster.service.QueryService;
+import com.hisarresearch.wms.framework.service.QueryService;
 
 import java.util.List;
 
@@ -50,7 +50,7 @@ public class AurLogQueryService extends QueryService<AurIntegrationLogs> {
 
 
     protected Specification<AurIntegrationLogs> createSpecification(AurLogCriteria criteria) {
-        Specification<AurIntegrationLogs> specification = Specification.where(null);
+        Specification<AurIntegrationLogs> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getLogId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getLogId(), AurIntegrationLogs_.logId));

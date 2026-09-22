@@ -64,8 +64,31 @@ yazıldığında ortak bir yanıt şekli (`ErpOperationResult` gibi) sabitlenmel
 | `dispatchOrder(token, apiPath, SevkiyatRequestDto)` | Müşteriye sevkiyat | `POST {apiPath}/sevkiyatYap` |
 | `generateBarcode(token, apiPath, stokKod)` | Stok kodundan barkod üretimi | `GET {apiPath}/produceBarkod/{stokKod}` |
 
-Yerel adaptör (`LocalOrderGateway`) bu üçü için `ErpOperationResult.notImplemented(...)`
-döner — istisna fırlatmaz, ekran akışı yerelde de bozulmaz.
+Yerel adaptör (`LocalOrderGateway`) barkod üretimi için
+`ErpOperationResult.notImplemented(...)` döner — istisna fırlatmaz, ekran akışı
+yerelde de bozulmaz. Mal kabul ve sevkiyat yerelde uygulanmıştır: ikisi de Mikro'yla
+aynı WMS adımlarını çalıştırır, ardından `aur_erp_data`'da satırın
+`sip_teslim_miktar` değerini artırır ve `success = true` döner; adımlardan biri hata
+verirse hepsi geri alınır.
+
+- Mal kabul: `ReceivingAddressService.completeReceivingAddressOperation`,
+  `AurOrderMasterService.completeReceiving`.
+- Sevkiyat: `AurDepoUrunAdresStokService.deleteProductsFromControlAreaByOrder`,
+  `AurOrderMasterService.completeDispatcher`.
+
+Mikro'daki rezerve listesi ve sipariş maili yerelde yoktur; sevkiyatta ERP belge
+numarası oluşmaz.
+
+Kanonik şekle geçmiş ilk yazma metodu depolar arası transferdir:
+
+| Metot | İş | Mikro'da gerçek karşılığı |
+|---|---|---|
+| `interWarehouseTransfer(token, apiPath, DepolarArasiTransferErpDto)` → `ErpOperationResult` | Depolar arası transferin ERP'ye bildirimi; `reference` ERP belge numarası | `POST {apiPath}/depolarArasiTransferYap` |
+
+Yerel adaptör ERP'ye bir şey göndermeden `success = true` döner (stok hareketini
+WMS zaten yapar). `success = false` dönerse `DepolarArasiTransferService` istisna
+fırlatır; servis `rollbackOn = Exception.class` ile işaretli olduğu için yerel stok
+hareketi de geri alınır.
 
 ```java
 public class ErpOperationResult {

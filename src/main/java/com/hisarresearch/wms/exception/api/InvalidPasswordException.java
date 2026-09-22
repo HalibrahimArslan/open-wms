@@ -1,14 +1,15 @@
 package com.hisarresearch.wms.exception.api;
 
-import com.hisarresearch.wms.exception.constants.ErrorConstants;
-import org.zalando.problem.AbstractThrowableProblem;
-import org.zalando.problem.Status;
+import com.hisarresearch.wms.exception.ProblemException;
+import org.springframework.http.HttpStatus;
 
-public class InvalidPasswordException extends AbstractThrowableProblem {
+import com.hisarresearch.wms.exception.constants.ErrorConstants;
+
+public class InvalidPasswordException extends ProblemException {
 
     private static final long serialVersionUID = 1L;
 
     public InvalidPasswordException() {
-        super(ErrorConstants.INVALID_PASSWORD_TYPE, "Incorrect password", Status.BAD_REQUEST);
+        super(ErrorConstants.INVALID_PASSWORD_TYPE, "Incorrect password", HttpStatus.BAD_REQUEST);
     }
 }

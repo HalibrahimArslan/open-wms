@@ -19,11 +19,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import tech.jhipster.web.util.HeaderUtil;
-import tech.jhipster.web.util.PaginationUtil;
-import tech.jhipster.web.util.ResponseUtil;
+import com.hisarresearch.wms.framework.web.util.HeaderUtil;
+import com.hisarresearch.wms.framework.web.util.PaginationUtil;
+import com.hisarresearch.wms.framework.web.util.ResponseUtil;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;

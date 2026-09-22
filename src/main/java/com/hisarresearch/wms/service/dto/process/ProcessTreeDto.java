@@ -3,7 +3,7 @@ package com.hisarresearch.wms.service.dto.process;
 import com.hisarresearch.wms.domain.address.AurDepoUrunAdres;
 import com.hisarresearch.wms.domain.enumeration.ProcessType;
 
-import javax.validation.constraints.Null;
+import jakarta.validation.constraints.Null;
 import java.util.List;
 
 public class ProcessTreeDto {

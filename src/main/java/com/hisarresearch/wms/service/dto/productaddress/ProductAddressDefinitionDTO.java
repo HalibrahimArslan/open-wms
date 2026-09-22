@@ -3,9 +3,9 @@ package com.hisarresearch.wms.service.dto.productaddress;
 import com.hisarresearch.wms.domain.ProductAddressSkt;
 
 import javax.annotation.Nullable;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 public class ProductAddressDefinitionDTO {

@@ -1,16 +1,15 @@
 package com.hisarresearch.wms.config;
 
-import static tech.jhipster.config.logging.LoggingUtils.*;
+import static com.hisarresearch.wms.framework.config.logging.LoggingUtils.*;
 
 import ch.qos.logback.classic.LoggerContext;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import tech.jhipster.config.JHipsterProperties;
+import com.hisarresearch.wms.framework.config.JHipsterProperties;
 
 /*
  * Configures the console and Logstash log appenders from the app properties
@@ -22,8 +21,8 @@ public class LoggingConfiguration {
         @Value("${spring.application.name}") String appName,
         @Value("${server.port}") String serverPort,
         JHipsterProperties jHipsterProperties,
-        ObjectMapper mapper
-    ) throws JsonProcessingException {
+        JsonMapper mapper
+    ) {
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
 
         Map<String, String> map = new HashMap<>();

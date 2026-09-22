@@ -1,5 +1,7 @@
 package com.hisarresearch.wms.service;
 
+import org.springframework.context.annotation.Lazy;
+
 import com.hisarresearch.wms.domain.AurOrderDetail;
 import com.hisarresearch.wms.domain.AurOrderMaster;
 import com.hisarresearch.wms.domain.barcode.PalletBarcode;
@@ -35,6 +37,7 @@ public class PalletBarcodeOrderRelService {
     @Autowired
     private  PalletBarcodeService palletBarcodeService;
 
+    @Lazy
     @Autowired
     private AurOrderMasterService aurOrderMasterService;
 

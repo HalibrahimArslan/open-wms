@@ -1,14 +1,16 @@
 package com.hisarresearch.wms.exception.business;
 
+import com.hisarresearch.wms.exception.ProblemException;
+import org.springframework.http.HttpStatus;
+
 import com.hisarresearch.wms.exception.constants.ErrorConstants;
-import org.zalando.problem.AbstractThrowableProblem;
-import org.zalando.problem.Status;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class BusinessException extends AbstractThrowableProblem {
+public class BusinessException extends ProblemException {
     private static final long serialVersionUID = 1L;
 
     private final String entityName;
@@ -24,7 +26,7 @@ public class BusinessException extends AbstractThrowableProblem {
     }
 
     public BusinessException(URI type, String defaultMessage, String entityName, String errorKey) {
-        super(type, defaultMessage, Status.EXPECTATION_FAILED, null, null, null, getAlertParameters(entityName, errorKey));
+        super(type, defaultMessage, HttpStatus.EXPECTATION_FAILED, null, getAlertParameters(entityName, errorKey));
         this.entityName = entityName;
         this.errorKey = errorKey;
     }
@@ -35,6 +37,14 @@ public class BusinessException extends AbstractThrowableProblem {
 
     public String getErrorKey() {
         return errorKey;
+    }
+
+    @Override
+    protected Map<String, Object> extraProperties() {
+        Map<String, Object> properties = new LinkedHashMap<>();
+        properties.put("entityName", entityName);
+        properties.put("errorKey", errorKey);
+        return properties;
     }
 
     private static Map<String, Object> getAlertParameters(String entityName, String errorKey) {

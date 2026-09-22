@@ -26,8 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.jhipster.service.filter.IntegerFilter;
-import tech.jhipster.service.filter.StringFilter;
+import com.hisarresearch.wms.framework.service.filter.IntegerFilter;
+import com.hisarresearch.wms.framework.service.filter.StringFilter;
 
 /**
  * Service Implementation for managing {@link AurSayimTanim}.

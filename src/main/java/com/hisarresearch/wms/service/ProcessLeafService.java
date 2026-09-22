@@ -1,5 +1,7 @@
 package com.hisarresearch.wms.service;
 
+import org.springframework.context.annotation.Lazy;
+
 import com.hisarresearch.wms.domain.ProcessLeaf;
 import com.hisarresearch.wms.domain.ProcessTree;
 import com.hisarresearch.wms.domain.address.AurDepoUrunAdres;
@@ -27,6 +29,7 @@ public class ProcessLeafService {
     @Autowired
     private  ProcessLeafRepository processLeafRepository;
 
+    @Lazy
     @Autowired
     private  ProcessTreeService processTreeService;
 

@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.annotation.Nullable;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "aur_order_master")

@@ -13,7 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.jhipster.service.QueryService;
+import com.hisarresearch.wms.framework.service.QueryService;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class AurDepoUrunAdresStokQueryService extends QueryService<AurDepoUrunAd
 
 
     protected Specification<AurDepoUrunAdresStok> createSpecification(AurDepoUrunAdresStokCriteria criteria) {
-        Specification<AurDepoUrunAdresStok> specification = Specification.where(null);
+        Specification<AurDepoUrunAdresStok> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), AurDepoUrunAdresStok_.id));

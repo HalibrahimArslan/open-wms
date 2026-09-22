@@ -13,9 +13,9 @@ import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.jhipster.service.QueryService;
+import com.hisarresearch.wms.framework.service.QueryService;
 
-import javax.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.JoinType;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -104,7 +104,7 @@ public class AurOrderMasterQueryService extends QueryService<AurOrderMaster> {
 
     protected Specification<AurOrderMaster> createSpecification(OrderMasterCriteria criteria) {
 
-        Specification<AurOrderMaster> specification = Specification.where(null);
+        Specification<AurOrderMaster> specification = Specification.unrestricted();
 
         if (criteria != null) {
 

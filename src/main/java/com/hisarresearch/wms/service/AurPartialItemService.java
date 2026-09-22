@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 
 import com.hisarresearch.wms.service.erp.MikroServices;
 import com.hisarresearch.wms.utility.AurHelper;
-import io.undertow.util.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

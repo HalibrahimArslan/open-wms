@@ -4,6 +4,7 @@ import com.hisarresearch.wms.domain.ApiParameters;
 import com.hisarresearch.wms.domain.enumeration.ErpConnectionType;
 import com.hisarresearch.wms.service.UserService;
 import com.hisarresearch.wms.service.dto.*;
+import com.hisarresearch.wms.service.dto.erp.ErpOperationResult;
 import com.hisarresearch.wms.service.dto.mikro.StockDetailResponseDto;
 import com.hisarresearch.wms.service.dto.mikro.v16.OrderParamsDTO;
 import org.slf4j.Logger;
@@ -174,5 +175,10 @@ public class ErpGatewayRouter implements ErpOrderGateway {
     @Override
     public Object generateBarcode(String token, String apiPath, String stokKod) throws Exception {
         return gateway().generateBarcode(token, apiPath, stokKod);
+    }
+
+    @Override
+    public ErpOperationResult interWarehouseTransfer(String token, String apiPath, DepolarArasiTransferErpDto dto) throws Exception {
+        return gateway().interWarehouseTransfer(token, apiPath, dto);
     }
 }

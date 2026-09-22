@@ -1,56 +1,64 @@
 package com.hisarresearch.wms.exception.handler;
 
-import java.net.URI;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
-
+import com.hisarresearch.wms.exception.ProblemException;
 import com.hisarresearch.wms.exception.api.BadRequestAlertException;
 import com.hisarresearch.wms.exception.api.InvalidPasswordException;
 import com.hisarresearch.wms.exception.api.LoginAlreadyUsedException;
 import com.hisarresearch.wms.exception.constants.ErrorConstants;
 import com.hisarresearch.wms.exception.validation.EmailAlreadyUsedException;
 import com.hisarresearch.wms.exception.validation.UsernameAlreadyUsedException;
+import com.hisarresearch.wms.framework.config.JHipsterConstants;
+import com.hisarresearch.wms.framework.web.util.HeaderUtil;
+import io.sentry.Sentry;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.NativeWebRequest;
-import org.zalando.problem.DefaultProblem;
-import org.zalando.problem.Problem;
-import org.zalando.problem.ProblemBuilder;
-import org.zalando.problem.Status;
-import org.zalando.problem.StatusType;
-import org.zalando.problem.spring.web.advice.ProblemHandling;
-import org.zalando.problem.spring.web.advice.security.SecurityAdviceTrait;
-import org.zalando.problem.violations.ConstraintViolationProblem;
-import tech.jhipster.config.JHipsterConstants;
-import tech.jhipster.web.util.HeaderUtil;
-import io.sentry.Sentry;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Controller advice to translate the server side exceptions to client-friendly json structures.
- * The error response follows RFC7807 - Problem Details for HTTP APIs (https://tools.ietf.org/html/rfc7807).
+ * Sunucu tarafindaki hatalari RFC 7807 (application/problem+json) govdelerine cevirir.
+ * <p>
+ * Govde sekli eski zalando problem-spring-web cevaplariyla aynidir; arayuz {@code message},
+ * {@code title}, {@code detail}, {@code params} ve {@code fieldErrors} alanlarini okur.
+ * Genel hatalar {@code type}, {@code title}, {@code status}, {@code detail}, {@code path} ve
+ * {@code message} ({@code error.http.<kod>}) doner; uygulamanin kendi hatalari
+ * ({@link ProblemException}) kendi alanlariyla doner.
  */
 @ControllerAdvice
-public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait {
+public class ExceptionTranslator {
 
     private static final String FIELD_ERRORS_KEY = "fieldErrors";
     private static final String MESSAGE_KEY = "message";
     private static final String PATH_KEY = "path";
     private static final String VIOLATIONS_KEY = "violations";
+    private static final URI ZALANDO_CONSTRAINT_VIOLATION_TYPE = URI.create("https://zalando.github.io/problem/constraint-violation");
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -61,169 +69,192 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         this.env = env;
     }
 
-    /**
-     * Post-process the Problem payload to add the message key for the front-end if needed.
-     */
-    @Override
-    public ResponseEntity<Problem> process(@Nullable ResponseEntity<Problem> entity, NativeWebRequest request) {
-        if (entity == null) {
-            return null;
-        }
-        Problem problem = entity.getBody();
-        if (!(problem instanceof ConstraintViolationProblem || problem instanceof DefaultProblem)) {
-            return entity;
-        }
-
-        HttpServletRequest nativeRequest = request.getNativeRequest(HttpServletRequest.class);
-        String requestUri = nativeRequest != null ? nativeRequest.getRequestURI() : StringUtils.EMPTY;
-        ProblemBuilder builder = Problem
-            .builder()
-            .withType(Problem.DEFAULT_TYPE.equals(problem.getType()) ? ErrorConstants.DEFAULT_TYPE : problem.getType())
-            .withStatus(problem.getStatus())
-            .withTitle(problem.getTitle())
-            .with(PATH_KEY, requestUri);
-
-        if (problem instanceof ConstraintViolationProblem) {
-            builder
-                .with(VIOLATIONS_KEY, ((ConstraintViolationProblem) problem).getViolations())
-                .with(MESSAGE_KEY, ErrorConstants.ERR_VALIDATION);
-        } else {
-            builder.withCause(((DefaultProblem) problem).getCause()).withDetail(problem.getDetail()).withInstance(problem.getInstance());
-            problem.getParameters().forEach(builder::with);
-            if (!problem.getParameters().containsKey(MESSAGE_KEY) && problem.getStatus() != null) {
-                builder.with(MESSAGE_KEY, "error.http." + problem.getStatus().getStatusCode());
-            }
-        }
-        return new ResponseEntity<>(builder.build(), entity.getHeaders(), entity.getStatusCode());
-    }
-
-    @Override
-    public ResponseEntity<Problem> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, @Nonnull NativeWebRequest request) {
+    @ExceptionHandler
+    public ResponseEntity<Map<String, Object>> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpServletRequest request) {
         BindingResult result = ex.getBindingResult();
         List<FieldErrorVM> fieldErrors = result
             .getFieldErrors()
             .stream()
-            .map(
-                f ->
-                    new FieldErrorVM(
-                        f.getObjectName().replaceFirst("DTO$", ""),
-                        f.getField(),
-                        StringUtils.isNotBlank(f.getDefaultMessage()) ? f.getDefaultMessage() : f.getCode()
-                    )
+            .map(f ->
+                new FieldErrorVM(
+                    f.getObjectName().replaceFirst("DTO$", ""),
+                    f.getField(),
+                    StringUtils.isNotBlank(f.getDefaultMessage()) ? f.getDefaultMessage() : f.getCode()
+                )
             )
             .collect(Collectors.toList());
 
-        Problem problem = Problem
-            .builder()
-            .withType(ErrorConstants.CONSTRAINT_VIOLATION_TYPE)
-            .withTitle("Method argument not valid")
-            .withStatus(defaultConstraintViolationStatus())
-            .with(MESSAGE_KEY, ErrorConstants.ERR_VALIDATION)
-            .with(FIELD_ERRORS_KEY, fieldErrors)
-            .build();
-        return create(ex, problem, request);
+        Map<String, Object> body = baseBody(
+            ErrorConstants.CONSTRAINT_VIOLATION_TYPE,
+            "Method argument not valid",
+            HttpStatus.BAD_REQUEST,
+            null,
+            request
+        );
+        body.put(MESSAGE_KEY, ErrorConstants.ERR_VALIDATION);
+        body.put(FIELD_ERRORS_KEY, fieldErrors);
+        return problem(HttpStatus.BAD_REQUEST, body, null);
     }
 
     @ExceptionHandler
-    public ResponseEntity<Problem> handleEmailAlreadyUsedException(
+    public ResponseEntity<Map<String, Object>> handleBindException(BindException ex, HttpServletRequest request) {
+        List<Map<String, String>> violations = ex
+            .getBindingResult()
+            .getFieldErrors()
+            .stream()
+            .map(f -> violation(f.getField(), f.getDefaultMessage()))
+            .collect(Collectors.toList());
+        return constraintViolation(violations, request);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Map<String, Object>> handleConstraintViolation(ConstraintViolationException ex, HttpServletRequest request) {
+        List<Map<String, String>> violations = ex
+            .getConstraintViolations()
+            .stream()
+            .map(v -> violation(v.getPropertyPath().toString(), v.getMessage()))
+            .collect(Collectors.toList());
+        return constraintViolation(violations, request);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Map<String, Object>> handleEmailAlreadyUsedException(
         com.hisarresearch.wms.exception.api.EmailAlreadyUsedException ex,
-        NativeWebRequest request
+        HttpServletRequest request
     ) {
-        EmailAlreadyUsedException problem = new EmailAlreadyUsedException();
-        return create(
-            problem,
-            request,
-            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
-        );
+        return handleBadRequestAlertException(new EmailAlreadyUsedException(), request);
     }
 
     @ExceptionHandler
-    public ResponseEntity<Problem> handleUsernameAlreadyUsedException(
-        UsernameAlreadyUsedException ex,
-        NativeWebRequest request
-    ) {
-        LoginAlreadyUsedException problem = new LoginAlreadyUsedException();
-        return create(
-            problem,
-            request,
-            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
-        );
+    public ResponseEntity<Map<String, Object>> handleUsernameAlreadyUsedException(UsernameAlreadyUsedException ex, HttpServletRequest request) {
+        return handleBadRequestAlertException(new LoginAlreadyUsedException(), request);
     }
 
     @ExceptionHandler
-    public ResponseEntity<Problem> handleInvalidPasswordException(
+    public ResponseEntity<Map<String, Object>> handleInvalidPasswordException(
         com.hisarresearch.wms.exception.validation.InvalidPasswordException ex,
-        NativeWebRequest request
+        HttpServletRequest request
     ) {
-        return create(new InvalidPasswordException(), request);
+        return handleProblemException(new InvalidPasswordException(), request);
     }
 
     @ExceptionHandler
-    public ResponseEntity<Problem> handleBadRequestAlertException(BadRequestAlertException ex, NativeWebRequest request) {
-        return create(
-            ex,
-            request,
+    public ResponseEntity<Map<String, Object>> handleBadRequestAlertException(BadRequestAlertException ex, HttpServletRequest request) {
+        return problem(
+            ex.getStatus(),
+            ex.toBody(),
             HeaderUtil.createFailureAlert(applicationName, true, ex.getEntityName(), ex.getErrorKey(), ex.getMessage())
         );
     }
 
     @ExceptionHandler
-    public ResponseEntity<Problem> handleConcurrencyFailure(ConcurrencyFailureException ex, NativeWebRequest request) {
-        Sentry.captureException(ex);
-        Problem problem = Problem.builder().withStatus(Status.CONFLICT).with(MESSAGE_KEY, ErrorConstants.ERR_CONCURRENCY_FAILURE).build();
-        return create(ex, problem, request);
+    public ResponseEntity<Map<String, Object>> handleProblemException(ProblemException ex, HttpServletRequest request) {
+        return problem(ex.getStatus(), ex.toBody(), null);
     }
 
-    @Override
-    public ProblemBuilder prepare(final Throwable throwable, final StatusType status, final URI type) {
-        Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
-        Sentry.captureException(throwable);
+    @ExceptionHandler
+    public ResponseEntity<Map<String, Object>> handleConcurrencyFailure(ConcurrencyFailureException ex, HttpServletRequest request) {
+        Sentry.captureException(ex);
+        Map<String, Object> body = baseBody(
+            ErrorConstants.DEFAULT_TYPE,
+            HttpStatus.CONFLICT.getReasonPhrase(),
+            HttpStatus.CONFLICT,
+            null,
+            request
+        );
+        body.put(MESSAGE_KEY, ErrorConstants.ERR_CONCURRENCY_FAILURE);
+        return problem(HttpStatus.CONFLICT, body, null);
+    }
 
-        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
+    /**
+     * Diger tum hatalar: Spring MVC hatalari (eksik parametre, desteklenmeyen metot, bulunamayan
+     * adres...), yetki hatalari (ProblemSecuritySupport uzerinden) ve beklenmeyen hatalar.
+     */
+    @ExceptionHandler
+    public ResponseEntity<Map<String, Object>> handleAny(Throwable throwable, HttpServletRequest request) {
+        HttpStatusCode status = resolveStatus(throwable);
+        Sentry.captureException(throwable);
+        Map<String, Object> body = baseBody(ErrorConstants.DEFAULT_TYPE, reasonPhrase(status), status, detail(throwable), request);
+        body.put(MESSAGE_KEY, "error.http." + status.value());
+        HttpHeaders headers = null;
+        if (throwable instanceof ErrorResponse errorResponse && !errorResponse.getHeaders().isEmpty()) {
+            headers = errorResponse.getHeaders();
+        }
+        return problem(status, body, headers);
+    }
+
+    private HttpStatusCode resolveStatus(Throwable throwable) {
+        if (throwable instanceof ErrorResponse errorResponse) {
+            return errorResponse.getStatusCode();
+        }
+        if (throwable instanceof AuthenticationException) {
+            return HttpStatus.UNAUTHORIZED;
+        }
+        if (throwable instanceof AccessDeniedException) {
+            return HttpStatus.FORBIDDEN;
+        }
+        if (throwable instanceof HttpMessageNotReadableException || throwable instanceof TypeMismatchException) {
+            return HttpStatus.BAD_REQUEST;
+        }
+        ResponseStatus responseStatus = AnnotatedElementUtils.findMergedAnnotation(throwable.getClass(), ResponseStatus.class);
+        if (responseStatus != null) {
+            return responseStatus.code();
+        }
+        return HttpStatus.INTERNAL_SERVER_ERROR;
+    }
+
+    private String detail(Throwable throwable) {
+        if (Arrays.asList(env.getActiveProfiles()).contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
             if (throwable instanceof HttpMessageConversionException) {
-                return Problem
-                    .builder()
-                    .withType(type)
-                    .withTitle(status.getReasonPhrase())
-                    .withStatus(status)
-                    .withDetail("Unable to convert http message")
-                    .withCause(
-                        Optional.ofNullable(throwable.getCause()).filter(cause -> isCausalChainsEnabled()).map(this::toProblem).orElse(null)
-                    );
+                return "Unable to convert http message";
             }
             if (throwable instanceof DataAccessException) {
-                return Problem
-                    .builder()
-                    .withType(type)
-                    .withTitle(status.getReasonPhrase())
-                    .withStatus(status)
-                    .withDetail("Failure during data access")
-                    .withCause(
-                        Optional.ofNullable(throwable.getCause()).filter(cause -> isCausalChainsEnabled()).map(this::toProblem).orElse(null)
-                    );
+                return "Failure during data access";
             }
             if (containsPackageName(throwable.getMessage())) {
-                return Problem
-                    .builder()
-                    .withType(type)
-                    .withTitle(status.getReasonPhrase())
-                    .withStatus(status)
-                    .withDetail("Unexpected runtime exception")
-                    .withCause(
-                        Optional.ofNullable(throwable.getCause()).filter(cause -> isCausalChainsEnabled()).map(this::toProblem).orElse(null)
-                    );
+                return "Unexpected runtime exception";
             }
         }
+        return throwable.getMessage();
+    }
 
-        return Problem
-            .builder()
-            .withType(type)
-            .withTitle(status.getReasonPhrase())
-            .withStatus(status)
-            .withDetail(throwable.getMessage())
-            .withCause(
-                Optional.ofNullable(throwable.getCause()).filter(cause -> isCausalChainsEnabled()).map(this::toProblem).orElse(null)
-            );
+    private ResponseEntity<Map<String, Object>> constraintViolation(List<Map<String, String>> violations, HttpServletRequest request) {
+        Map<String, Object> body = baseBody(ZALANDO_CONSTRAINT_VIOLATION_TYPE, "Constraint Violation", HttpStatus.BAD_REQUEST, null, request);
+        body.put(VIOLATIONS_KEY, violations);
+        body.put(MESSAGE_KEY, ErrorConstants.ERR_VALIDATION);
+        return problem(HttpStatus.BAD_REQUEST, body, null);
+    }
+
+    private static Map<String, String> violation(String field, String message) {
+        Map<String, String> violation = new LinkedHashMap<>();
+        violation.put("field", field);
+        violation.put("message", message);
+        return violation;
+    }
+
+    private static Map<String, Object> baseBody(URI type, String title, HttpStatusCode status, String detail, HttpServletRequest request) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("type", type.toString());
+        body.put("title", title);
+        body.put("status", status.value());
+        if (detail != null) {
+            body.put("detail", detail);
+        }
+        body.put(PATH_KEY, request != null ? request.getRequestURI() : StringUtils.EMPTY);
+        return body;
+    }
+
+    private static String reasonPhrase(HttpStatusCode status) {
+        HttpStatus resolved = HttpStatus.resolve(status.value());
+        return resolved != null ? resolved.getReasonPhrase() : null;
+    }
+
+    private static ResponseEntity<Map<String, Object>> problem(HttpStatusCode status, Map<String, Object> body, HttpHeaders headers) {
+        ResponseEntity.BodyBuilder builder = ResponseEntity.status(status).contentType(MediaType.APPLICATION_PROBLEM_JSON);
+        if (headers != null) {
+            builder.headers(headers);
+        }
+        return builder.body(body);
     }
 
     private boolean containsPackageName(String message) {

@@ -6,6 +6,7 @@ import com.hisarresearch.wms.domain.enumeration.MicroWaybillTypeV15;
 import com.hisarresearch.wms.repository.AurOrderMasterRepository;
 import com.hisarresearch.wms.service.*;
 import com.hisarresearch.wms.service.dto.*;
+import com.hisarresearch.wms.service.dto.erp.ErpOperationResult;
 import com.hisarresearch.wms.service.dto.barcode.PackageCodeList;
 import com.hisarresearch.wms.service.dto.base.RequestDto;
 import com.hisarresearch.wms.service.dto.base.ResponseDto;
@@ -55,6 +56,7 @@ public class MikroServices implements ErpOrderGateway {
     @Autowired
     private AurOrderMasterRepository aurOrderMasterRepository;
 
+    @Lazy
     @Autowired
     private AurOrderMasterService aurOrderMasterService;
 
@@ -65,9 +67,11 @@ public class MikroServices implements ErpOrderGateway {
     @Autowired
     private HttpService httpService;
 
+    @Lazy
     @Autowired
     private AurDepoUrunAdresStokService aurDepoUrunAdresStokService;
 
+    @Lazy
     @Autowired
     private ReceivingAddressService receivingAddressService;
 
@@ -402,6 +406,12 @@ public class MikroServices implements ErpOrderGateway {
         } else {
             throw new RuntimeException(responseDto.getMessage());
         }
+    }
+
+    @Override
+    public ErpOperationResult interWarehouseTransfer(String token, String apiPath, DepolarArasiTransferErpDto dto) throws Exception {
+        Object documentNo = depolarArasiTransfer(token, apiPath, dto, "", "", "");
+        return new ErpOperationResult(true, null, documentNo == null ? null : String.valueOf(documentNo));
     }
 
     @Override

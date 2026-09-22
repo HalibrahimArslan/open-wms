@@ -1,0 +1,8 @@
+{
+  "detail" : "A new productAddressv2 cannot already have an ID",
+  "message" : "error.http.400",
+  "path" : "/api/v2/product-address",
+  "status" : 400,
+  "title" : "Bad Request",
+  "type" : "https://www.jhipster.tech/problem/problem-with-message"
+}

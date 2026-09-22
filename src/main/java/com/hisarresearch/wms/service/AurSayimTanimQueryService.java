@@ -5,7 +5,7 @@ import com.hisarresearch.wms.domain.AurSayimTanim;
 import com.hisarresearch.wms.repository.AurSayimTanimRepository;
 import com.hisarresearch.wms.service.criteria.AurSayimTanimCriteria;
 import java.util.List;
-import javax.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.JoinType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -13,7 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.jhipster.service.QueryService;
+import com.hisarresearch.wms.framework.service.QueryService;
 
 /**
  * Service for executing complex queries for {@link AurSayimTanim} entities in the database.
@@ -76,7 +76,7 @@ public class AurSayimTanimQueryService extends QueryService<AurSayimTanim> {
      * @return the matching {@link Specification} of the entity.
      */
     protected Specification<AurSayimTanim> createSpecification(AurSayimTanimCriteria criteria) {
-        Specification<AurSayimTanim> specification = Specification.where(null);
+        Specification<AurSayimTanim> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), AurSayimTanim_.id));

@@ -2,10 +2,10 @@ package com.hisarresearch.wms.service.criteria;
 
 import com.hisarresearch.wms.domain.enumeration.ProcessType;
 import com.hisarresearch.wms.domain.enumeration.TransactionType;
-import tech.jhipster.service.Criteria;
-import tech.jhipster.service.filter.BooleanFilter;
-import tech.jhipster.service.filter.Filter;
-import tech.jhipster.service.filter.LongFilter;
+import com.hisarresearch.wms.framework.service.Criteria;
+import com.hisarresearch.wms.framework.service.filter.BooleanFilter;
+import com.hisarresearch.wms.framework.service.filter.Filter;
+import com.hisarresearch.wms.framework.service.filter.LongFilter;
 
 import java.io.Serializable;
 

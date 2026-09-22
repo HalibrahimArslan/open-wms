@@ -4,7 +4,7 @@ package com.hisarresearch.wms.domain.sevkplani;
 import com.hisarresearch.wms.domain.AbstractAuditingEntity;
 import com.hisarresearch.wms.domain.enumeration.AurTmpSevkPlaniStatus;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
 

@@ -1,7 +1,7 @@
 package com.hisarresearch.wms.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "aur_lookup_table")

@@ -3,7 +3,7 @@ package com.hisarresearch.wms.domain;
 import com.hisarresearch.wms.domain.enumeration.ErpConnectionType;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import org.hibernate.annotations.Cache;
 

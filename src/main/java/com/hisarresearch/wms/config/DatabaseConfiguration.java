@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import tech.jhipster.config.JHipsterConstants;
+import com.hisarresearch.wms.framework.config.JHipsterConstants;
 
 @Configuration
 @EnableJpaRepositories("com.hisarresearch.wms.repository")

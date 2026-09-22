@@ -1,6 +1,5 @@
 package com.hisarresearch.wms.service.dto.barcode;
 
-import net.bytebuddy.implementation.bind.annotation.Default;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;

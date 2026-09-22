@@ -1,0 +1,8 @@
+{
+  "detail" : "Required request parameter 'companyCode' for method parameter type Integer is not present",
+  "message" : "error.http.400",
+  "path" : "/api/aur-roles",
+  "status" : 400,
+  "title" : "Bad Request",
+  "type" : "https://www.jhipster.tech/problem/problem-with-message"
+}

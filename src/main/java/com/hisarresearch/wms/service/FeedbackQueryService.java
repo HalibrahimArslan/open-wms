@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.jhipster.service.QueryService;
+import com.hisarresearch.wms.framework.service.QueryService;
 
 import java.util.List;
 
@@ -49,7 +49,7 @@ public class FeedbackQueryService extends QueryService<Feedback> {
 
 
     protected Specification<Feedback> createSpecification(FeedbackCriteria criteria) {
-        Specification<Feedback> specification = Specification.where(null);
+        Specification<Feedback> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), Feedback_.id ));

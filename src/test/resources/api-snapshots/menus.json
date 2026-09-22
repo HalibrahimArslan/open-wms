@@ -1,0 +1,181 @@
+[ {
+  "id" : 1,
+  "parentMenuId" : 0,
+  "menuName" : "Kontrol Paneli",
+  "menuType" : "TERMINAL",
+  "companyCode" : null,
+  "path" : "dashboard",
+  "index" : false,
+  "icon" : "mdi:view-dashboard"
+}, {
+  "id" : 10,
+  "parentMenuId" : 0,
+  "menuName" : "Mal Kabul",
+  "menuType" : "TERMINAL",
+  "companyCode" : null,
+  "path" : null,
+  "index" : false,
+  "icon" : "mdi:truck-delivery"
+}, {
+  "id" : 11,
+  "parentMenuId" : 10,
+  "menuName" : "Firmadan Mal Kabul",
+  "menuType" : "TERMINAL",
+  "companyCode" : null,
+  "path" : "firmlist",
+  "index" : true,
+  "icon" : "mdi:domain"
+}, {
+  "id" : 12,
+  "parentMenuId" : 10,
+  "menuName" : "Tekil Barkodlu Mal Kabul",
+  "menuType" : "TERMINAL",
+  "companyCode" : null,
+  "path" : "unique-barcode-firmlist",
+  "index" : true,
+  "icon" : "mdi:barcode-scan"
+}, {
+  "id" : 13,
+  "parentMenuId" : 10,
+  "menuName" : "Irsaliye Kontrol",
+  "menuType" : "TERMINAL",
+  "companyCode" : null,
+  "path" : "waybill-control",
+  "index" : false,
+  "icon" : "mdi:file-document-check"
+}, {
+  "id" : 20,
+  "parentMenuId" : 0,
+  "menuName" : "Sevkiyat",
+  "menuType" : "TERMINAL",
+  "companyCode" : null,
+  "path" : null,
+  "index" : false,
+  "icon" : "mdi:truck-fast"
+}, {
+  "id" : 21,
+  "parentMenuId" : 20,
+  "menuName" : "Cari Secimi",
+  "menuType" : "TERMINAL",
+  "companyCode" : null,
+  "path" : "cari-selection",
+  "index" : true,
+  "icon" : "mdi:account-tie"
+}, {
+  "id" : 22,
+  "parentMenuId" : 20,
+  "menuName" : "Sevkiyatlarim",
+  "menuType" : "TERMINAL",
+  "companyCode" : null,
+  "path" : "dispatchingorder",
+  "index" : false,
+  "icon" : "mdi:clipboard-list"
+}, {
+  "id" : 30,
+  "parentMenuId" : 0,
+  "menuName" : "Adres Islemleri",
+  "menuType" : "TERMINAL",
+  "companyCode" : null,
+  "path" : null,
+  "index" : false,
+  "icon" : "mdi:map-marker"
+}, {
+  "id" : 31,
+  "parentMenuId" : 30,
+  "menuName" : "Adresler",
+  "menuType" : "TERMINAL",
+  "companyCode" : null,
+  "path" : "address",
+  "index" : false,
+  "icon" : "mdi:map-marker-multiple"
+}, {
+  "id" : 32,
+  "parentMenuId" : 30,
+  "menuName" : "Kontrol Adres",
+  "menuType" : "TERMINAL",
+  "companyCode" : null,
+  "path" : "kontroladres",
+  "index" : false,
+  "icon" : "mdi:map-marker-check"
+}, {
+  "id" : 33,
+  "parentMenuId" : 30,
+  "menuName" : "Urun Adres Tanimi",
+  "menuType" : "TERMINAL",
+  "companyCode" : null,
+  "path" : "productaddressdef",
+  "index" : false,
+  "icon" : "mdi:package-variant"
+}, {
+  "id" : 34,
+  "parentMenuId" : 30,
+  "menuName" : "Adres Operasyonlari",
+  "menuType" : "TERMINAL",
+  "companyCode" : null,
+  "path" : "address-operations",
+  "index" : false,
+  "icon" : "mdi:cog-transfer"
+}, {
+  "id" : 35,
+  "parentMenuId" : 30,
+  "menuName" : "Urun Adres Degisimi",
+  "menuType" : "TERMINAL",
+  "companyCode" : null,
+  "path" : "productaddressreplacement",
+  "index" : false,
+  "icon" : "mdi:swap-horizontal"
+}, {
+  "id" : 36,
+  "parentMenuId" : 30,
+  "menuName" : "Gecici Adresten Yerlestirme",
+  "menuType" : "TERMINAL",
+  "companyCode" : null,
+  "path" : "productplacement",
+  "index" : false,
+  "icon" : "mdi:archive-arrow-down"
+}, {
+  "id" : 37,
+  "parentMenuId" : 30,
+  "menuName" : "Adres Tanimlari",
+  "menuType" : "TERMINAL",
+  "companyCode" : null,
+  "path" : "address-tanim",
+  "index" : false,
+  "icon" : "mdi:map-marker-plus"
+}, {
+  "id" : 371,
+  "parentMenuId" : 37,
+  "menuName" : "Bolum",
+  "menuType" : "TERMINAL",
+  "companyCode" : null,
+  "path" : "address-tanim/department",
+  "index" : false,
+  "icon" : "mdi:office-building"
+}, {
+  "id" : 372,
+  "parentMenuId" : 37,
+  "menuName" : "Reyon",
+  "menuType" : "TERMINAL",
+  "companyCode" : null,
+  "path" : "address-tanim/hall",
+  "index" : false,
+  "icon" : "mdi:view-column"
+}, {
+  "id" : 373,
+  "parentMenuId" : 37,
+  "menuName" : "Unite",
+  "menuType" : "TERMINAL",
+  "companyCode" : null,
+  "path" : "address-tanim/unit",
+  "index" : false,
+  "icon" : "mdi:cube-outline"
+}, {
+  "id" : 374,
+  "parentMenuId" : 37,
+  "menuName" : "Kat",
+  "menuType" : "TERMINAL",
+  "companyCode" : null,
+  "path" : "address-tanim/flat",
+  "index" : false,
+  "icon" : "mdi:layers"
+} ]

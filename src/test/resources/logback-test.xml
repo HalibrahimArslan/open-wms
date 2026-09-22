@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Testler: Spring acilmadan once calisan Testcontainers/docker-java'nin DEBUG loglarini susturur. -->
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <logger name="org.testcontainers" level="WARN"/>
+    <logger name="com.github.dockerjava" level="WARN"/>
+    <logger name="tc" level="WARN"/>
+    <root level="WARN"/>
+</configuration>

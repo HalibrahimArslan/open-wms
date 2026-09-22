@@ -1,6 +1,6 @@
 package com.hisarresearch.wms.domain.sevkplani;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity

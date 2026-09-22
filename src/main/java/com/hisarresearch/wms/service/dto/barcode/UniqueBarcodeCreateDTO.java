@@ -3,8 +3,8 @@ package com.hisarresearch.wms.service.dto.barcode;
 import com.hisarresearch.wms.service.barcode.statemachine.UniqueBarcodeState;
 import com.hisarresearch.wms.service.dto.product.ProductWithoutAddressDTO;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.util.Map;
 

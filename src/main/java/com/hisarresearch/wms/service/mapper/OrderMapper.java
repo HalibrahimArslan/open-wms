@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
-@Mapper(componentModel = "spring", uses = { OrderStatusMapper.class,OrderRowMapper.class })
+@Mapper(componentModel = "spring", uses = { OrderStatusMapper.class, LazyOrderRowMapper.class })
 public interface OrderMapper extends EntityMapper<OrderDTO, Order> {
     @Named("id")
     @BeanMapping(ignoreByDefault = true)

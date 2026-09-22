@@ -13,7 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.jhipster.service.QueryService;
+import com.hisarresearch.wms.framework.service.QueryService;
 
 @Service
 @Transactional(readOnly = true)
@@ -41,7 +41,7 @@ public class UniqueBarcodeQueryService extends QueryService<UniqueBarcode> {
      * @return the matching {@link Specification} of the entity.
      */
     protected Specification<UniqueBarcode> createSpecification(UniqueBarcodeCriteria criteria) {
-        Specification<UniqueBarcode> specification = Specification.where(null);
+        Specification<UniqueBarcode> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getErpOrderInfo() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getErpOrderInfo(), UniqueBarcode_.erpOrderInfo));

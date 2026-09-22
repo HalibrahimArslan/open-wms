@@ -3,7 +3,6 @@ package com.hisarresearch.wms.repository;
 import com.hisarresearch.wms.domain.ProductAddressv2;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

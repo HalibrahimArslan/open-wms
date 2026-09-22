@@ -8,13 +8,13 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
+import org.springframework.boot.liquibase.autoconfigure.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,12 +23,12 @@ import org.springframework.http.converter.BufferedImageHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import tech.jhipster.config.DefaultProfileUtil;
-import tech.jhipster.config.JHipsterConstants;
+import com.hisarresearch.wms.framework.config.DefaultProfileUtil;
+import com.hisarresearch.wms.framework.config.JHipsterConstants;
+import com.hisarresearch.wms.framework.config.JHipsterProperties;
 
 @SpringBootApplication
-@EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class })
+@EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class, JHipsterProperties.class })
 public class WmsApp {
 
     private static final Logger log = LoggerFactory.getLogger(WmsApp.class);

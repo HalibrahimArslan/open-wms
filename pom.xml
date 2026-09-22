@@ -7,7 +7,7 @@
 
 	<groupId>com.hisarresearch.wms</groupId>
 	<artifactId>wms</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>2.0.0</version>
 	<packaging>war</packaging>
 	<name>Wms</name>
 
@@ -24,9 +24,7 @@
 	<properties>
 		<!-- Build properties -->
 		<maven.version>3.3.9</maven.version>
-		<java.version>11</java.version>
-		<node.version>v14.17.1</node.version>
-		<npm.version>7.18.1</npm.version>
+		<java.version>25</java.version>
 
          <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -47,61 +45,94 @@
              mvn sonar:sonar -Dsonar.host.url=... -Dsonar.login=$SONAR_TOKEN -->
 
 		<!-- Dependency versions -->
-		<jhipster-dependencies.version>7.1.0</jhipster-dependencies.version>
-		<!-- The spring-boot version should match the one managed by https://mvnrepository.com/artifact/tech.jhipster/jhipster-dependencies/${jhipster-dependencies.version} -->
-		<spring-boot.version>2.4.7</spring-boot.version>
+		<spring-boot.version>4.1.1</spring-boot.version>
 		<!-- The hibernate version should match the one managed by https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-dependencies/${spring-boot.version} -->
-		<hibernate.version>5.4.32.Final</hibernate.version>
-		<!-- The javassist version should match the one managed by https://mvnrepository.com/artifact/org.hibernate/hibernate-core/${hibernate.version} -->
-		<javassist.version>3.27.0-GA</javassist.version>
-		<!-- The liquibase version should match the one managed by https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-dependencies/${spring-boot.version} -->
-		<liquibase.version>4.3.5</liquibase.version>
-		<liquibase-hibernate5.version>4.3.5</liquibase-hibernate5.version>
-		<validation-api.version>2.0.1.Final</validation-api.version>
-		<jaxb-runtime.version>2.3.3</jaxb-runtime.version>
+		<hibernate.version>7.4.5.Final</hibernate.version>
+		<!-- Bilerek Boot'un yonettigi surumden (5.x) ayrilir: Liquibase 5 FSL-1.1 lisansli, Apache 2.0 olan son seri 4.x.
+		     enforcer'in liquibase-core icin verdigi DependencyConvergence uyarisi bu yuzden beklenir. Ayrinti: README "Liquibase surumu" -->
+		<liquibase.version>4.33.0</liquibase.version>
+		<liquibase-hibernate6.version>4.33.0</liquibase-hibernate6.version>
 		<archunit-junit5.version>0.19.0</archunit-junit5.version>
-		<mapstruct.version>1.4.2.Final</mapstruct.version>
+		<jjwt.version>0.11.5</jjwt.version>
+		<logstash-logback-encoder.version>8.1</logstash-logback-encoder.version>
+		<springdoc.version>3.1.1</springdoc.version>
+		<mapstruct.version>1.6.3</mapstruct.version>
 		<!-- Plugin versions -->
 		<maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
 		<maven-site-plugin.version>3.9.1</maven-site-plugin.version>
-		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+		<maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
 		<maven-javadoc-plugin.version>3.3.0</maven-javadoc-plugin.version>
 		<maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
 		<maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
-		<maven-failsafe-plugin.version>3.0.0-M5</maven-failsafe-plugin.version>
+		<maven-failsafe-plugin.version>3.5.4</maven-failsafe-plugin.version>
 		<maven-idea-plugin.version>2.2.1</maven-idea-plugin.version>
 		<maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
-		<maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+		<maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
 		<maven-war-plugin.version>3.3.1</maven-war-plugin.version>
 		<maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
 		<checkstyle.version>8.43</checkstyle.version>
 		<nohttp-checkstyle.version>0.0.8</nohttp-checkstyle.version>
-		<frontend-maven-plugin.version>1.12.0</frontend-maven-plugin.version>
-		<checksum-maven-plugin.version>1.10</checksum-maven-plugin.version>
-		<maven-antrun-plugin.version>3.0.0</maven-antrun-plugin.version>
 		<git-commit-id-plugin.version>4.0.5</git-commit-id-plugin.version>
-		<jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+		<jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
 		<jib-maven-plugin.version>3.1.1</jib-maven-plugin.version>
 		<lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
 		<properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
 		<sonar-maven-plugin.version>3.9.0.2155</sonar-maven-plugin.version>
 		<!-- jhipster-needle-maven-property -->
 
-        <bootstrap.version>4.0.0-2</bootstrap.version>
-        <webjars-locator.version>0.30</webjars-locator.version>
 
 
-        <kotlin.version>1.9.10</kotlin.version>
     </properties>
 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>tech.jhipster</groupId>
-				<artifactId>jhipster-dependencies</artifactId>
-				<version>${jhipster-dependencies.version}</version>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring-boot.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+			<!-- Gecisli bagimliliklarin farkli surumleri cakisiyor; Maven'in zaten sectigi surumler sabitlenir (enforcer DependencyConvergence) -->
+			<dependency>
+				<groupId>com.squareup.okhttp3</groupId>
+				<artifactId>okhttp</artifactId>
+				<version>4.11.0</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>1.8.3</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>2.5</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.19.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-compress</artifactId>
+				<version>1.26.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.bouncycastle</groupId>
+				<artifactId>bcmail-jdk14</artifactId>
+				<version>1.64</version>
+			</dependency>
+			<dependency>
+				<groupId>org.bouncycastle</groupId>
+				<artifactId>bcprov-jdk14</artifactId>
+				<version>1.64</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jetbrains</groupId>
+				<artifactId>annotations</artifactId>
+				<version>26.1.0</version>
 			</dependency>
 			<!-- jhipster-needle-maven-add-dependency-management -->
 		</dependencies>
@@ -111,31 +142,20 @@
         <dependency>
             <groupId>org.springframework.statemachine</groupId>
             <artifactId>spring-statemachine-core</artifactId>
-            <version>3.0.1</version>
+            <version>4.0.2</version>
         </dependency>
 		<dependency>
-			<groupId>tech.jhipster</groupId>
-			<artifactId>jhipster-framework</artifactId>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
-		</dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-autoconfigure</artifactId>
-            <version>2.4.9</version>
-            <!-- <version>2.0.6.RELEASE</version> -->
-        </dependency>
         <dependency>
             <groupId>net.sourceforge.barbecue</groupId>
             <artifactId>barbecue</artifactId>
             <version>1.5-beta1</version>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-envers</artifactId>
-            <version>5.4.30.Final</version>
         </dependency>
         <dependency>
             <groupId>org.xhtmlrenderer</groupId>
@@ -144,8 +164,8 @@
         </dependency>
         <dependency>
             <groupId>io.sentry</groupId>
-            <artifactId>sentry-spring-boot-starter</artifactId>
-            <version>7.6.0</version>
+            <artifactId>sentry-spring-boot-4-starter</artifactId>
+            <version>8.57.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.rabbitmq/amqp-client -->
 <!--        <dependency>-->
@@ -154,11 +174,6 @@
 <!--            <version>5.20.0</version>-->
 <!--        </dependency>-->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-websocket</artifactId>
-            <version>5.2.2.RELEASE</version>
-        </dependency>
-        <dependency>
             <groupId>org.java-websocket</groupId>
             <artifactId>Java-WebSocket</artifactId>
             <version>1.5.3</version>
@@ -166,6 +181,8 @@
         <dependency>
             <groupId>org.springframework.retry</groupId>
             <artifactId>spring-retry</artifactId>
+            <!-- Boot 4 artik yonetmiyor -->
+            <version>2.0.13</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -180,12 +197,18 @@
             <groupId>org.typesense</groupId>
             <artifactId>typesense-java</artifactId>
             <version>1.1.0</version>
+            <exclusions>
+                <!-- javax surumu springdoc'un kullandigi swagger-annotations-jakarta ile ayni siniflari tasir -->
+                <exclusion>
+                    <groupId>io.swagger.core.v3</groupId>
+                    <artifactId>swagger-annotations</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-messaging</artifactId>
-            <version>5.2.2.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>io.minio</groupId>
@@ -197,14 +220,15 @@
             <artifactId>okhttp</artifactId>
             <version>4.11.0</version>
         </dependency>
+        <!-- Kurallar siniftaki DRL dosyalarindan derlenir; Maven'dan KJAR indiren kie-ci gerekmez -->
         <dependency>
-            <groupId>org.kie</groupId>
-            <artifactId>kie-ci</artifactId>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-engine</artifactId>
             <version>9.44.0.Final</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
-            <artifactId>drools-decisiontables</artifactId>
+            <artifactId>drools-mvel</artifactId>
             <version>9.44.0.Final</version>
         </dependency>
 		<dependency>
@@ -228,10 +252,6 @@
             <artifactId>httpclient</artifactId>
             <version>4.5.10</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
 
 
 
@@ -242,66 +262,32 @@
 			<classifier>jdk15</classifier>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.mashape.unirest/unirest-java -->
 		<dependency>
-			<groupId>com.mashape.unirest</groupId>
-			<artifactId>unirest-java</artifactId>
-			<version>1.4.9</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.module</groupId>
-			<artifactId>jackson-module-jaxb-annotations</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.vladmihalcea</groupId>
-			<artifactId>hibernate-types-52</artifactId>
-			<version>2.9.11</version>
+			<groupId>io.hypersistence</groupId>
+			<artifactId>hypersistence-utils-hibernate-73</artifactId>
+			<version>3.16.0</version>
 		</dependency>
 
 
-		<dependency>
-			<groupId>com.fasterxml.jackson.module</groupId>
-			<artifactId>jackson-module-jaxb-annotations</artifactId>
-		</dependency>
-        <dependency>
-            <groupId>org.springframework.ws</groupId>
-            <artifactId>spring-ws-core</artifactId>
-            <version>3.0.1.RELEASE</version>
-        </dependency>
         <dependency>
             <groupId>org.jeasy</groupId>
             <artifactId>easy-rules-core</artifactId>
             <version>4.1.0</version>
         </dependency>
 		<dependency>
-			<groupId>com.fasterxml.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-hibernate5</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-hppc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-jsr310</artifactId>
+			<groupId>tools.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-hibernate7</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- OpenAPI dokumani ve Swagger arayuzu; yalnizca api-docs profilinde acilir -->
 		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-oas</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-bean-validators</artifactId>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.zaxxer</groupId>
@@ -313,7 +299,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.testcontainers</groupId>
-			<artifactId>postgresql</artifactId>
+			<artifactId>testcontainers-postgresql</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -321,20 +307,20 @@
 			<artifactId>cache-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.ehcache</groupId>
-			<artifactId>ehcache</artifactId>
+			<groupId>com.github.ben-manes.caffeine</groupId>
+			<artifactId>jcache</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate</groupId>
+			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-jcache</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-jpamodelgen</artifactId>
+			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-processor</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate</groupId>
+			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-core</artifactId>
 		</dependency>
 		<dependency>
@@ -344,7 +330,7 @@
 		<dependency>
 			<groupId>org.liquibase</groupId>
 			<artifactId>liquibase-core</artifactId>
-			<!-- Inherited version from Spring Boot can't be used because of regressions -->
+			<!-- Boot'un yonettigi 5.x yerine lisans nedeniyle 4.x (bkz. liquibase.version) -->
 			<version>${liquibase.version}</version>
 		</dependency>
 		<dependency>
@@ -371,21 +357,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>bootstrap</artifactId>
-            <version>${bootstrap.version}</version>
-        </dependency>
 
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>webjars-locator</artifactId>
-            <version>${webjars-locator.version}</version>
-        </dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-loader-tools</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
@@ -417,7 +389,7 @@
         </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<artifactId>spring-boot-starter-webmvc</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -456,21 +428,20 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.zalando</groupId>
-			<artifactId>problem-spring-web</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
+			<version>${jjwt.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-impl</artifactId>
+			<version>${jjwt.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-jackson</artifactId>
+			<version>${jjwt.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<!-- Spring Cloud -->
@@ -484,68 +455,46 @@
 			<artifactId>micrometer-registry-prometheus</artifactId>
 		</dependency>
 
+		<!-- jhipster.logging.use-json-format / logstash icin (framework.config.logging.LoggingUtils) -->
 		<dependency>
-			<groupId>io.dropwizard.metrics</groupId>
-			<artifactId>metrics-core</artifactId>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>${logstash-logback-encoder.version}</version>
+		</dependency>
+		<!-- Jackson 2: ERP entegrasyonlarindaki yerel ObjectMapper'lar icin. MVC Jackson 3 kullanir. -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-liquibase</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webmvc-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<!-- jhipster-needle-maven-add-dependency -->
 		<dependency>
 			<groupId>org.modelmapper</groupId>
 			<artifactId>modelmapper</artifactId>
-			<version>2.4.2</version>
+			<version>3.2.6</version>
 		</dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
+            <version>26.1.0</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
-            <version>${kotlin.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-test</artifactId>
-            <version>${kotlin.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
-            <version>${kotlin.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-compiler</artifactId>
-            <version>1.9.10</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-compiler</artifactId>
-            <version>1.9.10</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- cucumber-packages -->
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-java</artifactId>
-            <version>7.14.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-junit</artifactId>
-            <version>7.14.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-spring</artifactId>
-            <version>7.14.0</version>
-            <scope>test</scope>
         </dependency>
 
     </dependencies>
@@ -553,12 +502,24 @@
 	<build>
 		<defaultGoal>spring-boot:run</defaultGoal>
         <finalName>${project.artifactId}</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources/</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>config/*.yml</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources/</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>config/*.yml</exclude>
+				</excludes>
+			</resource>
+		</resources>
 		<plugins>
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 			</plugin>
@@ -614,70 +575,6 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>properties-maven-plugin</artifactId>
 			</plugin>
-            <plugin>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-maven-plugin</artifactId>
-                <version>${kotlin.version}</version>
-                <executions>
-                    <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                        <configuration>
-                            <sourceDirs>
-                                <source>src/main/java</source>
-                                <source>target/generated-sources/annotations</source>
-                            </sourceDirs>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>test-compile</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                            <goal>test-compile</goal>
-                        </goals>
-                        <configuration>
-                            <sourceDirs>
-                                <source>src/test/java</source>
-                                <source>target/generated-test-sources/test-annotations</source>
-                            </sourceDirs>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <jvmTarget>1.8</jvmTarget>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>default-compile</id>
-                        <phase>none</phase>
-                    </execution>
-                    <execution>
-                        <id>default-testCompile</id>
-                        <phase>none</phase>
-                    </execution>
-                    <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>testCompile</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                            <goal>testCompile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <!-- jhipster-needle-maven-add-plugin -->
 		</plugins>
 		<pluginManagement>
@@ -701,7 +598,7 @@
 					<configuration>
 						<configLocation>checkstyle.xml</configLocation>
 						<includes>pom.xml,README.md</includes>
-						<excludes>.git/**/*,target/**/*,node_modules/**/*,node/**/*</excludes>
+						<excludes>.git/**/*,target/**/*</excludes>
 						<sourceDirectories>./</sourceDirectories>
                     </configuration>
 					<executions>
@@ -717,7 +614,9 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>${maven-compiler-plugin.version}</version>
 					<configuration>
-                        <forceJavacCompilerUse>true</forceJavacCompilerUse>
+                        <forceLegacyJavacApi>true</forceLegacyJavacApi>
+						<!-- Spring 6.1+ @PathVariable/@RequestParam adlarini yalnizca buradan okur -->
+						<parameters>true</parameters>
 						<source>${java.version}</source>
 						<target>${java.version}</target>
 						<annotationProcessorPaths>
@@ -733,14 +632,9 @@
 							</path>
 							<!-- For JPA static metamodel generation -->
 							<path>
-								<groupId>org.hibernate</groupId>
-								<artifactId>hibernate-jpamodelgen</artifactId>
+								<groupId>org.hibernate.orm</groupId>
+								<artifactId>hibernate-processor</artifactId>
 								<version>${hibernate.version}</version>
-							</path>
-							<path>
-								<groupId>org.glassfish.jaxb</groupId>
-								<artifactId>jaxb-runtime</artifactId>
-								<version>${jaxb-runtime.version}</version>
 							</path>
 							<!-- jhipster-needle-maven-add-annotation-processor -->
 						</annotationProcessorPaths>
@@ -768,25 +662,7 @@
 						</execution>
 					</executions>
 					<configuration>
-						<warSourceIncludes>WEB-INF/**,META-INF/**</warSourceIncludes>
 						<failOnMissingWebXml>false</failOnMissingWebXml>
-						<warSourceDirectory>target/classes/static/</warSourceDirectory>
-						<webResources>
-							<resource>
-								<directory>src/main/webapp</directory>
-								<includes>
-									<include>WEB-INF/**</include>
-								</includes>
-							</resource>
-						</webResources>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>com.github.eirslett</groupId>
-					<artifactId>frontend-maven-plugin</artifactId>
-					<version>${frontend-maven-plugin.version}</version>
-					<configuration>
-						<installDirectory>target</installDirectory>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -873,7 +749,7 @@
 					<version>${jib-maven-plugin.version}</version>
 					<configuration>
 						<from>
-							<image>adoptopenjdk:11-jre-hotspot</image>
+							<image>eclipse-temurin:25-jre</image>
 						</from>
 						<to>
 							<image>wms:latest</image>
@@ -917,7 +793,7 @@
 						<defaultSchemaName></defaultSchemaName>
 						<username>wms</username>
 						<password>wms</password>
-						<referenceUrl>hibernate:spring:com.hisarresearch.wms.domain?dialect=tech.jhipster.domain.util.FixedPostgreSQL10Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
+						<referenceUrl>hibernate:spring:com.hisarresearch.wms.domain?dialect=org.hibernate.dialect.PostgreSQLDialect&amp;hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.hibernate.SpringImplicitNamingStrategy</referenceUrl>
 						<verbose>true</verbose>
 						<logging>debug</logging>
 						<contexts>!test</contexts>
@@ -930,28 +806,13 @@
 						</dependency>
 						<dependency>
 							<groupId>org.liquibase.ext</groupId>
-							<artifactId>liquibase-hibernate5</artifactId>
-							<version>${liquibase-hibernate5.version}</version>
+							<artifactId>liquibase-hibernate6</artifactId>
+							<version>${liquibase-hibernate6.version}</version>
 						</dependency>
 						<dependency>
 							<groupId>org.springframework.boot</groupId>
 							<artifactId>spring-boot-starter-data-jpa</artifactId>
 							<version>${spring-boot.version}</version>
-						</dependency>
-						<dependency>
-							<groupId>javax.validation</groupId>
-							<artifactId>validation-api</artifactId>
-							<version>${validation-api.version}</version>
-						</dependency>
-						<dependency>
-							<groupId>org.javassist</groupId>
-							<artifactId>javassist</artifactId>
-							<version>${javassist.version}</version>
-						</dependency>
-						<dependency>
-							<groupId>tech.jhipster</groupId>
-							<artifactId>jhipster-framework</artifactId>
-							<version>${jhipster-dependencies.version}</version>
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -1004,9 +865,8 @@
 								<version>[${maven.version},)</version>
 							</requireMavenVersion>
 							<requireJavaVersion>
-								<message>You are running an incompatible version of Java.
-									JHipster supports JDK 8 to 16.</message>
-								<version>[1.8,17)</version>
+								<message>Bu proje JDK ${java.version} ile derlenir.</message>
+								<version>[${java.version},)</version>
 							</requireJavaVersion>
 						</rules>
 					</configuration>
@@ -1015,46 +875,17 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-idea-plugin</artifactId>
 					<version>${maven-idea-plugin.version}</version>
-					<configuration>
-						<exclude>node_modules</exclude>
-					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>${maven-resources-plugin.version}</version>
-					<executions>
-						<execution>
-							<id>default-resources</id>
-							<phase>validate</phase>
-							<goals>
-								<goal>copy-resources</goal>
-							</goals>
-							<configuration>
-								<outputDirectory>${project.build.directory}/classes</outputDirectory>
-								<useDefaultDelimiters>false</useDefaultDelimiters>
-								<delimiters>
-									<delimiter>#</delimiter>
-								</delimiters>
-								<resources>
-									<resource>
-										<directory>src/main/resources/</directory>
-										<filtering>true</filtering>
-										<includes>
-											<include>config/*.yml</include>
-										</includes>
-									</resource>
-									<resource>
-										<directory>src/main/resources/</directory>
-										<filtering>false</filtering>
-										<excludes>
-											<exclude>config/*.yml</exclude>
-										</excludes>
-									</resource>
-								</resources>
-							</configuration>
-						</execution>
-					</executions>
+					<configuration>
+						<useDefaultDelimiters>false</useDefaultDelimiters>
+						<delimiters>
+							<delimiter>#</delimiter>
+						</delimiters>
+					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -1147,138 +978,11 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>webapp</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<dependencies>
-			</dependencies>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>net.nicoulaj.maven.plugins</groupId>
-						<artifactId>checksum-maven-plugin</artifactId>
-						<version>${checksum-maven-plugin.version}</version>
-						<executions>
-							<execution>
-								<goals>
-									<goal>files</goal>
-								</goals>
-								<phase>generate-resources</phase>
-							</execution>
-						</executions>
-						<configuration>
-							<fileSets>
-								<fileSet>
-									<directory>${project.basedir}</directory>
-									<includes>
-										<include>src/main/webapp/**/*.*</include>
-										<include>package.json</include>
-										<include>webpack/*.*</include>
-									</includes>
-									<excludes>
-										<exclude>**/app/**/service-worker.js</exclude>
-										<exclude>**/app/**/vendor.css</exclude>
-									</excludes>
-								</fileSet>
-							</fileSets>
-							<failOnError>false</failOnError>
-							<failIfNoFiles>false</failIfNoFiles>
-							<individualFiles>false</individualFiles>
-							<algorithms>
-								<algorithm>SHA-1</algorithm>
-							</algorithms>
-							<includeRelativePath>true</includeRelativePath>
-							<quiet>true</quiet>
-						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<version>${maven-antrun-plugin.version}</version>
-						<executions>
-							<execution>
-								<id>eval-frontend-checksum</id>
-								<phase>generate-resources</phase>
-								<goals>
-									<goal>run</goal>
-								</goals>
-								<configuration>
-									<target>
-										<condition property="skip.npm" value="true"
-											else="false">
-											<and>
-												<available file="checksums.csv"
-													filepath="${project.build.directory}" />
-												<available file="checksums.csv.old"
-													filepath="${project.build.directory}" />
-												<filesmatch
-													file1="${project.build.directory}/checksums.csv"
-													file2="${project.build.directory}/checksums.csv.old" />
-											</and>
-										</condition>
-										<copy file="${project.build.directory}/checksums.csv"
-											tofile="${project.build.directory}/checksums.csv.old" />
-									</target>
-									<exportAntProperties>true</exportAntProperties>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>			<plugin>
-                    <groupId>com.github.eirslett</groupId>
-                    <artifactId>frontend-maven-plugin</artifactId>
-                    <executions>
-                        <execution>
-                            <id>install-node-and-npm</id>
-                            <goals>
-                                <goal>install-node-and-npm</goal>
-                            </goals>
-                            <configuration>
-                                <nodeVersion>${node.version}</nodeVersion>
-                                <npmVersion>${npm.version}</npmVersion>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>npm install</id>
-                            <goals>
-                                <goal>npm</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>webapp build dev</id>
-                            <goals>
-                                <goal>npm</goal>
-                            </goals>
-                            <phase>generate-resources</phase>
-                            <configuration>
-                                <arguments>run webapp:build</arguments>
-                                <environmentVariables>
-                                    <APP_VERSION>${project.version}</APP_VERSION>
-                                </environmentVariables>
-                                <npmInheritsProxyConfigFromMaven>false</npmInheritsProxyConfigFromMaven>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-
-				</plugins>
-			</build>
-			<properties>
-				<!-- default Spring profiles -->
-				<spring.profiles.active>dev${profile.no-liquibase}</spring.profiles.active>
-			</properties>
-		</profile>
-		<profile>
 			<id>dev</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<dependencies>
-				<dependency>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-undertow</artifactId>
-                    <scope>provided</scope>
-				</dependency>
 				<dependency>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-devtools</artifactId>
@@ -1293,24 +997,9 @@
 		<profile>
 			<id>prod</id>
 			<dependencies>
-				<dependency>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-undertow</artifactId>
-                    <scope>provided</scope>
-				</dependency>
 			</dependencies>
 			<build>
 				<plugins>
-					<plugin>
-						<artifactId>maven-clean-plugin</artifactId>
-						<configuration>
-							<filesets>
-								<fileset>
-									<directory>target/classes/static/</directory>
-								</fileset>
-							</filesets>
-						</configuration>
-					</plugin>
 					<plugin>
 						<groupId>org.springframework.boot</groupId>
 						<artifactId>spring-boot-maven-plugin</artifactId>
@@ -1356,8 +1045,8 @@
 					<version>${mapstruct.version}</version>
 				</dependency>
 				<dependency>
-					<groupId>org.hibernate</groupId>
-					<artifactId>hibernate-jpamodelgen</artifactId>
+					<groupId>org.hibernate.orm</groupId>
+					<artifactId>hibernate-processor</artifactId>
 				</dependency>
 			</dependencies>
 		</profile>
@@ -1371,11 +1060,6 @@
 			</activation>
 			<dependencies>
 				<!-- The following dependency is added due to issue #9175 -->
-				<dependency>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-undertow</artifactId>
-                    <scope>provided</scope>
-				</dependency>
 			</dependencies>
 			<build>
 				<pluginManagement>
@@ -1401,20 +1085,6 @@
 												</versionRange>
 												<goals>
 													<goal>prepare-agent</goal>
-												</goals>
-											</pluginExecutionFilter>
-											<action>
-												<ignore />
-											</action>
-										</pluginExecution>
-										<pluginExecution>
-											<pluginExecutionFilter>
-												<groupId>com.github.eirslett</groupId>
-												<artifactId>frontend-maven-plugin</artifactId>
-												<versionRange>${frontend-maven-plugin.version}</versionRange>
-												<goals>
-													<goal>install-node-and-npm</goal>
-													<goal>npm</goal>
 												</goals>
 											</pluginExecutionFilter>
 											<action>

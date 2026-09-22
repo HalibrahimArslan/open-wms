@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import tech.jhipster.web.util.PaginationUtil;
+import com.hisarresearch.wms.framework.web.util.PaginationUtil;
 
 @RestController
 @RequestMapping("/api")

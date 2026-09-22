@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.jhipster.service.QueryService;
+import com.hisarresearch.wms.framework.service.QueryService;
 
 import java.util.List;
 
@@ -50,7 +50,7 @@ public class AddressQueryService extends QueryService<AurDepoUrunAdres> {
 
 
     protected Specification<AurDepoUrunAdres> createSpecification(AurDepoUrunAdresCriteria criteria) {
-        Specification<AurDepoUrunAdres> specification = Specification.where(null);
+        Specification<AurDepoUrunAdres> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getUrunAdresId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getUrunAdresId(), AurDepoUrunAdres_.urunAdresId));

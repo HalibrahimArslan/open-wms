@@ -2,12 +2,12 @@ package com.hisarresearch.wms.utility;
 
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import tech.jhipster.service.QueryService;
-import tech.jhipster.service.filter.InstantFilter;
-import tech.jhipster.service.filter.LongFilter;
-import tech.jhipster.service.filter.StringFilter;
+import com.hisarresearch.wms.framework.service.QueryService;
+import com.hisarresearch.wms.framework.service.filter.InstantFilter;
+import com.hisarresearch.wms.framework.service.filter.LongFilter;
+import com.hisarresearch.wms.framework.service.filter.StringFilter;
 
-import javax.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.metamodel.SingularAttribute;
 import java.beans.Introspector;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -18,7 +18,7 @@ public class AurQueryService extends QueryService<Object> {
 
     @SuppressWarnings("unchecked")
     public <ENTITY> Specification<ENTITY> createSpecification(Object criteria, Class<?> metaModelClass) {
-        Specification<ENTITY> specification = Specification.where(null);
+        Specification<ENTITY> specification = Specification.unrestricted();
 
         for (Method getter : criteria.getClass().getMethods()) {
             if (getter.getName().startsWith("get") && !getter.getName().equals("getClass")) {

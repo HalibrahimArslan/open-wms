@@ -3,39 +3,39 @@ package com.hisarresearch.wms.config;
 import com.hisarresearch.wms.security.*;
 import com.hisarresearch.wms.security.jwt.*;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.web.filter.CorsFilter;
-import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
-import tech.jhipster.config.JHipsterProperties;
+import com.hisarresearch.wms.framework.config.JHipsterProperties;
 
+@Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-@Import(SecurityProblemSupport.class)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+@EnableMethodSecurity(securedEnabled = true)
+public class SecurityConfiguration {
 
     private final JHipsterProperties jHipsterProperties;
 
     private final TokenProvider tokenProvider;
 
     private final CorsFilter corsFilter;
-    private final SecurityProblemSupport problemSupport;
+    private final ProblemSecuritySupport problemSupport;
 
     public SecurityConfiguration(
         TokenProvider tokenProvider,
         CorsFilter corsFilter,
         JHipsterProperties jHipsterProperties,
-        SecurityProblemSupport problemSupport
+        ProblemSecuritySupport problemSupport
     ) {
         this.tokenProvider = tokenProvider;
         this.corsFilter = corsFilter;
@@ -48,63 +48,52 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Override
-    public void configure(WebSecurity web) {
-        web
-            .ignoring()
-            .antMatchers(HttpMethod.OPTIONS, "/**")
-            .antMatchers("/app/**/*.{js,html}")
-            .antMatchers("/i18n/**")
-            .antMatchers("/content/**")
-            .antMatchers("/swagger-ui/**")
-            .antMatchers("/test/**");
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web ->
+            web
+                .ignoring()
+                .requestMatchers(HttpMethod.OPTIONS, "/**")
+                .requestMatchers("/swagger-ui/**")
+                .requestMatchers("/test/**");
     }
 
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        // @formatter:off
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf()
-            .disable()
+            .csrf(csrf -> csrf.disable())
             .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-            .exceptionHandling()
-                .authenticationEntryPoint(problemSupport)
-                .accessDeniedHandler(problemSupport)
-        .and()
-            .headers()
-            .contentSecurityPolicy(jHipsterProperties.getSecurity().getContentSecurityPolicy())
-        .and()
-            .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
-        .and()
-            .featurePolicy("geolocation 'none'; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; fullscreen 'self'; payment 'none'")
-        .and()
-            .frameOptions()
-            .deny()
-        .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-            .authorizeRequests()
-            .antMatchers("/api/authenticate").permitAll()
-            .antMatchers("/api/register").permitAll()
-            .antMatchers("/api/activate").permitAll()
-            .antMatchers("/api/account/reset-password/init").permitAll()
-            .antMatchers("/api/account/reset-password/finish").permitAll()
-            .antMatchers("/api/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/api/**").authenticated()
-            .antMatchers("/management/health").permitAll()
-            .antMatchers("/management/health/**").permitAll()
-            .antMatchers("/management/info").permitAll()
-            .antMatchers("/management/prometheus").permitAll()
-            .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
-        .and()
-            .httpBasic()
-        .and()
-            .apply(securityConfigurerAdapter());
-        // @formatter:on
-    }
-
-    private JWTConfigurer securityConfigurerAdapter() {
-        return new JWTConfigurer(tokenProvider);
+            .addFilterBefore(new JWTFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
+            .exceptionHandling(exceptions -> exceptions.authenticationEntryPoint(problemSupport).accessDeniedHandler(problemSupport))
+            .headers(headers ->
+                headers
+                    .contentSecurityPolicy(csp -> csp.policyDirectives(jHipsterProperties.getSecurity().getContentSecurityPolicy()))
+                    .referrerPolicy(referrer -> referrer.policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN))
+                    .frameOptions(frameOptions -> frameOptions.deny())
+                    .featurePolicy(
+                        "geolocation 'none'; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; fullscreen 'self'; payment 'none'"
+                    )
+            )
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(authz ->
+                authz
+                    .requestMatchers("/api/authenticate").permitAll()
+                    .requestMatchers("/api/register").permitAll()
+                    .requestMatchers("/api/activate").permitAll()
+                    .requestMatchers("/api/account/reset-password/init").permitAll()
+                    .requestMatchers("/api/account/reset-password/finish").permitAll()
+                    .requestMatchers("/api/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                    .requestMatchers("/api/**").authenticated()
+                    .requestMatchers("/management/health").permitAll()
+                    .requestMatchers("/management/health/**").permitAll()
+                    .requestMatchers("/management/info").permitAll()
+                    .requestMatchers("/management/prometheus").permitAll()
+                    .requestMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                    // authorizeRequests eslesmeyen istekleri serbest birakiyordu (api-docs, /error);
+                    // authorizeHttpRequests varsayilan olarak reddettigi icin ayni davranis acikca yazildi.
+                    .anyRequest().permitAll()
+            )
+            .httpBasic(Customizer.withDefaults());
+        return http.build();
     }
 }

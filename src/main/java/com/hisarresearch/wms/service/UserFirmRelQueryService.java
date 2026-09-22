@@ -15,7 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.jhipster.service.QueryService;
+import com.hisarresearch.wms.framework.service.QueryService;
 
 import java.util.List;
 
@@ -77,7 +77,7 @@ public class UserFirmRelQueryService extends QueryService<UserFirmRel>{
      * @return the matching {@link Specification} of the entity.
      */
     protected Specification<UserFirmRel> createSpecification(UserFirmRelCriteria criteria) {
-        Specification<UserFirmRel> specification = Specification.where(null);
+        Specification<UserFirmRel> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), UserFirmRel_.id));

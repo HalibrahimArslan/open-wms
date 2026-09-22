@@ -8,16 +8,16 @@ import com.hisarresearch.wms.service.*;
 import com.hisarresearch.wms.service.dto.*;
 import com.hisarresearch.wms.service.mapper.AurOrderDetailMapper;
 import com.hisarresearch.wms.exception.api.BadRequestAlertException;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tech.jhipster.web.util.HeaderUtil;
-import tech.jhipster.web.util.ResponseUtil;
+import com.hisarresearch.wms.framework.web.util.HeaderUtil;
+import com.hisarresearch.wms.framework.web.util.ResponseUtil;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -230,7 +230,7 @@ public class AurOrderDetailResource {
             .build();
     }
 
-    @ApiOperation("Fetch aur_order_detail type is lazy")
+    @Operation(summary = "Fetch aur_order_detail type is lazy")
     @GetMapping("/dispatch-area-control-list")
     public ResponseEntity<List<AurDispatchAreaControl>> getAllAurDispatchAreaControlList(){
         return ResponseEntity.ok(aurDispatchAreaControlService.findAll());

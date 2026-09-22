@@ -7,7 +7,7 @@ import com.hisarresearch.wms.service.ProductAddressService;
 import com.hisarresearch.wms.service.criteria.ProductAddressCriteria;
 import com.hisarresearch.wms.service.dto.address.AurDepoStockCodeDto;
 import com.hisarresearch.wms.service.dto.address.AurDepoStokUrunAdresDto;
-import io.undertow.util.BadRequestException;
+import com.hisarresearch.wms.exception.validation.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController

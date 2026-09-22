@@ -7,7 +7,7 @@ import com.hisarresearch.wms.service.criteria.UserDepoRelCriteria;
 import com.hisarresearch.wms.service.dto.UserDepoRelDTO;
 import com.hisarresearch.wms.service.mapper.UserDepoRelMapper;
 import java.util.List;
-import javax.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.JoinType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -15,7 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.jhipster.service.QueryService;
+import com.hisarresearch.wms.framework.service.QueryService;
 
 /**
  * Service for executing complex queries for {@link UserDepoRel} entities in the database.
@@ -81,7 +81,7 @@ public class UserDepoRelQueryService extends QueryService<UserDepoRel> {
      * @return the matching {@link Specification} of the entity.
      */
     protected Specification<UserDepoRel> createSpecification(UserDepoRelCriteria criteria) {
-        Specification<UserDepoRel> specification = Specification.where(null);
+        Specification<UserDepoRel> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), UserDepoRel_.id));

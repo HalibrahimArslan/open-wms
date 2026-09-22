@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import tech.jhipster.web.util.HeaderUtil;
+import com.hisarresearch.wms.framework.web.util.HeaderUtil;
 
 import java.util.Collection;
 

@@ -1,6 +1,6 @@
 package com.hisarresearch.wms.domain;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 // Sinif adindan turetilen ad (aur_vw_firm_order_list_bulk) view'in gercek adiyla eslesmiyordu.

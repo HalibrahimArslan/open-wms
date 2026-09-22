@@ -5,7 +5,7 @@ import com.hisarresearch.wms.domain.address.AurDepoUrunAdres;
 import com.hisarresearch.wms.domain.Product;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;

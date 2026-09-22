@@ -13,18 +13,21 @@ Iceridigi kayitlar:
 | Tablo | Kayit |
 |---|---|
 | `aur_company` | `1 / WMS Lokal` |
-| `warehouse` | `1 / Merkez Depo` |
+| `warehouse` | `1 / Merkez Depo`, `2 / Yan Depo` (`transfer_code` ve `receiving_code` depo koduyla ayni) |
 | `aur_role` | `ADMIN` |
 | `aur_user` | `admin` ve `user` kullanicilarina `company_code = 1` |
 | `aur_user_role_rel` | her iki kullanici da `ADMIN` rolunde |
-| `user_depo_rel` | her iki kullanici da Merkez Depo'ya yetkili |
+| `jhi_user_authority` | `admin`e `COUNTER` yetkisi (el terminalinde sayim listesi icin) |
+| `user_depo_rel` | her iki kullanici da iki depoya yetkili |
 | `aur_menu` | — menuler artik seed'de degil, `2026091300000002_added_data_AurMenu.xml` changeset'inde |
 | `aur_menu_role_rel` | tum menuler `ADMIN` rolune bagli |
 | `product` | 5 demo urun (`8690000000011`..`59`) |
+| `aur_lookup_table` | irsaliye diyalogunun nakliye secenekleri: `KARAYOLU`/`DENIZYOLU`, `ANLASMALI`/`TEDARIKCI`, `PALET`/`KOLI` |
+| `aur_driver` | `Test Sofor` (mal kabul) ve `Sevkiyat Sofor` |
 | `aur_erp_data` | mal kabul (`sip_tip = 1`): 3 siparis / 7 satir, `320.01.001` ve `320.01.002` |
 | `aur_erp_data` | sevkiyat (`sip_tip = 0`): `S-3001` / 3 satir, `320.02.001` |
-| `aur_adres_*` | adres bilesenleri: 1 bolum, 3 reyon, 1 unite, 1 kat, 1 goz, `RAF` + `KNT` adres tipleri |
-| `aur_depo_urun_adres` | `A01010101` ve `A02010101` toplama gozleri, `A03010101` kontrol adresi |
+| `aur_adres_*` | adres bilesenleri (tek haneli unite/kat/goz kodlari, adresler 6 hane). Merkez Depo: 1 bolum, 4 reyon, `RAF` + `KNT` + `GEC`; Yan Depo: 1 bolum, 2 reyon, `RAF` + `GEC` |
+| `aur_depo_urun_adres` | Merkez Depo: `A01111` ve `A02111` toplama gozleri, `A03111` kontrol adresi, `A99111` gecici adres; Yan Depo: `B99111` gecici adres, `B01111` toplama gozu |
 | `aur_depo_urun_adres_stok` | `S-3001` satirlarinin urunleri toplama gozlerinde (250 / 180 / 60) |
 | `aur_order_master` / `aur_order_detail` | `A-1001`'den devam eden bir mal kabul siparisi (3 acik satir) |
 | `aur_order_master` / `aur_order_detail` | `S-3001`'den `admin`e atanmis bir sevkiyat siparisi (`MSK`, 3 satir) |
@@ -36,8 +39,8 @@ Iceridigi kayitlar:
 Sevkiyat ekranlari siparisleri `sip_tip = 0` ile okur; seed bu tipte tek bir siparis
 (`S-3001`), bu siparisin urunlerini tasiyan adres/stok kayitlarini ve siparisin `admin`
 kullanicisina atanmis halini kurar. Yani **Sevkiyat > Sevkiyatlarim** ekrani acildiginda
-siparis hazir gelir; toplamada okutulacak adres barkodlari `A01010101` (STK-001,
-STK-003) ve `A02010101` (STK-005), kontrol adresi ise `A03010101`'dir.
+siparis hazir gelir; toplamada okutulacak adres barkodlari `A01111` (STK-001,
+STK-003) ve `A02111` (STK-005), kontrol adresi ise `A03111`'dir.
 
 Atama adimini da denemek istersen bu siparisin WMS kayitlarini silmek yeterli
 (`order_picking_transaction`, `aur_order_detail`, `aur_order_master`); siparis o zaman
@@ -56,11 +59,32 @@ Menuler `company_code = NULL` ile eklenir; `aur_vw_user_menu_rel` sorgusu
 `company_code = :companyCode or company_code is null` filtreledigi icin
 tum sirketlerde gorunurler.
 
+## Depolar arasi transferi ve gecici adresten yerlestirmeyi denemek
+
+**Depolar Arasi Transfer** ekraninda cikis depo Merkez Depo, giris depo Yan Depo
+secilip `A01111` adresinden bir urun (orn. `8690000000011`) aktarilir; urun Yan
+Depo'nun gecici adresi `B99111`'e duser. Ardindan depo secicisinden Yan Depo'ya
+gecilip **Gecici Adresten Yerlestirme** ekraninda `B01111` adresi ve ayni barkod
+okutularak urun rafa yerlestirilir.
+
+Ters yon de denenebilir: Yan Depo'dan Merkez Depo'ya aktarilan urun `A99111`
+gecici adresine duser ve Merkez Depo'da `A01111` gibi bir rafa yerlestirilir.
+
+Mal kabul ve transfer, urunu giris deposunun `receiving_code` degerine gore
+buldugu gecici adrese koyar; bu yuzden her depoda `receiving_code` depo koduyla
+ayni ve tek bir gecici adres vardir. Birden fazla gecici adres desteklenmez.
+
 ## Calistirma
 
     docker exec -i wms-postgres psql -U wms -d wms < seed/local-seed.sql
 
 Idempotenttir (`ON CONFLICT DO NOTHING`), tekrar tekrar calistirilabilir.
+
+Uygulama calisirken seed yuklenirse degisiklikler hemen gorunmeyebilir: kullanicilar,
+depolar ve roller onbellekte tutulur (varsayilan omur 1 saat). Onbellegi bosaltmak icin
+uygulamayi yeniden baslatin ya da admin token'iyla:
+
+    curl -X DELETE -H "Authorization: Bearer <token>" http://localhost:8080/management/caches
 
 ## Dogrulama
 

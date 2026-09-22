@@ -1,6 +1,6 @@
 package com.hisarresearch.wms.service.dto.tag;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 public class TagDTO {
     @NotNull

@@ -62,11 +62,12 @@ Ayarları değiştirmek için `.env.example` dosyasını `.env` olarak kopyalay�
 
 | Dizin | İçerik |
 |---|---|
-| `src/main/java` | Spring Boot uygulaması (Java 11, JHipster 7 tabanlı) |
-| `src/main/webapp` | React arayüzü |
+| `src/main/java` | Spring Boot 4 uygulaması (Java 25) |
 | `src/main/resources/config/liquibase` | Veritabanı şeması |
 | `seed/` | Lokal geliştirme için örnek veri |
 | `.claude/rules/` | Projeye özel mimari kurallar |
+
+Arayüz bu reponun dışında, `../open-wms-app` deposunda yer alır.
 
 Bildirimler için küçük Node.js WebSocket sunucusu bu reponun dışında,
 `../websocket-server` (bu repoyla aynı `wms/` dizininin altında) yer alır.
@@ -75,13 +76,26 @@ Bildirimler için küçük Node.js WebSocket sunucusu bu reponun dışında,
 
 ```bash
 ./mvnw                # backend (dev profili)
-npm start             # frontend (webpack dev server)
 ./mvnw verify         # testler
 ```
 
-Gereksinimler: JDK 11, Node 14, PostgreSQL 13. Docker ile çalışırken hiçbiri
+`./mvnw verify`, `*IT` entegrasyon testlerini de calistirir; bunlar Testcontainers
+ile PostgreSQL 18 actigi icin Docker gerektirir. Sema Liquibase ile kurulur, uzerine
+`seed/local-seed.sql` yuklenir. `ApiContractIT`, arayuzun kullandigi uclarin
+cevaplarini `src/test/resources/api-snapshots/` altindaki kayitlarla karsilastirir;
+bir cevap bilerek degistiyse kayitlar `-Dsnapshot.update=true` ile yenilenir ve
+fark gozden gecirilip commit edilir.
+
+Gereksinimler: JDK 25, PostgreSQL 13. Docker ile çalışırken hiçbiri
 yerel olarak kurulu olmak zorunda değildir — `Dockerfile.local` derlemeyi
 kendi içinde yapar.
+
+### Liquibase sürümü
+
+Spring Boot 4.1 Liquibase 5.x'i yönetir; ancak Liquibase 5 ile lisans Apache 2.0'dan
+FSL-1.1'e (Functional Source License) geçti. Proje bu yüzden Apache 2.0 lisanslı son
+seri olan 4.x'te (`liquibase.version`, `pom.xml`) tutuluyor. 5.x'e geçmek bir lisans
+kararıdır.
 
 ## Yapılandırma
 

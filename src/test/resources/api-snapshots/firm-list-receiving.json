@@ -1,0 +1,19 @@
+[ {
+  "cariKod" : "320.01.001",
+  "cariUnvan" : "Yildiz Makina Ltd.",
+  "bolgeKodu" : "34",
+  "bolgeAdi" : "Istanbul Anadolu",
+  "cariHareketTipi" : "0",
+  "cariBaglantiTipi" : "1",
+  "orderLineItemCount" : null,
+  "orderList" : null
+}, {
+  "cariKod" : "320.01.002",
+  "cariUnvan" : "Demir Celik A.S.",
+  "bolgeKodu" : "06",
+  "bolgeAdi" : "Ankara",
+  "cariHareketTipi" : "0",
+  "cariBaglantiTipi" : "1",
+  "orderLineItemCount" : null,
+  "orderList" : null
+} ]

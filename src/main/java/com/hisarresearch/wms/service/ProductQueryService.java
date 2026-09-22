@@ -11,13 +11,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.jhipster.service.QueryService;
-import tech.jhipster.service.filter.StringFilter;
+import com.hisarresearch.wms.framework.service.QueryService;
+import com.hisarresearch.wms.framework.service.filter.StringFilter;
 
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Path;
+import jakarta.persistence.criteria.Root;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Function;
@@ -56,7 +56,7 @@ public class ProductQueryService extends QueryService<Product> {
     }
 
     protected Specification<Product> createSpecification(ProductCriteria criteria) {
-        Specification<Product> specification = Specification.where(null);
+        Specification<Product> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getBarkod() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getBarkod(), root -> root.get(Product_.id).get(ProductId_.barkod)));

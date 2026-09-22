@@ -1,5 +1,7 @@
 package com.hisarresearch.wms.service;
 
+import org.springframework.context.annotation.Lazy;
+
 import com.hisarresearch.wms.domain.AurOrderMaster;
 import com.hisarresearch.wms.domain.CustomerAddress;
 import com.hisarresearch.wms.repository.CustomerAddressRepository;
@@ -9,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -20,6 +22,7 @@ public class CustomerAddressService {
     @Autowired
     private CustomerAddressRepository customerAddressRepository;
 
+    @Lazy
     @Autowired
     private AurOrderMasterService aurOrderMasterService;
 

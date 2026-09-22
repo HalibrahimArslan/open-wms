@@ -10,11 +10,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.jhipster.service.QueryService;
+import com.hisarresearch.wms.framework.service.QueryService;
 
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
 import java.util.List;
 
 @Service
@@ -51,7 +51,7 @@ public class ProductCountingTypePairingQueryService extends QueryService<Product
 
 
     protected Specification<ProductCountingTypePairing> createSpecification(ProductCountingTypePairingCriteria criteria) {
-        Specification<ProductCountingTypePairing> specification = Specification.where(null);
+        Specification<ProductCountingTypePairing> specification = Specification.unrestricted();
         if (criteria != null) {
             if (criteria.getWarehouseCode() != null) {
                 specification = specification.and(buildSpecification(criteria.getWarehouseCode(), ProductCountingTypePairing_.warehouseCode));

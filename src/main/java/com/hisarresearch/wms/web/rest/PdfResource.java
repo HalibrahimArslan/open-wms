@@ -48,19 +48,6 @@ public class PdfResource {
         this.barcodeGenerator = barcodeGenerator;
     }
 
-    @GetMapping("/generatepdf/{pdfName}/{orderId}")
-    public void generatePdf(@PathVariable String pdfName,@PathVariable Long orderId){
-        Map<String, Object> data = new HashMap<>();
-        Optional<AurOrderMaster> aurOrderMaster = aurOrderMasterRepository.findByOrderInfo("AUR-".concat(orderId.toString()));
-        if(aurOrderMaster.isPresent()){
-            AurOrderMaster aom = aurOrderMaster.get();
-            data.put("aurOrderMaster",aom);
-            List<AurOrderDetail> aurOrderDetails = aurOrderDetailRepository.findByOrderId(aurOrderMaster.get().getId());
-            data.put("aurTmpList", aurOrderDetails);
-        }
-        pdfGenerateService.generatePdfFile("mail/quotation", data, pdfName.concat(".pdf"));
-    }
-
     @GetMapping("/generate-pdf/{orderId}")
     public ResponseEntity<InputStreamResource> generatePdfDownload(@PathVariable Long orderId) throws Exception{
         Map<String, Object> data = new HashMap<>();

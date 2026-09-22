@@ -2,8 +2,8 @@ package com.hisarresearch.wms.service.dto.counting;
 
 import com.hisarresearch.wms.domain.address.AurDepoUrunAdres;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 public class CountingUserAddressSearchDTO {

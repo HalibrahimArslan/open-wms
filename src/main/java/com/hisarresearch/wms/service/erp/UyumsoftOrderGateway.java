@@ -127,4 +127,10 @@ public class UyumsoftOrderGateway implements ErpOrderGateway {
     public Object generateBarcode(String token, String apiPath, String stokKod) {
         return ErpOperationResult.notImplemented("Uyumsoft barkod uretimi");
     }
+
+    /** TODO Uyumsoft'ta depolar arasi transfer belgesi olusturma. */
+    @Override
+    public ErpOperationResult interWarehouseTransfer(String token, String apiPath, DepolarArasiTransferErpDto dto) {
+        return ErpOperationResult.notImplemented("Uyumsoft depolar arasi transfer");
+    }
 }

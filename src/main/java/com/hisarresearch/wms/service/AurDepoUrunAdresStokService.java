@@ -1,5 +1,7 @@
 package com.hisarresearch.wms.service;
 
+import org.springframework.context.annotation.Lazy;
+
 import com.hisarresearch.wms.domain.*;
 import com.hisarresearch.wms.domain.address.AurDepoUrunAdres;
 import com.hisarresearch.wms.domain.address.AurDepoUrunAdresStok;
@@ -87,9 +89,11 @@ public class AurDepoUrunAdresStokService {
     @Autowired
     private ProductAddressService productAddressService;
 
+    @Lazy
     @Autowired
     private AurDepoUrunAdresStokService aurDepoUrunAdresStokService;
 
+    @Lazy
     @Autowired
     AurOrderMasterService aurOrderMasterService;
 
@@ -229,6 +233,14 @@ public class AurDepoUrunAdresStokService {
         } else {
             productAtTmpArea.setMiktar(transactionAmount);
         }
+
+        AurDepoUrunAdres placementAddress = aurDepoAdresRepository.findByAdresAndDepoNoAndCompanyCodeAndStatus(
+            productAddressSaveDTO.getUrunAdres(), productAddressSaveDTO.getDepoCode(), productAddressSaveDTO.getCompanyCode(), true)
+            .orElseThrow(InvalidAddressException::new);
+        AurDepoUrunAdresStok placementStock = aurDepoUrunAdresStokRepository.findByBarcodeAndUrunAdresIdAndStatusAndDepoCode(
+            productAddressSaveDTO.getBarcode(), placementAddress.getUrunAdresId(), true, productAddressSaveDTO.getDepoCode())
+            .orElseThrow(() -> new IllegalStateException("Yerlestirilen urun hedef adreste bulunamadi"));
+        addressMovementHistoryService.saveTemporaryPlacementMovement(productAddressSaveDTO, productAtTmpArea, placementStock);
 
         logService.logResponse(logId, "success");
     }
@@ -386,7 +398,7 @@ public class AurDepoUrunAdresStokService {
         if (dto.getMiktar() <= transferProductAddress.getMiktar()) {
             decreaseProductAmount(barcode, depoCode, dto.getMiktar(), oldAddressId);
             AurDepoUrunAdresStok targetProductAddress = saveProductAddress(replacementDtoToAddressSaveDto(dto));
-            addressMovementHistoryService.saveAddressReplacementMovement(dto, targetProductAddress, transferProductAddress.getMiktar());
+            addressMovementHistoryService.saveAddressReplacementMovement(dto, targetProductAddress, transferProductAddress);
 
         }
 

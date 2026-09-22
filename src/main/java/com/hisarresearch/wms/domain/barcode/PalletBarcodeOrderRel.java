@@ -4,8 +4,8 @@ import com.hisarresearch.wms.domain.AbstractAuditingEntity;
 import com.hisarresearch.wms.domain.AurOrderDetail;
 import com.hisarresearch.wms.domain.AurOrderMaster;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "pallet_barcode_order_rel")
