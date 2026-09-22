@@ -130,13 +130,8 @@ services:
       MINIO_SECRETKEY: ${MINIO_SECRET_KEY:-wmsadmin123}
       MINIO_BUCKETNAME: ${MINIO_BUCKET:-wms}
 
-      # Konfigürasyonda Windows yolu (C:\pdf\) yazılı, linux container için ezildi
-      PDF_DIRECTORY: /app/pdf/
-
     ports:
       - '${APP_PORT:-8080}:8080'
-    volumes:
-      - pdf:/app/pdf
     healthcheck:
       test: ['CMD-SHELL', 'curl -fs http://localhost:8080/management/health || exit 1']
       interval: 15s
@@ -146,5 +141,4 @@ services:
 
 volumes:
   pgdata:
-  pdf:
   miniodata:

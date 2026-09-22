@@ -45,9 +45,6 @@ jhipster:
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 86400
 
-pdf:
-  directory: ${java.io.tmpdir}/wms-test-pdf/
-
 metabase:
   url: http://localhost:3000
   secretKey: test-secret

@@ -121,9 +121,6 @@ jhipster:
 
 # application:
 
-pdf:
-  directory: C:\\pdf\\
-
 metabase:
   url: ${METABASE_SECRET_URL:}
   secretKey: ${METABASE_SECRET_KEY:}
