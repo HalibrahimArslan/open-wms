@@ -131,9 +131,7 @@
     <include file="config/liquibase/changelog/2026060800000002_added_audit_UniqueBarcode.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/2026060900000001_added_audit_AurDepoUrunAdresStok.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/2026061700000001_added_column_UniqueBarcode_address.xml" relativeToChangelogFile="false"/>
-
     <include file="config/liquibase/changelog/2026091300000001_added_missing_ErpOrderViews.xml" relativeToChangelogFile="false"/>
-
     <include file="config/liquibase/changelog/2026091300000002_added_data_AurMenu.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/2026091400000001_sequences.xml" relativeToChangelogFile="false"/>
 
