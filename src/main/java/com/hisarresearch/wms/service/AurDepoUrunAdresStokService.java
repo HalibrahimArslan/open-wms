@@ -390,7 +390,7 @@ public class AurDepoUrunAdresStokService {
         if (dto.getMiktar() <= transferProductAddress.getMiktar()) {
             decreaseProductAmount(barcode, depoCode, dto.getMiktar(), oldAddressId);
             AurDepoUrunAdresStok targetProductAddress = saveProductAddress(replacementDtoToAddressSaveDto(dto));
-            addressMovementHistoryService.saveAddressReplacementMovement(dto, targetProductAddress, transferProductAddress.getMiktar());
+            addressMovementHistoryService.saveAddressReplacementMovement(dto, targetProductAddress, transferProductAddress);
 
         }
 

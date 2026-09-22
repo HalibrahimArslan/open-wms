@@ -57,7 +57,9 @@ public class AddressMovementHistoryService {
 
        if(originAddress.isPresent()){
            adph.setOriginAddress(generateAddress(originAddress.get().getUrunAdresId()));
-           adph.setOriginUpdatedAmount(originAddress.get().getMiktar() - dto.getChangeAmount());
+           // Arayuz bu kaydi yerlestirmeden sonra ayri bir istekle yazar; gecici adresteki
+           // miktar o anda zaten dusulmustur.
+           adph.setOriginUpdatedAmount(originAddress.get().getMiktar());
        }
        else{
            AurDepoUrunAdres temporaryAddress = addressService.checkTemporaryAddress(dto.getDepoCode());
@@ -97,13 +99,16 @@ public class AddressMovementHistoryService {
 
     }
 
+    /**
+     * Stok kayitlari ayni islemde yonetilen entity'ler oldugu icin, cagrildiginda ikisi de
+     * zaten guncellenmistir; guncel miktarlar oldugu gibi yazilir.
+     */
     public void saveAddressReplacementMovement(AurProductAddressReplacementDto dto,
                                                AurDepoUrunAdresStok targetAddress,
-                                               Double previousTransferAddressAmount
+                                               AurDepoUrunAdresStok transferAddress
                                               ){
         Long targetAddressId = dto.getNewUrunAdresId();
         Long transferAddressId = dto.getOldUrunAdresId();
-        Double previousTargetAddressAmount = targetAddress.getMiktar();
 
         AddressMovementHistory addressMovementHistory = new AddressMovementHistory();
         addressMovementHistory.setAurUser(userService.getUser());
@@ -111,9 +116,9 @@ public class AddressMovementHistoryService {
         addressMovementHistory.setBarcode(dto.getBarcode());
         addressMovementHistory.setProcessAmount(dto.getMiktar());
         addressMovementHistory.setPlacementAddress(generateAddress(targetAddressId));
-        addressMovementHistory.setPlacementUpdatedAmount(previousTargetAddressAmount + dto.getMiktar());
+        addressMovementHistory.setPlacementUpdatedAmount(targetAddress.getMiktar());
         addressMovementHistory.setOriginAddress(generateAddress(transferAddressId));
-        addressMovementHistory.setOriginUpdatedAmount(previousTransferAddressAmount - dto.getMiktar());
+        addressMovementHistory.setOriginUpdatedAmount(transferAddress.getMiktar());
         addressMovementHistory.setMovementType(AddressMovementType.REPLACEMENT);
 
         addressMovementHistoryRepository.save(addressMovementHistory);
