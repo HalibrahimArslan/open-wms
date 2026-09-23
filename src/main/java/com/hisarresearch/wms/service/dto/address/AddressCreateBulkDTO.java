@@ -10,20 +10,13 @@ import jakarta.validation.constraints.Size;
 import java.util.List;
 
 public class AddressCreateBulkDTO {
-    @NotNull
-    private Long firstDepartmentId;
-    @NotNull
-    private Long lastDepartmentId;
-    @NotNull
-    private Long firstHallId;
-    @NotNull
-    private Long lastHallId;
-    private Long firstUnitId;
-    private Long lastUnitId;
-    private Long firstFlatId;
-    private Long lastFlatId;
-    private Long firstRoomId;
-    private Long lastRoomId;
+    @NotEmpty
+    private List<Long> departmentIds;
+    @NotEmpty
+    private List<Long> hallIds;
+    private List<Long> unitIds;
+    private List<Long> flatIds;
+    private List<Long> roomIds;
     @NotNull
     private AddressType addressType;
     @NotNull
@@ -35,87 +28,48 @@ public class AddressCreateBulkDTO {
     private Boolean kontrolAdres;
     private Boolean countable;
 
+    @NotNull
     @Size(min = 1)
     private List<AddressFieldType> selectedFields;
 
-    public Long getFirstDepartmentId() {
-        return firstDepartmentId;
+    public List<Long> getDepartmentIds() {
+        return departmentIds;
     }
 
-    public void setFirstDepartmentId(Long firstDepartmentId) {
-        this.firstDepartmentId = firstDepartmentId;
+    public void setDepartmentIds(List<Long> departmentIds) {
+        this.departmentIds = departmentIds;
     }
 
-    public Long getLastDepartmentId() {
-        return lastDepartmentId;
+    public List<Long> getHallIds() {
+        return hallIds;
     }
 
-    public void setLastDepartmentId(Long lastDepartmentId) {
-        this.lastDepartmentId = lastDepartmentId;
+    public void setHallIds(List<Long> hallIds) {
+        this.hallIds = hallIds;
     }
 
-    public Long getFirstHallId() {
-        return firstHallId;
+    public List<Long> getUnitIds() {
+        return unitIds;
     }
 
-    public void setFirstHallId(Long firstHallId) {
-        this.firstHallId = firstHallId;
+    public void setUnitIds(List<Long> unitIds) {
+        this.unitIds = unitIds;
     }
 
-    public Long getLastHallId() {
-        return lastHallId;
+    public List<Long> getFlatIds() {
+        return flatIds;
     }
 
-    public void setLastHallId(Long lastHallId) {
-        this.lastHallId = lastHallId;
+    public void setFlatIds(List<Long> flatIds) {
+        this.flatIds = flatIds;
     }
 
-    public Long getFirstUnitId() {
-        return firstUnitId;
+    public List<Long> getRoomIds() {
+        return roomIds;
     }
 
-    public void setFirstUnitId(Long firstUnitId) {
-        this.firstUnitId = firstUnitId;
-    }
-
-    public Long getLastUnitId() {
-        return lastUnitId;
-    }
-
-    public void setLastUnitId(Long lastUnitId) {
-        this.lastUnitId = lastUnitId;
-    }
-
-    public Long getFirstFlatId() {
-        return firstFlatId;
-    }
-
-    public void setFirstFlatId(Long firstFlatId) {
-        this.firstFlatId = firstFlatId;
-    }
-
-    public Long getLastFlatId() {
-        return lastFlatId;
-    }
-
-    public void setLastFlatId(Long lastFlatId) {
-        this.lastFlatId = lastFlatId;
-    }
-
-    public Long getFirstRoomId() {
-        return firstRoomId;
-    }
-
-    public void setFirstRoomId(Long firstRoomId) {
-        this.firstRoomId = firstRoomId;
-    }
-
-    public Long getLastRoomId() {
-        return lastRoomId;
-    }
-
-    public void setLastRoomId(Long lastRoomId) {
-        this.lastRoomId = lastRoomId;
+    public void setRoomIds(List<Long> roomIds) {
+        this.roomIds = roomIds;
     }
 
     public @NotNull AddressType getAddressType() {

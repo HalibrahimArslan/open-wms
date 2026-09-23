@@ -28,6 +28,9 @@ public interface AurDepoAdresRepository extends JpaRepository<AurDepoUrunAdres, 
 
     AurDepoUrunAdres findByUrunAdresId(Long urunAdresId);
 
+    @Query("SELECT a.adres FROM AurDepoUrunAdres a WHERE a.depoNo = :depoNo AND a.companyCode = :companyCode")
+    List<String> findAdresByDepoNoAndCompanyCode(@Param("depoNo") String depoNo, @Param("companyCode") String companyCode);
+
     List<AurDepoUrunAdres> findByDepoNoAndCompanyCodeAndGeciciAdresAndStatusTrue(String depoNo, String companyCode, Boolean geciciAdres);
 
     List<AurDepoUrunAdres> findByDepoNoAndCompanyCodeAndStatusAndKontrolAdres(String depoNo, String companyCode,Boolean status, Boolean kontrolAdres);

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -280,25 +281,23 @@ public class AddressComponentService {
         addressTypeRepository.deleteById(id);
     }
 
-    public List<AddressDepartment> getAddressDepartmentsByIdRange(Long startId, Long endId) {
-        return addressDepartmentRepository.findByIdBetween(startId, endId);
+    public List<AddressDepartment> getAddressDepartmentsByIds(Collection<Long> ids, String companyCode, String depoCode) {
+        return addressDepartmentRepository.findByIdInAndCompanyCodeAndDepoCode(ids, companyCode, depoCode);
     }
 
-    public List<AddressHall> getAddressHallsByIdRange(Long startId, Long endId) {
-        return addressHallRepository.findByIdBetween(startId, endId);
+    public List<AddressHall> getAddressHallsByIds(Collection<Long> ids, String companyCode, String depoCode) {
+        return addressHallRepository.findByIdInAndCompanyCodeAndDepoCode(ids, companyCode, depoCode);
     }
 
-    public List<AddressUnit> getAddressUnitsByIdRange(Long startId, Long endId) {
-        return addressUnitRepository.findByIdBetween(startId, endId);
+    public List<AddressUnit> getAddressUnitsByIds(Collection<Long> ids, String companyCode, String depoCode) {
+        return addressUnitRepository.findByIdInAndCompanyCodeAndDepoCode(ids, companyCode, depoCode);
     }
 
-    public List<AddressFlat> getAddressFlatsByIdRange(Long startId, Long endId) {
-        return addressFlatRepository.findByIdBetween(startId, endId);
+    public List<AddressFlat> getAddressFlatsByIds(Collection<Long> ids, String companyCode, String depoCode) {
+        return addressFlatRepository.findByIdInAndCompanyCodeAndDepoCode(ids, companyCode, depoCode);
     }
 
-    public List<AddressRoom> getAddressRoomsByIdRange(Long startId, Long endId) {
-        return addressRoomRepository.findByIdBetween(startId, endId);
+    public List<AddressRoom> getAddressRoomsByIds(Collection<Long> ids, String companyCode, String depoCode) {
+        return addressRoomRepository.findByIdInAndCompanyCodeAndDepoCode(ids, companyCode, depoCode);
     }
-
-
 }

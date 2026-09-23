@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -308,31 +309,42 @@ public class AddressService {
         return aurDepoAdresRepository.save(createOne);
     }
 
-    private void validateIdRange(Long firstId, Long lastId, String errorMessage, String errorKey) {
-        if (firstId != null && lastId != null && firstId > lastId) {
-            throw new BadRequestAlertException(translationService.getErrorMessage(errorMessage), ENTITY_NAME, errorKey);
-        }
-    }
-
     public List<AddressDTO> createAddressBulk(AddressCreateBulkDTO addressCreateBulkDTO) {
-        validateIdRange(addressCreateBulkDTO.getFirstDepartmentId(), addressCreateBulkDTO.getLastDepartmentId(), "createBulkAddress.invalidIdRange", "invalidAddressDepartment");
-        validateIdRange(addressCreateBulkDTO.getFirstHallId(), addressCreateBulkDTO.getLastHallId(), "createBulkAddress.invalidIdRange", "invalidAddressHall");
-        validateIdRange(addressCreateBulkDTO.getFirstUnitId(), addressCreateBulkDTO.getLastUnitId(), "createBulkAddress.invalidIdRange", "invalidAddressUnit");
-        validateIdRange(addressCreateBulkDTO.getFirstFlatId(), addressCreateBulkDTO.getLastFlatId(), "createBulkAddress.invalidIdRange", "invalidAddressFlat");
-        validateIdRange(addressCreateBulkDTO.getFirstRoomId(), addressCreateBulkDTO.getLastRoomId(), "createBulkAddress.invalidIdRange", "invalidAddressRoom");
+        String companyCode = addressCreateBulkDTO.getCompanyCode();
+        String depoCode = String.valueOf(addressCreateBulkDTO.getWarehouseCode());
+        List<AddressFieldType> selectedFields = addressCreateBulkDTO.getSelectedFields();
+
+        List<AddressDepartment> departments = resolveComponents(addressCreateBulkDTO.getDepartmentIds(),
+            ids -> addressComponentService.getAddressDepartmentsByIds(ids, companyCode, depoCode), "invalidAddressDepartment");
+        List<AddressHall> halls = resolveComponents(addressCreateBulkDTO.getHallIds(),
+            ids -> addressComponentService.getAddressHallsByIds(ids, companyCode, depoCode), "invalidAddressHall");
+        List<List<? extends AddressComponent>> selectedLevels = new ArrayList<>();
+        if (selectedFields.contains(AddressFieldType.UNIT)) {
+            selectedLevels.add(resolveComponents(addressCreateBulkDTO.getUnitIds(),
+                ids -> addressComponentService.getAddressUnitsByIds(ids, companyCode, depoCode), "invalidAddressUnit"));
+        }
+        if (selectedFields.contains(AddressFieldType.FLAT)) {
+            selectedLevels.add(resolveComponents(addressCreateBulkDTO.getFlatIds(),
+                ids -> addressComponentService.getAddressFlatsByIds(ids, companyCode, depoCode), "invalidAddressFlat"));
+        }
+        if (selectedFields.contains(AddressFieldType.ROOM)) {
+            selectedLevels.add(resolveComponents(addressCreateBulkDTO.getRoomIds(),
+                ids -> addressComponentService.getAddressRoomsByIds(ids, companyCode, depoCode), "invalidAddressRoom"));
+        }
 
         List<AddressDTO> addressDTOList = new ArrayList<>();
 
-        for (AddressDepartment addressDepartment : addressComponentService.getAddressDepartmentsByIdRange(
-            addressCreateBulkDTO.getFirstDepartmentId(), addressCreateBulkDTO.getLastDepartmentId())) {
-
-            for (AddressHall addressHall : addressComponentService.getAddressHallsByIdRange(
-                addressCreateBulkDTO.getFirstHallId(), addressCreateBulkDTO.getLastHallId())) {
-
-                Optional.ofNullable(addressCreateBulkDTO.getFirstUnitId())
-                    .ifPresentOrElse(unitId -> processUnits(addressCreateBulkDTO, addressDepartment, addressHall, addressDTOList),
-                        () -> processWithoutUnits(addressCreateBulkDTO, addressDepartment, addressHall, addressDTOList));
+        for (AddressDepartment addressDepartment : departments) {
+            for (AddressHall addressHall : halls) {
+                collectAddresses(addressCreateBulkDTO, addressDepartment, addressHall, selectedLevels, new ArrayList<>(), addressDTOList);
             }
+        }
+
+        Set<String> existingAddresses = new HashSet<>(aurDepoAdresRepository.findAdresByDepoNoAndCompanyCode(depoCode, companyCode));
+        addressDTOList.removeIf(addressDTO -> existingAddresses.contains(addressDTO.getAddress()));
+
+        if (addressDTOList.isEmpty()) {
+            throw new BadRequestAlertException(translationService.getErrorMessage("createBulkAddress.allAddressesExist"), ENTITY_NAME, "addressesAlreadyExist");
         }
 
         List<AurDepoUrunAdres> createdList = aurDepoAdresRepository.saveAll(addressMapper.toEntity(addressDTOList));
@@ -340,32 +352,34 @@ public class AddressService {
         return addressMapper.toDto(createdList);
     }
 
-    private void processUnits(AddressCreateBulkDTO dto, AddressDepartment department, AddressHall hall, List<AddressDTO> dtoList) {
-        for (AddressUnit unit : addressComponentService.getAddressUnitsByIdRange(dto.getFirstUnitId(), dto.getLastUnitId())) {
-            Optional.ofNullable(dto.getFirstFlatId())
-                .ifPresentOrElse(flatId -> processFlats(dto, department, hall, unit, dtoList),
-                    () -> addIfNotExists(generateAddress(dto, department, hall, unit), dtoList));
+    private <T extends AddressComponent> List<T> resolveComponents(List<Long> ids, Function<Collection<Long>, List<T>> finder, String errorKey) {
+        if (ids == null || ids.isEmpty()) {
+            throw new BadRequestAlertException(translationService.getErrorMessage("createBulkAddress.emptySelection"), ENTITY_NAME, errorKey);
+        }
+
+        Set<Long> uniqueIds = new LinkedHashSet<>(ids);
+        Map<Long, T> found = finder.apply(uniqueIds).stream()
+            .collect(Collectors.toMap(AddressComponent::getId, Function.identity()));
+
+        if (found.size() != uniqueIds.size()) {
+            throw new BadRequestAlertException(translationService.getErrorMessage("createBulkAddress.componentNotFound"), ENTITY_NAME, errorKey);
+        }
+
+        return uniqueIds.stream().map(found::get).toList();
+    }
+
+    private void collectAddresses(AddressCreateBulkDTO dto, AddressDepartment department, AddressHall hall,
+                                  List<List<? extends AddressComponent>> levels, List<AddressComponent> current, List<AddressDTO> dtoList) {
+        if (current.size() == levels.size()) {
+            addIfNotExists(generateAddress(dto, department, hall, current.toArray(new AddressComponent[0])), dtoList);
+            return;
+        }
+        for (AddressComponent component : levels.get(current.size())) {
+            current.add(component);
+            collectAddresses(dto, department, hall, levels, current, dtoList);
+            current.remove(current.size() - 1);
         }
     }
-
-    private void processWithoutUnits(AddressCreateBulkDTO dto, AddressDepartment department, AddressHall hall, List<AddressDTO> dtoList) {
-        addIfNotExists(generateAddress(dto, department, hall), dtoList);
-    }
-
-    private void processFlats(AddressCreateBulkDTO dto, AddressDepartment department, AddressHall hall, AddressUnit unit, List<AddressDTO> dtoList) {
-        for (AddressFlat flat : addressComponentService.getAddressFlatsByIdRange(dto.getFirstFlatId(), dto.getLastFlatId())) {
-            Optional.ofNullable(dto.getFirstRoomId())
-                .ifPresentOrElse(roomId -> processRooms(dto, department, hall, unit, flat, dtoList),
-                    () -> addIfNotExists(generateAddress(dto, department, hall, unit, flat), dtoList));
-        }
-    }
-
-    private void processRooms(AddressCreateBulkDTO dto, AddressDepartment department, AddressHall hall, AddressUnit unit, AddressFlat flat, List<AddressDTO> dtoList) {
-        for (AddressRoom room : addressComponentService.getAddressRoomsByIdRange(dto.getFirstRoomId(), dto.getLastRoomId())) {
-            addIfNotExists(generateAddress(dto, department, hall, unit, flat, room), dtoList);
-        }
-    }
-
 
     private void addIfNotExists(AddressDTO addressDTO, List<AddressDTO> addressDTOList) {
         if (addressDTOList.stream().noneMatch(address -> address.getAddress().equals(addressDTO.getAddress()))) {
