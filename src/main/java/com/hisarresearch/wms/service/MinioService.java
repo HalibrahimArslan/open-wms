@@ -7,6 +7,7 @@ import io.minio.errors.*;
 import io.minio.messages.Item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -38,10 +39,10 @@ public class MinioService {
     @Value("${wms.mail.shipment-form-url:}")
     private String shipmentFormUrl;
 
-    @Value("${minio.bucketName}")
+    @Value("${minio.bucketName:}")
     private String bucketName;
 
-    @Value("${minio.url}")
+    @Value("${minio.url:}")
     private String url;
 
     private final Logger log = LoggerFactory.getLogger(MinioService.class);
@@ -51,7 +52,7 @@ public class MinioService {
     private final TemplateEngine templateEngine;
     private final JHipsterProperties jHipsterProperties;
     private final AurLogService aurLogService;
-    private final MinioClient minioClient;
+    private final ObjectProvider<MinioClient> minioClientProvider;
 
     private final TranslationService translationService;
 
@@ -63,7 +64,7 @@ public class MinioService {
 
     public MinioService(JavaMailSender javaMailSender, TemplateEngine templateEngine,
                         JHipsterProperties jHipsterProperties,AurLogService aurLogService,
-                        TranslationService translationService,MinioClient minioClient,
+                        TranslationService translationService,ObjectProvider<MinioClient> minioClientProvider,
                         AurLogService logService,UploadService uploadService,
                         UserService userService) {
         this.javaMailSender = javaMailSender;
@@ -71,10 +72,18 @@ public class MinioService {
         this.jHipsterProperties = jHipsterProperties;
         this.aurLogService = aurLogService;
         this.translationService = translationService;
-        this.minioClient = minioClient;
+        this.minioClientProvider = minioClientProvider;
         this.logService = logService;
         this.uploadService = uploadService;
         this.userService = userService;
+    }
+
+    private MinioClient minioClient() {
+        MinioClient minioClient = minioClientProvider.getIfAvailable();
+        if (minioClient == null) {
+            throw new IllegalStateException("Obje deposu yapilandirilmamis (MINIO_URL tanimli degil)");
+        }
+        return minioClient;
     }
 
     public Upload uploadObject(MultipartFile file) {
@@ -87,7 +96,7 @@ public class MinioService {
                 .append("-")
                 .append(file.getOriginalFilename());
             InputStream inputStream = file.getInputStream();
-            minioClient.putObject(PutObjectArgs.builder()
+            minioClient().putObject(PutObjectArgs.builder()
                     .bucket(bucketName)
                     .object(updatedFilename.toString())
                     .contentType(file.getContentType())
@@ -107,11 +116,11 @@ public class MinioService {
     public void listBucketItems(){
         boolean found;
         try {
-            found = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
+            found = minioClient().bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
             if (!found) throw new RuntimeException("Bucket " + bucketName + "doesnt found");
 
             Iterable<Result<Item>> results =
-                minioClient.listObjects(ListObjectsArgs.builder().bucket(bucketName).build());
+                minioClient().listObjects(ListObjectsArgs.builder().bucket(bucketName).build());
 
             for (Result<Item> result : results) {
                 Item item = result.get();
@@ -125,7 +134,7 @@ public class MinioService {
 
     public InputStream downloadFile(String fileName) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         long logId = logService.logRequest(SERVICE_NAME,"downloadFile",fileName);
-        InputStream stream = minioClient.getObject(
+        InputStream stream = minioClient().getObject(
             GetObjectArgs.builder()
                 .bucket(bucketName)
                 .object(fileName)
@@ -143,7 +152,7 @@ public class MinioService {
             logId = aurLogService.logRequest("MinioService","sendMailWithObject",aphr.toString() + templateName + attachmentName);
 
             InputStream stream =
-                minioClient.getObject(
+                minioClient().getObject(
                     GetObjectArgs.builder().bucket(bucketName).object(objectName).build());
 
             Locale locale = Locale.forLanguageTag("tr");

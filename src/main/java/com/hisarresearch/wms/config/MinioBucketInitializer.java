@@ -5,6 +5,7 @@ import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -14,25 +15,30 @@ import org.springframework.util.StringUtils;
 /**
  * Uygulama acilirken yapilandirilan bucket'in var olup olmadigina bakar, yoksa olusturur.
  * Boylece obje deposunu hazirlamak icin ayrica bir kurulum adimi (mc mb) gerekmez.
- * Depo o an erisilemezse acilis engellenmez; sadece uyari basilir, dosya yukleme
- * istekleri kendi hatasini dondurur.
+ * Depo tanimli degilse ya da o an erisilemezse acilis engellenmez; sadece uyari basilir,
+ * dosya yukleme istekleri kendi hatasini dondurur.
  */
 @Component
 public class MinioBucketInitializer implements ApplicationRunner {
 
     private final Logger log = LoggerFactory.getLogger(MinioBucketInitializer.class);
 
-    private final MinioClient minioClient;
+    private final ObjectProvider<MinioClient> minioClientProvider;
 
     @Value("${minio.bucketName:}")
     private String bucketName;
 
-    public MinioBucketInitializer(MinioClient minioClient) {
-        this.minioClient = minioClient;
+    public MinioBucketInitializer(ObjectProvider<MinioClient> minioClientProvider) {
+        this.minioClientProvider = minioClientProvider;
     }
 
     @Override
     public void run(ApplicationArguments args) {
+        MinioClient minioClient = minioClientProvider.getIfAvailable();
+        if (minioClient == null) {
+            log.warn("minio.url tanimli degil, obje deposu devre disi");
+            return;
+        }
         if (!StringUtils.hasText(bucketName)) {
             log.warn("minio.bucketName tanimli degil, bucket kontrolu atlandi");
             return;

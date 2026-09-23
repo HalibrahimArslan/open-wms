@@ -114,8 +114,8 @@ services:
       MAIL_PASSWORD: ''
       MAIL_URL: http://localhost:${APP_PORT:-8080}
 
-      # --- application.yml içindeki zorunlu placeholder'lar ---
-      # Bunlar uygulama açılışında @Value ile okunuyor, boş bırakılırsa context ayağa kalkmaz.
+      # --- isteğe bağlı servisler ---
+      # WEBSOCKET_URI çalışan bir sunucuyu göstermeli; sunucu yoksa açılış takılır.
       WEBSOCKET_URI: ${WEBSOCKET_URI:-ws://websocket:8080/websocket}
       METABASE_SECRET_URL: ${METABASE_SECRET_URL:-http://localhost:3000}
       METABASE_SECRET_KEY: ${METABASE_SECRET_KEY:-local-dev-dummy-secret}
