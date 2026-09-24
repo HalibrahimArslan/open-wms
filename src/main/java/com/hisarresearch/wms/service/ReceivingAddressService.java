@@ -50,7 +50,7 @@ public class ReceivingAddressService {
 
         AurDepoUrunAdres aurDepoUrunAdres = addressService.isExistAddress(addressId);
         String companyCode = userService.getUserCompanyCode().toString();
-        Warehouse warehouse = warehouseRepository.findByCode(depoNo).orElseThrow(() -> new BusinessException("Depo Bulunamadı", "Warehouse", "DEPO_YOK"));
+        Warehouse warehouse = warehouseRepository.findByCodeAndCompanyCode(depoNo, companyCode).orElseThrow(() -> new BusinessException("Depo Bulunamadı", "Warehouse", "DEPO_YOK"));
 
         if (!Boolean.TRUE.equals(aurDepoUrunAdres.getStatus()) || !Boolean.TRUE.equals(aurDepoUrunAdres.getGeciciAdres())) {
             throw new BusinessException("Adres aktif değil veya geçici adrese ürün kabülü yapılamaz", "AurDepoUrunAdres", "ADRES_GECERSIZ");

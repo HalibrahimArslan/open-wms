@@ -88,6 +88,9 @@ public class AurOrderMasterService {
     private UserService userService;
 
     @Autowired
+    private ProductService productService;
+
+    @Autowired
     private AddressService addressService;
 
     @Autowired
@@ -882,10 +885,12 @@ public class AurOrderMasterService {
 
     public void saveOrderDetailWithoutAssign(List<AurOrderDetailDTO> detailList, Long orderId, String opType, String addressId) throws Exception {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        String companyCode = String.valueOf(userService.getUserCompanyCode());
         for (AurOrderDetailDTO aod : detailList) {
             aod.setTeslimMiktar(AurHelper.roundAmount(aod.getTeslimMiktar()));
             aod.setObserverAmount(AurHelper.roundAmount(aod.getObserverAmount()));
             Optional<AurOrderDetail> aurTmpDetail = checkOrderDetailWhenWithoutAssign(aod, orderId,opType);
+            productService.createIfAbsent(aod.getBarkod(), companyCode, aod.getStokKodu(), aod.getStokAdi(), aod.getStokBirimi());
             Double transactionAmount = aod.getTeslimMiktar();
             AurOrderDetail savedDetail;
             if (aurTmpDetail.isPresent()) {

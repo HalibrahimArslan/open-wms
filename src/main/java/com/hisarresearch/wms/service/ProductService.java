@@ -221,6 +221,19 @@ public class ProductService {
         return productRepository.save(searchProduct);
     }
 
+    public void createIfAbsent(String barcode, String companyCode, String stokKodu, String stokAdi, String stokBirimi) {
+        ProductId id = new ProductId(barcode, companyCode);
+        if (productRepository.findById(id).isPresent()) {
+            return;
+        }
+        Product product = new Product();
+        product.setId(id);
+        product.setStokKodu(stokKodu);
+        product.setStokAdi(stokAdi);
+        product.setStokBirimi(stokBirimi);
+        productRepository.save(product);
+    }
+
     @Transactional
     public void updatePhysicalAttributes(List<Product> products) {
         if (products == null || products.isEmpty()) {

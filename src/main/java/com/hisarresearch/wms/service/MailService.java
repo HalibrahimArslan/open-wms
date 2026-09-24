@@ -640,7 +640,7 @@ public class MailService {
             dto.setIrsaliyeTarihi(orderMaster.getLastModifiedDate());
             dto.setIrsaliyeNumarasi(orderMaster.getBelgeNo());
             dto.setKayitNo(orderMaster.getOrderInfo());
-            Optional<Warehouse> depo = warehouseService.findByCode(String.valueOf(orderMaster.getDepoNo()));
+            Optional<Warehouse> depo = warehouseService.findByCode(String.valueOf(orderMaster.getDepoNo()), String.valueOf(userService.getUserCompanyCode()));
             depo.ifPresentOrElse(depo1 -> dto.setDepo(orderMaster.getDepoNo().toString().concat("-").concat(depo1.getName())), () -> dto.setDepo(orderMaster.getDepoNo().toString().concat("")));
             dto.setSipTip(orderMaster.getOpType());
             dto.setSiparisNumarasi(item.getSiparisNo());
@@ -691,7 +691,7 @@ public class MailService {
             dto.setIrsaliyeTarihi(masterDTO.getCreatedDate());
             dto.setIrsaliyeNumarasi(masterDTO.getBelgeNo());
             dto.setKayitNo(masterDTO.getOrderInfo());
-            Optional<Warehouse> depo = warehouseService.findByCode(String.valueOf(masterDTO.getDepoNo()));
+            Optional<Warehouse> depo = warehouseService.findByCode(String.valueOf(masterDTO.getDepoNo()), String.valueOf(userService.getUserCompanyCode()));
             depo.ifPresentOrElse(depo1 -> dto.setDepo(masterDTO.getDepoNo().toString().concat("-").concat(depo1.getName())), () -> dto.setDepo(masterDTO.getDepoNo().toString().concat("")));
             dto.setSipTip(masterDTO.getOpType());
             dto.setSiparisNumarasi(item.getSiparisNo());

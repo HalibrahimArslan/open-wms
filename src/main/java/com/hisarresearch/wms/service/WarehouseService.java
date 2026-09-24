@@ -42,8 +42,8 @@ public class WarehouseService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Warehouse> findByCode(String code){
-        return warehouseRepository.findByCode(code);
+    public Optional<Warehouse> findByCode(String code, String companyCode){
+        return warehouseRepository.findByCodeAndCompanyCode(code, companyCode);
     }
 
     public List<AurCariOrderDetailListDto> getFirmStockOrderList(JSONObject data) {
@@ -65,15 +65,14 @@ public class WarehouseService {
 
     public String createVirtualWarehouse(String code, String name) {
         Warehouse warehouse = new Warehouse();
-        Optional<Warehouse> isExistDepoCode = warehouseRepository.findByCode(code);
-        Optional<Warehouse> isExistDepoName =  warehouseRepository.findByName(name);
+        String companyCode = String.valueOf(userService.getUserCompanyCode());
+        Optional<Warehouse> isExistDepoCode = warehouseRepository.findByCodeAndCompanyCode(code, companyCode);
+        Optional<Warehouse> isExistDepoName =  warehouseRepository.findByNameAndCompanyCode(name, companyCode);
 
         if(isExistDepoCode.isPresent() || isExistDepoName.isPresent()){
             throw new BadRequestAlertException("Invalid depoCode or depoName request params","Depo","depoParamsErr");
         }
         else{
-            String companyCode = String.valueOf(userService.getUserCompanyCode());
-
             warehouse.setCode(code);
             warehouse.setName(name);
             warehouse.setCompanyCode(companyCode);

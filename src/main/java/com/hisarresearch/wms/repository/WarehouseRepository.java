@@ -12,8 +12,7 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @Repository
 public interface WarehouseRepository extends JpaRepository<Warehouse, Long>,JpaSpecificationExecutor<Warehouse> {
-    Optional<Warehouse> findByCode(String code);
-    Optional<Warehouse> findByName(String name);
+    Optional<Warehouse> findByNameAndCompanyCode(String name,String companyCode);
     Optional<Warehouse> findByCodeAndCompanyCode(String code,String companyCode);
     Optional<Warehouse> findByAutoScan(boolean autoScan);
 
