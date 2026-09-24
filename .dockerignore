@@ -4,7 +4,9 @@
 .vscode
 .husky
 node_modules
-target
+# Dockerfile onceden derlenmis war'i kopyalar; target'in geri kalani gonderilmez.
+target/*
+!target/wms.war
 docs
 *.log
 .env
