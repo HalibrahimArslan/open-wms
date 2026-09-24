@@ -45,6 +45,30 @@ class AccountIT extends AbstractIntegrationTest {
     }
 
     @Test
+    void companyInfoIsBusinessErrorForUserWithoutCompany() throws Exception {
+        sql("UPDATE aur_user SET company_code = NULL WHERE login = 'user'");
+        clearCaches();
+
+        // Eskiden ModelMapper null kaynakta IllegalArgumentException firlatiyor, 500 donuyordu
+        mockMvc
+            .perform(get("/api/users/companyInfo").header("Authorization", "Bearer " + login("user", "user")))
+            .andExpect(status().isExpectationFailed())
+            .andExpect(jsonPath("$.title").value("Kullanıcının şirketi tanımlı değil"))
+            .andExpect(jsonPath("$.errorKey").value("userCompanyNotFound"));
+    }
+
+    @Test
+    void companyInfoIsBusinessErrorWhenCompanyDoesNotExist() throws Exception {
+        sql("UPDATE aur_user SET company_code = 999 WHERE login = 'user'");
+        clearCaches();
+
+        mockMvc
+            .perform(get("/api/users/companyInfo").header("Authorization", "Bearer " + login("user", "user")))
+            .andExpect(status().isExpectationFailed())
+            .andExpect(jsonPath("$.errorKey").value("userCompanyNotFound"));
+    }
+
+    @Test
     void directDatabaseChangeIsVisibleAfterCacheEviction() throws Exception {
         String token = adminToken();
         mockMvc.perform(get("/api/account").header("Authorization", token)).andExpect(jsonPath("$.companyCode").value(1));

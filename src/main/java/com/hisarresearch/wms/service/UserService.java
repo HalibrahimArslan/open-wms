@@ -4,6 +4,7 @@ import com.hisarresearch.wms.config.Constants;
 import com.hisarresearch.wms.domain.*;
 import com.hisarresearch.wms.domain.enumeration.ErpConnectionType;
 import com.hisarresearch.wms.exception.api.EmailAlreadyUsedException;
+import com.hisarresearch.wms.exception.business.BusinessException;
 import com.hisarresearch.wms.exception.validation.InvalidPasswordException;
 import com.hisarresearch.wms.exception.validation.UsernameAlreadyUsedException;
 import com.hisarresearch.wms.repository.*;
@@ -418,6 +419,11 @@ public class UserService {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         AurUser aurUser = aurUserRepository.findByLogin(userName);
         AurCompany aurCompany = aurCompanyRepository.findByCompanyCode(aurUser.getCompanyCode());
+        // Sirketi olmayan ya da sirketi silinmis kullanici: ModelMapper null kaynakta
+        // IllegalArgumentException firlatip 500 donduruyordu.
+        if (aurUser.getCompanyCode() == null || aurCompany == null) {
+            throw new BusinessException("Kullanıcının şirketi tanımlı değil", "AurCompany", "userCompanyNotFound");
+        }
         ModelMapper mm = new ModelMapper();
         return mm.map(aurCompany, AurCompanyDTO.class);
     }
