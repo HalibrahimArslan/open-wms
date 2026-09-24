@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Depo tanimlari ekrani (/d:<depo>/definitions/warehouses) icin menu kaydi.
+
+        Sabit id yerine aur_menu_seq kullaniliyor: menuler arayuzden de
+        eklenebildigi icin sabit bir id baska bir kurulumda dolu olabilir ya da
+        sekansin daha sonra uretecegi id ile cakisabilir. Sekans once tablodaki
+        en buyuk id'ye esitleniyor; 2026092200000001'deki id=86 gibi sekansi
+        ilerletmeden eklenmis kayitlar varsa sekans onlarin gerisinde kalmasin.
+
+        Ust menu id'si degil yolu ('definitions') ile bulunuyor. Kayit zaten
+        varsa (ayni yol) ya da Tanimlar menusu yoksa hicbir sey eklenmez.
+    -->
+    <changeSet id="2026092400000002-1" author="jhipster">
+        <sql splitStatements="false">
+SELECT setval('aur_menu_seq', greatest((SELECT coalesce(max(id), 0) FROM aur_menu), 1));
+
+INSERT INTO aur_menu (id, parent_menu_id, menu_name, menu_type, path, index, icon, company_code)
+SELECT nextval('aur_menu_seq'), parent.id, 'Depolar', 'TERMINAL', 'definitions/warehouses', false, 'mdi:warehouse', NULL
+FROM aur_menu parent
+WHERE parent.path = 'definitions'
+  AND NOT EXISTS (SELECT 1 FROM aur_menu WHERE path = 'definitions/warehouses')
+ORDER BY parent.id
+LIMIT 1;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
