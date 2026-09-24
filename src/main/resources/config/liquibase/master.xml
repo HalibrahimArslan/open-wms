@@ -136,6 +136,7 @@
     <include file="config/liquibase/changelog/2026091400000001_sequences.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/2026092200000001_added_data_AurMenu_company.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/2026092400000002_added_data_AurMenu_warehouse.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/2026092400000001_added_data_installation.xml" relativeToChangelogFile="false"/>
 
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->

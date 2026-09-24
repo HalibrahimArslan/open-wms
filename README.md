@@ -56,6 +56,11 @@ docker exec -i wms-postgres psql -U wms -d wms < seed/local-seed.sql
 
 Giriş: `admin` / `admin`
 
+Prod profiliyle boş bir veritabanına kurulumda (örneğin k8s) seed gerekmez: menüler,
+yetkiler, varsayılan şirket (`LOCAL` ERP), `ROLE_ADMIN` / `ROLE_SEVKIYAT` / `ROLE_KABUL`
+rolleri ve yalnızca `admin` kullanıcısı Liquibase ile kurulur. Depo eklenmez, kurulumdan sonra tanımlanır. İlk girişte
+`admin` / `admin` ile girilir, arayüz parolayı değiştirtir.
+
 Ayarları değiştirmek için `.env.example` dosyasını `.env` olarak kopyalayın.
 
 ## Yapı
