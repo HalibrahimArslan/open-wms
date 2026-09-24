@@ -13,7 +13,7 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @Repository
 public interface UserDepoRelRepository extends JpaRepository<UserDepoRel, Long>, JpaSpecificationExecutor<UserDepoRel> {
-    Optional<UserDepoRel> findByUser_IdAndWarehouse_Code(Long userId, String code);
+    Optional<UserDepoRel> findByUser_IdAndWarehouse_Id(Long userId, Long warehouseId);
     List<UserDepoRel> findByUser_Id(Long userId);
     List<UserDepoRel> findByWarehouse_Id(Long warehouseId);
 }

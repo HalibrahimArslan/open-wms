@@ -4,6 +4,7 @@ import com.hisarresearch.wms.domain.UserDepoRel;
 import com.hisarresearch.wms.domain.Warehouse;
 import com.hisarresearch.wms.domain.enumeration.WarehousePickingRuleType;
 import com.hisarresearch.wms.repository.UserDepoRelRepository;
+import com.hisarresearch.wms.repository.UserRepository;
 import com.hisarresearch.wms.repository.WarehouseRepository;
 import com.hisarresearch.wms.service.dto.UserDepoRelDTO;
 import com.hisarresearch.wms.service.dto.UserDepoRelSaveDto;
@@ -41,14 +42,17 @@ public class UserDepoRelService {
 
     private final UserService userService;
 
+    private final UserRepository userRepository;
+
     public UserDepoRelService(UserDepoRelRepository userDepoRelRepository, UserDepoRelMapper userDepoRelMapper,
                               WarehouseRepository warehouseRepository,WarehouseMapper warehouseMapper,
-                              UserService userService) {
+                              UserService userService, UserRepository userRepository) {
         this.userDepoRelRepository = userDepoRelRepository;
         this.userDepoRelMapper = userDepoRelMapper;
         this.warehouseRepository = warehouseRepository;
         this.warehouseMapper = warehouseMapper;
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -151,8 +155,10 @@ public class UserDepoRelService {
                 warehouseDTO.setId(createdOne.getId());
             }
         });
-        userDepoRelSaveDto.getUserList().forEach(user -> userDepoRelSaveDto.getWarehouseList().forEach(warehouseDTO -> {
-            Optional<UserDepoRel> userDepoRel = userDepoRelRepository.findByUser_IdAndWarehouse_Code(user.getId(),warehouseDTO.getCode());
+        userDepoRelSaveDto.getUserList().stream()
+            .map(requested -> userRepository.findById(requested.getId()).orElseThrow(InvalidIdException::new))
+            .forEach(user -> userDepoRelSaveDto.getWarehouseList().forEach(warehouseDTO -> {
+            Optional<UserDepoRel> userDepoRel = userDepoRelRepository.findByUser_IdAndWarehouse_Id(user.getId(),warehouseDTO.getId());
             if(userDepoRel.isEmpty()){
                 userService.clearUserCaches(user);
                 UserDepoRel saveItem = new UserDepoRel();
