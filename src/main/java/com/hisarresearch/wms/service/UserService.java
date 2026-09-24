@@ -192,7 +192,7 @@ public class UserService {
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(Instant.now());
         user.setActivated(true);
-        user.setCompanyCode(getUserCompanyCode());
+        user.setCompanyCode(userDTO.getCompanyCode() != null ? requireExistingCompany(userDTO.getCompanyCode()) : getUserCompanyCode());
         if (userDTO.getAuthorities() != null) {
             Set<Authority> authorities = userDTO
                 .getAuthorities()
@@ -248,6 +248,9 @@ public class UserService {
                     user.setImageUrl(userDTO.getImageUrl());
                     user.setActivated(userDTO.isActivated());
                     user.setLangKey(userDTO.getLangKey());
+                    if (userDTO.getCompanyCode() != null) {
+                        user.setCompanyCode(requireExistingCompany(userDTO.getCompanyCode()));
+                    }
                     Set<Authority> managedAuthorities = user.getAuthorities();
                     managedAuthorities.clear();
                     userDTO
@@ -406,6 +409,13 @@ public class UserService {
         } else {
             throw new RuntimeException("Test");
         }
+    }
+
+    private Integer requireExistingCompany(Integer companyCode) {
+        if (aurCompanyRepository.findByCompanyCode(companyCode) == null) {
+            throw new BadRequestAlertException("Şirket bulunamadı: " + companyCode, "userManagement", "companynotfound");
+        }
+        return companyCode;
     }
 
     public void clearUserCaches(User user) {
