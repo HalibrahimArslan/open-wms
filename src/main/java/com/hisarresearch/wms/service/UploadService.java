@@ -41,6 +41,11 @@ public class UploadService {
         return uploadRepository.findByCompanyCode(companyCode);
     }
 
+    @Transactional(readOnly = true)
+    public boolean isOwnedByCurrentCompany(String fileName) {
+        return uploadRepository.existsByUrlEndingWithAndCompanyCode("/" + fileName, String.valueOf(userService.getUserCompanyCode()));
+    }
+
     public List<Upload> getAllUploads() {
         log.debug("Request getAllUploads");
         return uploadRepository.findAll();

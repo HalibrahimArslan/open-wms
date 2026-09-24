@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface UploadRepository extends JpaRepository<Upload, Long> {
     List<Upload> findByCompanyCode(String companyCode);
+
+    boolean existsByUrlEndingWithAndCompanyCode(String urlSuffix, String companyCode);
 }

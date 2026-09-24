@@ -2,7 +2,9 @@ package com.hisarresearch.wms.web.rest;
 
 import com.hisarresearch.wms.domain.Upload;
 import com.hisarresearch.wms.security.AuthoritiesConstants;
+import com.hisarresearch.wms.security.SecurityUtils;
 import com.hisarresearch.wms.service.MinioService;
+import com.hisarresearch.wms.service.UploadService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
@@ -28,13 +30,18 @@ public class MinioResource {
 
     private final MinioService minioService;
 
-    public MinioResource(MinioService minioService) {
+    private final UploadService uploadService;
+
+    public MinioResource(MinioService minioService, UploadService uploadService) {
         this.minioService = minioService;
+        this.uploadService = uploadService;
     }
 
     @GetMapping("/download/{fileName}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.MINIO + "\")")
     public ResponseEntity<InputStreamResource> downloadFile(@PathVariable("fileName") String fileName) {
+        if (!SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.MINIO) && !uploadService.isOwnedByCurrentCompany(fileName)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         try {
             log.debug("Minio download process is started {}",fileName);
             InputStream stream =  minioService.downloadFile(fileName);
@@ -51,7 +58,6 @@ public class MinioResource {
     }
 
     @PostMapping("/single-file-upload")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.MINIO + "\")")
     public ResponseEntity<Void> handleSingleFileUpload(@RequestParam("file") MultipartFile file) {
         log.debug("Minio single file upload is started {}",file);
         minioService.uploadObject(file);
@@ -59,7 +65,6 @@ public class MinioResource {
     }
 
     @PostMapping("/multiple-file-upload")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.MINIO + "\")")
     public ResponseEntity<List<Upload>> handleMultipleFileUpload(@RequestParam("files") MultipartFile[] files) {
         log.debug("Multiple file upload is started, {} files", files.length);
         List<Upload> uploadedFiles = new ArrayList<>() ;
