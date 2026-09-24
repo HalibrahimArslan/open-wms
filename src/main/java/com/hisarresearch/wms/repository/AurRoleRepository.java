@@ -16,4 +16,6 @@ public interface AurRoleRepository extends JpaRepository<AurRole, Long> {
     Optional<AurRole> findByRoleName(String role);
 
     List<AurRole> findAllByCompanyCode(Integer companyCode);
+
+    Optional<AurRole> findByRoleNameAndCompanyCode(String roleName, Integer companyCode);
 }

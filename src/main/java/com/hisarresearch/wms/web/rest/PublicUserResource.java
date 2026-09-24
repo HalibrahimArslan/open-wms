@@ -92,6 +92,11 @@ public class PublicUserResource {
     }
 
 
+    @GetMapping("/users/by-role/{roleName}")
+    public ResponseEntity<List<AurUser>> getUsersByRoleName(@PathVariable String roleName) {
+        return ResponseEntity.ok(userService.getUsersByRoleName(roleName));
+    }
+
     @GetMapping("/users/{roleId}")
     public ResponseEntity<List<AurUser>> getUsersByRoleId(@PathVariable Long roleId) {
         List<AurUser> aurUsers = userService.getUsersByRoleId(roleId);

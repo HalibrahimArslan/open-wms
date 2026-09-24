@@ -454,6 +454,12 @@ public class UserService {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
+    public List<AurUser> getUsersByRoleName(String roleName) {
+        return roleRepository.findByRoleNameAndCompanyCode(roleName, getUserCompanyCode())
+            .map(role -> getUsersByRoleId(role.getId()))
+            .orElseGet(List::of);
+    }
+
     public List<AurUser> getUsersByRoleId(Long roleId) {
         return aurUserRoleRelRepository.findByRole_IdAndUser_Activated(roleId,true).stream().map(AurUserRoleRel::getUser).filter(Objects::nonNull).collect(Collectors.toList());
 
