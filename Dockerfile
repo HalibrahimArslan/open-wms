@@ -1,12 +1,3 @@
-# Onceden derlenmis war'dan imaj (CI: mvn clean package, ardindan docker build .).
-# Derlemeyi imaj icinde yapan surum icin Dockerfile.local'e bakin.
-#
-# Ortam degiskenlerinin hepsi istege baglidir:
-#   JAVA_MINHEAP / JAVA_MAXHEAP / JAVA_STACKSIZE  -> -Xms / -Xmx / -Xss (orn. 512m)
-#   JAVA_OPTS                                     -> ek JVM argumanlari
-#   SPRING_PROFILE                                -> -Dspring.profiles.active
-#                                                    (SPRING_PROFILES_ACTIVE de calisir)
-# Bos birakilan deger JVM'e hic gecilmez; eskiden bos -Xms gibi argumanlarla JVM acilmiyordu.
 FROM eclipse-temurin:25-jre
 ENV TZ=Europe/Istanbul
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
