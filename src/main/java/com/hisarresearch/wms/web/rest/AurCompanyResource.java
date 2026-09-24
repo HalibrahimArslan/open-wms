@@ -242,7 +242,6 @@ public class AurCompanyResource {
         if (source.getApiParameters() != null) {
             ApiParameters maskedApiParameters = new ApiParameters();
             maskedApiParameters.setErpApiActive(source.getApiParameters().getErpApiActive());
-            maskedApiParameters.setDepoNo(source.getApiParameters().getDepoNo());
             maskedApiParameters.setUsername(source.getApiParameters().getUsername());
             maskedApiParameters.setPassword(null);
             masked.setApiParameters(maskedApiParameters);

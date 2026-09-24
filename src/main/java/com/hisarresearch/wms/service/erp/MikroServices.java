@@ -100,9 +100,6 @@ public class MikroServices implements ErpOrderGateway {
     }
 
     public Object getDepoList(String token, String apiPath) throws Exception {
-        AurCompanyDTO aurCompanyDto = userService.getUserCompanyInfo();
-        List<Integer> depoNoList = aurCompanyDto.getApiParameters().getDepoNo();
-
         RequestDto dto = new RequestDto();
         dto.setServiceName("depoService.getDepoList");
 

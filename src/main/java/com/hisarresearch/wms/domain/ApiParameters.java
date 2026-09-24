@@ -3,7 +3,6 @@ package com.hisarresearch.wms.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * {@code aur_company.api_parameters} (jsonb) kolonunun kanonik sekli.
@@ -17,7 +16,6 @@ public class ApiParameters implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Boolean erpApiActive;
-    private List<Integer> depoNo;
     private String username;
 
     // Bu alan her zaman sifreli tutulur (bkz. ApiPasswordCipher): AurCompanyResource
@@ -34,14 +32,6 @@ public class ApiParameters implements Serializable {
 
     public void setErpApiActive(Boolean erpApiActive) {
         this.erpApiActive = erpApiActive;
-    }
-
-    public List<Integer> getDepoNo() {
-        return depoNo;
-    }
-
-    public void setDepoNo(List<Integer> depoNo) {
-        this.depoNo = depoNo;
     }
 
     public String getUsername() {

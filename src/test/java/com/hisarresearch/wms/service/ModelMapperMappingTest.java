@@ -56,7 +56,6 @@ class ModelMapperMappingTest {
     void company() {
         ApiParameters apiParameters = new ApiParameters();
         apiParameters.setErpApiActive(true);
-        apiParameters.setDepoNo(List.of(1, 2));
         apiParameters.setUsername("erp");
         apiParameters.setPassword("secret");
         AurCompany source = new AurCompany();
@@ -75,7 +74,6 @@ class ModelMapperMappingTest {
         assertThat(dto.getErpType()).isEqualTo(ErpConnectionType.UYUMSOFT);
         assertThat(dto.getApiEndPoint()).isEqualTo("http://erp");
         assertThat(dto.getApiParameters().getErpApiActive()).isTrue();
-        assertThat(dto.getApiParameters().getDepoNo()).containsExactly(1, 2);
         assertThat(dto.getApiParameters().getUsername()).isEqualTo("erp");
         assertThat(dto.getApiParameters().getPassword()).isEqualTo("secret");
     }
