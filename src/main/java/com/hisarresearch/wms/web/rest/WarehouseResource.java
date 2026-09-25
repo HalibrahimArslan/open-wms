@@ -1,6 +1,7 @@
 package com.hisarresearch.wms.web.rest;
 
 import com.hisarresearch.wms.domain.Warehouse;
+import com.hisarresearch.wms.domain.enumeration.WarehousePickingRuleType;
 import com.hisarresearch.wms.repository.WarehouseRepository;
 import com.hisarresearch.wms.service.WarehouseQueryService;
 import com.hisarresearch.wms.service.WarehouseService;
@@ -69,6 +70,9 @@ public class WarehouseResource {
         log.debug("REST request to save Depo : {}", warehouse);
         if (warehouse.getId() != null) {
             throw new BadRequestAlertException("A new depo cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        if (warehouse.getPickingRuleType() == null) {
+            warehouse.setPickingRuleType(WarehousePickingRuleType.DEFAULT);
         }
         Warehouse result = warehouseRepository.save(warehouse);
         return ResponseEntity
@@ -156,6 +160,12 @@ public class WarehouseResource {
                     }
                     if(warehouse.getUniquePickingAddress() != null){
                         existingDepo.setUniquePickingAddress(warehouse.getUniquePickingAddress());
+                    }
+                    if (warehouse.getCountable() != null) {
+                        existingDepo.setCountable(warehouse.getCountable());
+                    }
+                    if (warehouse.getReal() != null) {
+                        existingDepo.setReal(warehouse.getReal());
                     }
 
                     return existingDepo;
