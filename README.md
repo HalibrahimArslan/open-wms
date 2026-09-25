@@ -44,7 +44,7 @@ Ayağa kalkan servisler:
 |---|---|
 | Uygulama | http://localhost:8080 |
 | PostgreSQL | `localhost:5432` (`wms` / `wms` / `wms`) |
-| MinIO konsolu | http://localhost:9001 |
+| Obje deposu konsolu (RustFS, S3/MinIO uyumlu) | http://localhost:9001 |
 | Mail arayüzü (mailpit) | http://localhost:8025 |
 | WebSocket sunucusu | `ws://localhost:8090/websocket` |
 
