@@ -95,6 +95,10 @@ services:
       dockerfile: Dockerfile.local
     image: wms-app:local
     container_name: wms-app
+    # Host'ta calisan servislere (orn. mikro-v16 :8081) konteynerden erisim icin.
+    # aur_company.api_endpoint = http://host.docker.internal:8081/api
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
     depends_on:
       postgres:
         condition: service_healthy

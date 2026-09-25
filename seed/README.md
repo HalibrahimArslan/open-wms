@@ -93,3 +93,14 @@ uygulamayi yeniden baslatin ya da admin token'iyla:
       -d '{"username":"admin","password":"admin"}' | jq -r .id_token)
 
     curl -s http://localhost:8080/api/menu-tree -H "Authorization: Bearer $TOKEN" | jq
+
+## Sirket 2: Mikro V16
+
+`mikro-v16-company.sql`, `local-seed.sql`'den sonra calistirilir ve Mikro V16'ya bagli
+ikinci bir sirket kurar (`company_code = 2`, `erp_type = MIKRO_V16`,
+`api_endpoint = http://host.docker.internal:8081/api`, Mikro girisi `admin`/`admin`).
+Ayrica sirket 2 icin `1 / Merkez Depo (Mikro)` deposu, `ROLE_ADMIN` rolu ve
+`mikro` / `admin` kullanicisi olusturulur.
+
+    docker exec -i wms-postgres psql -U wms -d wms < seed/mikro-v16-company.sql
+    docker restart wms-app
