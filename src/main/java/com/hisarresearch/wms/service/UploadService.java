@@ -54,12 +54,16 @@ public class UploadService {
     public Upload save(UploadDTO uploadDTO) {
         log.debug("Request to save Upload : {}", uploadDTO);
         Upload upload = uploadMapper.toEntity(uploadDTO);
+        // Tag'in id'si (name) elle atandigi icin tagRepository.save() persist degil merge
+        // yapar ve yonetilen *yeni* bir kopya dondurur; mapper'in urettigi nesne transient
+        // kalir. Upload'a o nesne birakilirsa (cascade yalnizca MERGE) flush'ta
+        // TransientPropertyValueException alinir. Bu yuzden Upload'a DB'deki ya da
+        // save()'in dondurdugu yonetilen Tag'ler baglanir.
+        Set<Tag> managedTags = new HashSet<>();
         for (Tag tag : upload.getTags()) {
-            Optional<Tag> newTag = tagService.findById(tag.getName());
-            if (newTag.isEmpty()) {
-                tagService.save(tag);
-            }
+            managedTags.add(tagService.findById(tag.getName()).orElseGet(() -> tagService.save(tag)));
         }
+        upload.setTags(managedTags);
         upload = uploadRepository.save(upload);
         return upload;
 
