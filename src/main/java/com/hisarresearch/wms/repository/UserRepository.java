@@ -25,6 +25,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     String USERS_BY_EMAIL_CACHE = "usersByEmail";
 
+    boolean existsByAuthorities_Name(String name);
+
     Optional<User> findOneByActivationKey(String activationKey);
 
     List<User> findAllByActivatedIsFalseAndActivationKeyIsNotNullAndCreatedDateBefore(Instant dateTime);
