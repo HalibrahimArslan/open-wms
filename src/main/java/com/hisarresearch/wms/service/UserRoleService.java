@@ -38,4 +38,9 @@ public class UserRoleService {
         }).collect(Collectors.toList());
         return userRoleRelRepository.saveAll(newUserRoleList);
     }
+
+    public void deleteUserRoleRel(Long userId, Long roleId) {
+        log.debug("Request to delete AurUserRoleRel : user {}, role {}", userId, roleId);
+        userRoleRelRepository.findByRole_IdAndUser_Id(roleId, userId).ifPresent(userRoleRelRepository::delete);
+    }
 }

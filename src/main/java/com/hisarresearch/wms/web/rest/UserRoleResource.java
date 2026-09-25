@@ -52,4 +52,11 @@ public class UserRoleResource {
             .headers(HeaderUtil.createAlert(applicationName,"userrolerel.created",userRoleList.toString()))
             .body(userRoles);
     }
+
+    @DeleteMapping("/user-role")
+    public ResponseEntity<Void> deleteUserRole(@RequestParam Long userId, @RequestParam Long roleId) {
+        log.debug("REST request to delete AurUserRoleRel : user {}, role {}", userId, roleId);
+        userRoleService.deleteUserRoleRel(userId, roleId);
+        return ResponseEntity.noContent().build();
+    }
 }
